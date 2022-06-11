@@ -19,18 +19,35 @@ dependencies:
   qr_flutter: ^3.2.0
   qr_code_scanner: ^0.3.5
   intl: ^0.16.1
-
+  awesome_notifications: ^0.0.5+8
+  mask_text_input_formatter: ^2.0.0
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.8.0"
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: false
+  image_path: "assets/ecash_app_icon.png"
 
 
 flutter:
 
   uses-material-design: true
 
+  assets:
+    - assets/
 
-
-
+  fonts:
+    - family: Cabin-Bold
+      fonts:
+        - asset: fonts/Cabin-Bold.ttf
+    - family: Cabin-Regular
+      fonts:
+        - asset: fonts/Cabin-Regular.ttf
+    - family: Cabin-SemiBold
+      fonts:
+        - asset: fonts/Cabin-SemiBold.ttf
