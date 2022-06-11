@@ -1,0 +1,36 @@
+name: ecash
+description: A new Flutter project.
+
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_hooks: ^0.15.0
+  hooks_riverpod: ^0.12.4
+  carousel_slider: ^3.0.0
+  cached_network_image: ^2.5.1
+  shimmer: ^1.1.2
+  page_transition: ^1.1.7+6
+  qr_flutter: ^3.2.0
+  qr_code_scanner: ^0.3.5
+  intl: ^0.16.1
+
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+flutter:
+
+  uses-material-design: true
+
+
+
+
