@@ -6,17 +6,17 @@ import 'package:ecash/components/primary_icon_button.dart';
 import 'package:ecash/constants/app_color.dart';
 import 'package:ecash/constants/app_font.dart';
 import 'package:ecash/constants/enums.dart';
-import 'package:ecash/main.dart';
 import 'package:ecash/models/transaction_model.dart';
 import 'package:ecash/pages/primary_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:toast/toast.dart';
-import 'package:riverpod/riverpod.dart';
 
-class GrabBillPage extends StatelessWidget {
-  GrabBillPage({Key key}) : super(key: key);
+import '../main.dart';
+
+class HomeCreditBillPage extends StatelessWidget {
+  HomeCreditBillPage({Key key}) : super(key: key);
   final TextEditingController amountController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,7 @@ class GrabBillPage extends StatelessWidget {
                                 height: 10,
                               ),
                               Image.asset(
-                                'assets/grab_logo.png',
+                                'assets/home_credit_logo.png',
                                 height: 80,
                                 width: 80,
                               ),
@@ -68,7 +68,6 @@ class GrabBillPage extends StatelessWidget {
                               ),
                               PrimaryTextField(
                                 hint: 'Amount',
-                                controller: amountController,
                                 textInputType: TextInputType.number,
                               ),
                               const SizedBox(
@@ -107,6 +106,12 @@ class GrabBillPage extends StatelessWidget {
                                 ],
                               ),
                               const SizedBox(
+                                height: 15,
+                              ),
+                              PrimaryTextField(
+                                hint: 'Name',
+                              ),
+                              const SizedBox(
                                 height: 50,
                               ),
                               Column(
@@ -126,7 +131,7 @@ class GrabBillPage extends StatelessWidget {
                                         style: AppFont.semiBold(
                                           fontSize: 15,
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
                                   const SizedBox(
@@ -156,7 +161,7 @@ class GrabBillPage extends StatelessWidget {
                                     TransactionModel newTransaction = TransactionModel(
                                       amount: double.parse(amountController.text),
                                       date: DateTime.now(),
-                                      description: 'You paid Grab bill with amount of PHP ' + amountController.text,
+                                      description: 'You paid Home Credit bill with amount of PHP ' + amountController.text,
                                       title: 'Pay Bill',
                                       type: TransactionType.expense,
                                     );
@@ -188,8 +193,8 @@ class GrabBillPage extends StatelessWidget {
           ),
           Consumer(
             builder: (context, watch, child) {
-              final isLoading = watch(userTransactions).isLoading;
-              if (isLoading) {
+              final isloading = context.read(userTransactions).isLoading;
+              if (isloading) {
                 return LoadingScreen();
               }
               return const SizedBox();

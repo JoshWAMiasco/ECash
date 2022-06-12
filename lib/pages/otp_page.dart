@@ -1,16 +1,17 @@
 import 'package:ecash/components/primary_button.dart';
 import 'package:ecash/constants/app_color.dart';
 import 'package:ecash/constants/app_font.dart';
+import 'package:ecash/main.dart';
 import 'package:ecash/pages/home_page.dart';
 import 'package:ecash/pages/main_page.dart';
+import 'package:ecash/utils/navigaton_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:page_transition/page_transition.dart';
 
 class OtpPage extends StatelessWidget {
-  OtpPage({Key key}) : super(key: key);
-
-  TextEditingController mobileNumberController = TextEditingController();
+  final TextEditingController mobileNumberController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,40 +59,77 @@ class OtpPage extends StatelessWidget {
             const SizedBox(
               height: 30,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: List.generate(4, (index) {
-                return Container(
-                  height: 60,
-                  width: 60,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Card(
-                    elevation: 2,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Center(
-                      child: Text(
-                        '2',
-                        style: AppFont.bold(
-                          color: AppColor.primary,
-                          fontSize: 20,
+            Consumer(
+              builder: (context, watch, child) {
+                final otp = watch(userProvider).fakeOtp;
+                if (otp != null) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: List.generate(otp.length, (index) {
+                      return Container(
+                        height: 60,
+                        width: 60,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
                         ),
+                        child: Card(
+                          elevation: 2,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Center(
+                            child: Text(
+                              String.fromCharCode(otp.runes.toList()[index]),
+                              style: AppFont.bold(
+                                color: AppColor.primary,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+                  );
+                }
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: List.generate(4, (index) {
+                    return Container(
+                      height: 60,
+                      width: 60,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
                       ),
-                    ),
-                  ),
+                      child: Card(
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: const SizedBox(),
+                      ),
+                    );
+                  }),
                 );
-              }),
+              },
             ),
             Expanded(child: Container()),
-            PrimaryButton(
-              onPressed: () {
-                Navigator.pushReplacement(context, PageTransition(child: MainPage(), type: PageTransitionType.fade));
-              },
-              title: 'Continue',
-            ),
+            Consumer(builder: (context, watch, child) {
+              final otp = context.read(userProvider).fakeOtp;
+              return Opacity(
+                opacity: otp == "" ? 0.5 : 1,
+                child: PrimaryButton(
+                  onPressed: () {
+                    if (otp != "") {
+                      NavigationService().navigateToScreen(
+                        page: MainPage(),
+                        type: PageTransitionType.rightToLeft,
+                      );
+                    }
+                  },
+                  title: 'Continue',
+                ),
+              );
+            }),
             const SizedBox(
               height: 20,
             )

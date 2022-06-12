@@ -1,17 +1,20 @@
-import 'dart:io';
-
+import 'package:ecash/components/loading_screen.dart';
 import 'package:ecash/components/primary_button.dart';
 import 'package:ecash/constants/app_color.dart';
 import 'package:ecash/constants/app_font.dart';
+import 'package:ecash/constants/enums.dart';
 import 'package:ecash/constants/functions.dart';
-import 'package:ecash/pages/sucess_transaction_page.dart';
+import 'package:ecash/main.dart';
+
+import 'package:ecash/models/transaction_model.dart';
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:qr_flutter/qr_flutter.dart';
 
 class SevenElevenReciptPage extends StatelessWidget {
-  SevenElevenReciptPage({Key key}) : super(key: key);
-
+  const SevenElevenReciptPage({Key key, this.amount}) : super(key: key);
+  final double amount;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,7 +86,22 @@ class SevenElevenReciptPage extends StatelessWidget {
                           height: 20,
                         ),
                         PrimaryButton(
-                          onPressed: () => Navigator.push(context, PageTransition(child: SuccessTransactionPage(), type: PageTransitionType.rightToLeft)),
+                          onPressed: () {
+                            TransactionModel newTransaction = TransactionModel(
+                              amount: amount,
+                              date: DateTime.now(),
+                              description: 'cash in via 7-Eleven with amount of PHP ' + amount.toString(),
+                              title: 'Cash In',
+                              type: TransactionType.income,
+                            );
+                            final userWaller = context.read(userProvider).user.wallet;
+                            context.read(userTransactions).addTransaction(
+                                  context: context,
+                                  currentUserWallet: userWaller,
+                                  transaction: newTransaction,
+                                  type: TransactionType.income,
+                                );
+                          },
                           title: 'Done',
                         )
                       ],
@@ -131,7 +149,7 @@ class SevenElevenReciptPage extends StatelessWidget {
                                   style: AppFont.semiBold(fontSize: 15, color: Colors.grey.shade600),
                                 ),
                                 Text(
-                                  'PHP ' + moneyFormatter(1000),
+                                  'PHP ' + moneyFormatter(amount + 15.0),
                                   style: AppFont.regular(
                                     fontSize: 14,
                                   ),
@@ -152,7 +170,7 @@ class SevenElevenReciptPage extends StatelessWidget {
                                   style: AppFont.semiBold(fontSize: 15, color: Colors.grey.shade600),
                                 ),
                                 Text(
-                                  'PHP ' + moneyFormatter(1000),
+                                  'PHP ' + moneyFormatter(amount),
                                   style: AppFont.regular(
                                     fontSize: 14,
                                   ),
@@ -173,7 +191,7 @@ class SevenElevenReciptPage extends StatelessWidget {
                                   style: AppFont.semiBold(fontSize: 15, color: Colors.grey.shade600),
                                 ),
                                 Text(
-                                  'PHP ' + moneyFormatter(1000),
+                                  'PHP ' + moneyFormatter(15.0),
                                   style: AppFont.regular(
                                     fontSize: 14,
                                   ),
@@ -233,6 +251,15 @@ class SevenElevenReciptPage extends StatelessWidget {
                   ),
                 ),
               ),
+            ),
+            Consumer(
+              builder: (context, watch, child) {
+                final isloading = watch(userTransactions).isLoading;
+                if (isloading) {
+                  return LoadingScreen();
+                }
+                return const SizedBox();
+              },
             )
           ],
         ),

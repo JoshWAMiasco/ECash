@@ -1,12 +1,33 @@
+import 'dart:developer';
+
 import 'package:ecash/components/ripple_animation.dart';
 import 'package:ecash/constants/app_color.dart';
 import 'package:ecash/constants/app_font.dart';
+import 'package:ecash/main.dart';
 import 'package:ecash/pages/login_page.dart';
+import 'package:ecash/pages/main_page.dart';
+import 'package:ecash/providers/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
 
-class RootPage extends StatelessWidget {
-  const RootPage({Key key}) : super(key: key);
+class RootPage extends StatefulWidget {
+  @override
+  _RootPageState createState() => _RootPageState();
+}
+
+class _RootPageState extends State<RootPage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => context.read(userProvider).checkUser());
+    // context.read(userProvider).addListener(() {
+    //   final user = context.read(userProvider).user;
+    //   if (user == null) {
+    //     context.read(userProvider).checkUser();
+    //   }
+    // });
+  }
 
   @override
   Widget build(BuildContext context) {

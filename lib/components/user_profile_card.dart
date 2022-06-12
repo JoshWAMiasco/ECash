@@ -8,10 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class UserProfileCard extends StatelessWidget {
-  const UserProfileCard({Key key, this.profilePhoto, this.displayName, this.mobileNumber}) : super(key: key);
+  const UserProfileCard({Key key, this.profilePhoto, this.displayName, this.mobileNumber, this.userAccountNumber}) : super(key: key);
   final String profilePhoto;
   final String displayName;
   final String mobileNumber;
+  final String userAccountNumber;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -126,7 +127,7 @@ class UserProfileCard extends StatelessWidget {
                                 children: [
                                   Center(
                                     child: QrImage(
-                                      data: 'This is a simple QR code',
+                                      data: userAccountNumber,
                                       version: QrVersions.auto,
                                       size: 220,
                                       gapless: false,
@@ -137,7 +138,7 @@ class UserProfileCard extends StatelessWidget {
                                   ),
                                   Center(
                                     child: Text(
-                                      'Grace Faith',
+                                      displayName,
                                       style: AppFont.bold(
                                         color: AppColor.primary,
                                         fontSize: 20,
@@ -146,7 +147,7 @@ class UserProfileCard extends StatelessWidget {
                                   ),
                                   Center(
                                     child: Text(
-                                      '+63 999-9999-999',
+                                      mobileNumber,
                                       style: AppFont.regular(
                                         fontSize: 15,
                                       ),

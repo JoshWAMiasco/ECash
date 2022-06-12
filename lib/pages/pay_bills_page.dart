@@ -7,7 +7,7 @@ import 'package:ecash/constants/app_font.dart';
 import 'package:ecash/pages/cash_in_via_card.dart';
 import 'package:ecash/pages/cash_in_via_seveneleven_page.dart';
 import 'package:ecash/pages/grab_bill_page.dart';
-import 'package:ecash/pages/home_credit_bill+page.dart';
+import 'package:ecash/pages/home_credit_billpage.dart';
 import 'package:ecash/pages/meralco_bill_page.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';

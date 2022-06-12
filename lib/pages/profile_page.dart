@@ -7,13 +7,28 @@ import 'package:ecash/constants/app_color.dart';
 import 'package:ecash/constants/app_font.dart';
 import 'package:ecash/constants/enums.dart';
 import 'package:ecash/constants/functions.dart';
+import 'package:ecash/main.dart';
+import 'package:ecash/models/transaction_model.dart';
 import 'package:ecash/pages/transaction_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({Key key, this.onHome}) : super(key: key);
   final VoidCallback onHome;
+
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => context.read(userTransactions).getTransactions());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,10 +41,16 @@ class ProfilePage extends StatelessWidget {
               const SizedBox(
                 height: 50,
               ),
-              UserProfileCard(
-                displayName: 'Grace Fate',
-                profilePhoto: 'https://picsum.photos/200/300',
-                mobileNumber: '+63 999-9999-999',
+              Consumer(
+                builder: (context, watch, child) {
+                  final user = context.read(userProvider).user;
+                  return UserProfileCard(
+                    displayName: user.firstName + ' ' + user.lastName,
+                    profilePhoto: user.photo,
+                    mobileNumber: user.mobile,
+                    userAccountNumber: user.accountNumber,
+                  );
+                },
               ),
               const SizedBox(
                 height: 30,
@@ -111,29 +132,47 @@ class ProfilePage extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    TransactionCard(
-                      title: 'Cash In',
-                      description: 'Cash in via 7-Eleven at Dasmarinas Cavite',
-                      type: TransactionType.income,
-                      amount: 50.00,
-                      date: DateTime.now(),
-                    ),
-                    TransactionCard(
-                      title: 'Money Receive',
-                      description: 'You receive P200.00 from John Smith via bank transfer',
-                      type: TransactionType.income,
-                      amount: 200.00,
-                      date: DateTime.now().subtract(Duration(days: 2)),
-                    ),
-                    TransactionCard(
-                      title: 'Pay Bill',
-                      description: 'You paid meralco bill with amount due of P1,500.00.',
-                      type: TransactionType.expense,
-                      amount: 200.00,
-                      date: DateTime.now().subtract(Duration(
-                        days: 20,
-                      )),
-                    ),
+                    Consumer(
+                      builder: (context, watch, child) {
+                        final transaction = watch(userTransactions);
+                        if (transaction.isLoading) {
+                          return Center(
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 20, bottom: 20),
+                              child: CircularProgressIndicator(
+                                backgroundColor: Colors.transparent,
+                                valueColor: AlwaysStoppedAnimation<Color>(AppColor.primary),
+                              ),
+                            ),
+                          );
+                        }
+                        if (transaction.listOfTransaction.isNotEmpty) {
+                          List<TransactionModel> recentList = <TransactionModel>[];
+                          for (int count = 0; count < 3; count++) {
+                            try {
+                              recentList.add(transaction.listOfTransaction[count]);
+                            } catch (e) {}
+                          }
+                          return Column(
+                            children: List.generate(recentList.length, (index) {
+                              return TransactionCard(
+                                amount: recentList[index].amount,
+                                date: recentList[index].date,
+                                description: recentList[index].description,
+                                title: recentList[index].title,
+                                type: recentList[index].type,
+                              );
+                            }),
+                          );
+                        }
+                        return Center(
+                          child: Text(
+                            'No Transaction Yet.',
+                            style: AppFont.bold(fontSize: 18, color: Colors.grey),
+                          ),
+                        );
+                      },
+                    )
                   ],
                 ),
               ),
@@ -150,7 +189,7 @@ class ProfilePage extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         )),
-                    onPressed: onHome,
+                    onPressed: widget.onHome,
                     child: Row(
                       children: [
                         Icon(

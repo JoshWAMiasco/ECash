@@ -3,12 +3,15 @@ import 'package:ecash/constants/app_color.dart';
 import 'package:ecash/constants/app_font.dart';
 import 'package:ecash/constants/functions.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 class UserWalletCard extends StatelessWidget {
-  const UserWalletCard({Key key, this.photoUrl, this.balance, this.onTap}) : super(key: key);
+  const UserWalletCard({Key key, this.photoUrl, this.balance, this.onTap, this.displayName, this.accountNumber}) : super(key: key);
   final String photoUrl;
   final double balance;
   final VoidCallback onTap;
+  final String displayName;
+  final String accountNumber;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,7 +29,7 @@ class UserWalletCard extends StatelessWidget {
             child: ImageIcon(
               AssetImage('assets/ecash_logo.png'),
               size: MediaQuery.of(context).size.height * 0.25,
-              color: Colors.white.withOpacity(0.5),
+              color: Colors.white.withOpacity(0.3),
             ),
           ),
           Padding(
@@ -39,7 +42,7 @@ class UserWalletCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      moneyFormatter(balance),
+                      'PHP ' + moneyFormatter(balance),
                       style: AppFont.bold(
                         color: Colors.white,
                         fontSize: 25,
@@ -60,7 +63,7 @@ class UserWalletCard extends StatelessWidget {
                       height: 5,
                     ),
                     Text(
-                      'Grace Faith',
+                      displayName,
                       style: AppFont.semiBold(
                         color: Colors.white,
                         fontSize: 15,
@@ -70,7 +73,7 @@ class UserWalletCard extends StatelessWidget {
                       height: 5,
                     ),
                     Text(
-                      'E123-123-1234',
+                      accountNumber,
                       style: AppFont.regular(
                         color: Colors.white,
                         fontSize: 14,
@@ -102,6 +105,28 @@ class UserWalletCard extends StatelessWidget {
                               image: DecorationImage(
                                 image: imageProvider,
                                 fit: BoxFit.cover,
+                              ),
+                            ),
+                          );
+                        },
+                        placeholder: (context, url) {
+                          return Shimmer.fromColors(
+                            baseColor: Colors.grey.shade500,
+                            highlightColor: Colors.white.withOpacity(0.8),
+                            child: Container(
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.white,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    offset: Offset(1, 2),
+                                    color: Colors.grey,
+                                  )
+                                ],
+                                shape: BoxShape.circle,
                               ),
                             ),
                           );

@@ -3,7 +3,9 @@ import 'package:ecash/components/transaction_card.dart';
 import 'package:ecash/constants/app_color.dart';
 import 'package:ecash/constants/app_font.dart';
 import 'package:ecash/constants/enums.dart';
+import 'package:ecash/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TransactionPage extends StatelessWidget {
   const TransactionPage({Key key}) : super(key: key);
@@ -26,17 +28,40 @@ class TransactionPage extends StatelessWidget {
                     ),
                     Container(
                       padding: EdgeInsets.only(left: 20, right: 20),
-                      child: Column(
-                        children: List.generate(
-                          20,
-                          (index) => TransactionCard(
-                            amount: 200.00,
-                            date: DateTime.now().subtract(Duration(days: index + 1)),
-                            title: 'Cash In',
-                            description: 'Lorem Ipsum',
-                            type: TransactionType.income,
-                          ),
-                        ),
+                      child: Consumer(
+                        builder: (context, watch, child) {
+                          final transaction = watch(userTransactions);
+                          if (transaction.isLoading) {
+                            return Center(
+                              child: Padding(
+                                padding: EdgeInsets.only(top: 20, bottom: 20),
+                                child: CircularProgressIndicator(
+                                  backgroundColor: Colors.transparent,
+                                  valueColor: AlwaysStoppedAnimation<Color>(AppColor.primary),
+                                ),
+                              ),
+                            );
+                          }
+                          if (transaction.listOfTransaction.isNotEmpty) {
+                            return Column(
+                              children: List.generate(transaction.listOfTransaction.length, (index) {
+                                return TransactionCard(
+                                  amount: transaction.listOfTransaction[index].amount,
+                                  date: transaction.listOfTransaction[index].date,
+                                  description: transaction.listOfTransaction[index].description,
+                                  title: transaction.listOfTransaction[index].title,
+                                  type: transaction.listOfTransaction[index].type,
+                                );
+                              }),
+                            );
+                          }
+                          return Center(
+                            child: Text(
+                              'No Transaction Yet',
+                              style: AppFont.bold(color: Colors.grey, fontSize: 20),
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ],

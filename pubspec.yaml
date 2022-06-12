@@ -10,8 +10,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_hooks: ^0.15.0
-  hooks_riverpod: ^0.12.4
+  flutter_riverpod: ^0.12.4
+  # hooks_riverpod: ^0.12.4
   carousel_slider: ^3.0.0
   cached_network_image: ^2.5.1
   shimmer: ^1.1.2
@@ -19,9 +19,12 @@ dependencies:
   qr_flutter: ^3.2.0
   qr_code_scanner: ^0.3.5
   intl: ^0.16.1
-  awesome_notifications: ^0.0.5+8
   mask_text_input_formatter: ^2.0.0
   cupertino_icons: ^1.0.2
+  firebase_core : ^0.5.0
+  cloud_firestore: ^0.14.0+2
+  firebase_auth: ^0.18.0+1
+  toast: ^0.1.5
 
 dev_dependencies:
   flutter_test:

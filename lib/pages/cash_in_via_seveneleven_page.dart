@@ -9,10 +9,11 @@ import 'package:ecash/pages/primary_textfield.dart';
 import 'package:ecash/pages/seven_eleven_recipt.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:toast/toast.dart';
 
 class CashInViaSevenElevenPage extends StatelessWidget {
-  const CashInViaSevenElevenPage({Key key}) : super(key: key);
-
+  CashInViaSevenElevenPage({Key key}) : super(key: key);
+  final TextEditingController amountController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,6 +49,7 @@ class CashInViaSevenElevenPage extends StatelessWidget {
                     PrimaryTextField(
                       hint: 'Amount',
                       textInputType: TextInputType.number,
+                      controller: amountController,
                     ),
                     const SizedBox(
                       height: 10,
@@ -68,7 +70,21 @@ class CashInViaSevenElevenPage extends StatelessWidget {
                       height: 80,
                     ),
                     PrimaryButton(
-                      onPressed: () => Navigator.push(context, PageTransition(child: SevenElevenReciptPage(), type: PageTransitionType.rightToLeft)),
+                      onPressed: () {
+                        if (amountController.text != "") {
+                          Navigator.push(
+                            context,
+                            PageTransition(
+                              child: SevenElevenReciptPage(
+                                amount: double.parse(amountController.text),
+                              ),
+                              type: PageTransitionType.rightToLeft,
+                            ),
+                          );
+                        } else {
+                          Toast.show("Please enter amount", context, duration: 2, gravity: Toast.TOP);
+                        }
+                      },
                       title: 'Continue',
                     ),
                     const SizedBox(

@@ -4,8 +4,8 @@ import 'package:ecash/constants/app_font.dart';
 import 'package:flutter/material.dart';
 
 class PrimaryDrawer extends StatelessWidget {
-  const PrimaryDrawer({Key key}) : super(key: key);
-
+  const PrimaryDrawer({Key key, this.onLogout}) : super(key: key);
+  final VoidCallback onLogout;
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -170,39 +170,42 @@ class PrimaryDrawer extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
-              height: 60,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.only(left: 20),
-                    height: 30,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.4),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Text(
-                      'Logout',
-                      style: AppFont.regular(
-                        fontSize: 15,
-                        color: Colors.white,
+            GestureDetector(
+              onTap: onLogout,
+              child: Container(
+                height: 60,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.only(left: 20),
+                      height: 30,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.4),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        'Logout',
+                        style: AppFont.regular(
+                          fontSize: 15,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: PrimaryIconButton(
-                        icon: Icons.exit_to_app_rounded,
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: PrimaryIconButton(
+                          icon: Icons.exit_to_app_rounded,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],

@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:ecash/constants/app_color.dart';
 import 'package:ecash/constants/app_font.dart';
 import 'package:ecash/pages/qr_payment_result_page.dart';
+import 'package:ecash/utils/navigaton_service.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:toast/toast.dart';
 
 class PayQRScanner extends StatefulWidget {
   PayQRScanner({Key key}) : super(key: key);
@@ -24,7 +26,21 @@ class _PayQRScannerState extends State<PayQRScanner> {
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
-      log('qr Scanned: $scanData');
+      log('qr Scanned: ' + scanData.code);
+      if (scanData.code.contains("ecash-pay")) {
+        try {
+          NavigationService().replaceScreen(
+            page: QrPaymentResult(
+              amount: double.parse(scanData.code.split('-').last),
+            ),
+            type: PageTransitionType.rightToLeft,
+          );
+        } catch (e) {
+          Toast.show('Invalid Barcode', context);
+        }
+      } else {
+        Toast.show('Invalid Barcode', context);
+      }
     });
   }
 

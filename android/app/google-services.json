@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "296547514192",
+    "project_id": "ecash-8339e",
+    "storage_bucket": "ecash-8339e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:296547514192:android:77a4af1a09abb220ab9e55",
+        "android_client_info": {
+          "package_name": "com.joshua.ecash"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "296547514192-pfe04mamf1ad02vmu5u5agll6jjd5l5p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUF02fhvVtFmDcXG6SsyhSyJVD2LB2LEM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "296547514192-pfe04mamf1ad02vmu5u5agll6jjd5l5p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

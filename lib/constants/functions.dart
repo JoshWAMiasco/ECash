@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 
 String moneyFormatter(double number) {
   var f = NumberFormat("###,###,###.##");
-  return f.format(number);
+  return f.format(number) + ".00";
 }
 
 String shortDateFormatter(DateTime date) {
@@ -15,4 +15,9 @@ String shortDateFormatter(DateTime date) {
 String dateFormatter(DateTime date) {
   var f = DateFormat("MMMM d,y");
   return f.format(date);
+}
+
+String mobileFormatter(String mobile) {
+  var f = NumberFormat("+63 ##-###-####-###");
+  return f.format(int.parse(mobile.substring(1, 9)));
 }
