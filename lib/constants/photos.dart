@@ -1,0 +1,1 @@
+const String profilePlaceHolder = 'https://firebasestorage.googleapis.com/v0/b/ecash-8339e.appspot.com/o/profile.jpeg?alt=media&token=69378063-992f-44dc-82c2-558d929fb842';

@@ -1,15 +1,14 @@
 import 'package:ecash/constants/app_color.dart';
-import 'package:ecash/constants/app_font.dart';
 import 'package:ecash/constants/enums.dart';
 import 'package:ecash/constants/functions.dart';
 import 'package:flutter/material.dart';
 
 class TransactionCard extends StatelessWidget {
-  const TransactionCard({Key key, this.title, this.description, this.amount, this.type, this.date}) : super(key: key);
-  final String title;
-  final String description;
-  final double amount;
-  final TransactionType type;
+  const TransactionCard({Key? key, this.title, this.description, this.amount, this.type,required this.date}) : super(key: key);
+  final String? title;
+  final String? description;
+  final double? amount;
+  final TransactionType? type;
   final DateTime date;
   @override
   Widget build(BuildContext context) {
@@ -27,14 +26,14 @@ class TransactionCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    title,
-                    style: AppFont.bold(
+                    title ?? '',
+                    style: TextStyle(
                       fontSize: 15,
                     ),
                   ),
                   Text(
-                    type == TransactionType.expense ? '- P ' + moneyFormatter(amount) + '.00' : 'P ' + moneyFormatter(amount) + '.00',
-                    style: AppFont.bold(
+                    type == TransactionType.expense ? '- P ${moneyFormatter(amount ?? 0)}.00' : 'P ${moneyFormatter(amount ?? 0)}.00',
+                    style: TextStyle(
                       fontSize: 13,
                       color: type == TransactionType.income ? AppColor.green : AppColor.red,
                     ),
@@ -47,8 +46,8 @@ class TransactionCard extends StatelessWidget {
               Container(
                 width: MediaQuery.of(context).size.width * 0.95,
                 child: Text(
-                  description,
-                  style: AppFont.regular(
+                  description ?? '',
+                  style: TextStyle(
                     color: Colors.grey.shade600,
                     fontSize: 12,
                   ),
@@ -58,7 +57,7 @@ class TransactionCard extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 child: Text(
                   shortDateFormatter(date),
-                  style: AppFont.regular(
+                  style: TextStyle(
                     color: Colors.grey.shade600,
                     fontSize: 10,
                   ),

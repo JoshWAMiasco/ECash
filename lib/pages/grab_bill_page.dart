@@ -1,23 +1,23 @@
-import 'package:ecash/components/loading_screen.dart';
+
 import 'package:ecash/components/primary_appbar.dart';
 import 'package:ecash/components/primary_button.dart';
-import 'package:ecash/components/primary_buttonlabeled.dart';
-import 'package:ecash/components/primary_icon_button.dart';
 import 'package:ecash/constants/app_color.dart';
-import 'package:ecash/constants/app_font.dart';
-import 'package:ecash/constants/enums.dart';
-import 'package:ecash/main.dart';
-import 'package:ecash/models/transaction_model.dart';
+
 import 'package:ecash/pages/primary_textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
-import 'package:toast/toast.dart';
-import 'package:riverpod/riverpod.dart';
 
-class GrabBillPage extends StatelessWidget {
-  GrabBillPage({Key key}) : super(key: key);
+class GrabBillPage extends StatefulWidget {
+  const GrabBillPage({Key? key}) : super(key: key);
+
+  @override
+  State<GrabBillPage> createState() => _GrabBillPageState();
+}
+
+class _GrabBillPageState extends State<GrabBillPage> {
   final TextEditingController amountController = TextEditingController();
+
+  final TextEditingController accountController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +46,7 @@ class GrabBillPage extends StatelessWidget {
                                 alignment: Alignment.center,
                                 child: Text(
                                   'You are paying',
-                                  style: AppFont.semiBold(fontSize: 15, color: Colors.grey.shade500),
+                                  style: TextStyle(fontSize: 15, color: Colors.grey.shade500),
                                 ),
                               ),
                               const SizedBox(
@@ -62,6 +62,7 @@ class GrabBillPage extends StatelessWidget {
                               ),
                               PrimaryTextField(
                                 hint: 'Account Number',
+                                controller: accountController,
                               ),
                               const SizedBox(
                                 height: 10,
@@ -76,11 +77,11 @@ class GrabBillPage extends StatelessWidget {
                               ),
                               Align(
                                 alignment: Alignment.centerLeft,
-                                child: Container(
+                                child: SizedBox(
                                   width: MediaQuery.of(context).size.width * 0.75,
-                                  child: Text(
+                                  child: const Text(
                                     'Biller Conveneince Fee (BCF) may apply',
-                                    style: AppFont.regular(
+                                    style: TextStyle(
                                       fontSize: 14,
                                     ),
                                   ),
@@ -92,9 +93,9 @@ class GrabBillPage extends StatelessWidget {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
+                                  const Text(
                                     '+63',
-                                    style: AppFont.semiBold(
+                                    style: TextStyle(
                                       fontSize: 15,
                                     ),
                                   ),
@@ -121,9 +122,9 @@ class GrabBillPage extends StatelessWidget {
                                       const SizedBox(
                                         width: 10,
                                       ),
-                                      Text(
+                                      const Text(
                                         'Remider',
-                                        style: AppFont.semiBold(
+                                        style: TextStyle(
                                           fontSize: 15,
                                         ),
                                       )
@@ -132,11 +133,11 @@ class GrabBillPage extends StatelessWidget {
                                   const SizedBox(
                                     height: 5,
                                   ),
-                                  Container(
+                                  SizedBox(
                                     width: MediaQuery.of(context).size.width,
-                                    child: Text(
+                                    child: const Text(
                                       'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta ',
-                                      style: AppFont.regular(
+                                      style: TextStyle(
                                         fontSize: 12,
                                       ),
                                     ),
@@ -149,24 +150,24 @@ class GrabBillPage extends StatelessWidget {
                               PrimaryButton(
                                 title: 'Pay',
                                 onPressed: () {
-                                  final userWallet = context.read(userProvider).user.wallet;
-                                  if (userWallet < double.parse(amountController.text)) {
-                                    Toast.show('Sorry, Unsufficient Balance', context, duration: 3, gravity: Toast.TOP);
-                                  } else {
-                                    TransactionModel newTransaction = TransactionModel(
-                                      amount: double.parse(amountController.text),
-                                      date: DateTime.now(),
-                                      description: 'You paid Grab bill with amount of PHP ' + amountController.text,
-                                      title: 'Pay Bill',
-                                      type: TransactionType.expense,
-                                    );
-                                    context.read(userTransactions).addTransaction(
-                                          context: context,
-                                          currentUserWallet: userWallet,
-                                          transaction: newTransaction,
-                                          type: TransactionType.expense,
-                                        );
-                                  }
+                                  // final userWallet = context.read(userProvider).user.wallet;
+                                  // if (userWallet < double.parse(amountController.text)) {
+                                  //   Toast.show('Sorry, Unsufficient Balance', context, duration: 3, gravity: Toast.TOP);
+                                  // } else {
+                                  //   TransactionModel newTransaction = TransactionModel(
+                                  //     amount: double.parse(amountController.text),
+                                  //     date: DateTime.now(),
+                                  //     description: 'You paid Grab bill with amount of PHP ' + amountController.text,
+                                  //     title: 'Pay Bill',
+                                  //     type: TransactionType.expense,
+                                  //   );
+                                  //   context.read(userTransactions).addTransaction(
+                                  //         context: context,
+                                  //         currentUserWallet: userWallet,
+                                  //         transaction: newTransaction,
+                                  //         type: TransactionType.expense,
+                                  //       );
+                                  // }
                                 },
                               ),
                               const SizedBox(
@@ -186,15 +187,15 @@ class GrabBillPage extends StatelessWidget {
               ),
             ),
           ),
-          Consumer(
-            builder: (context, watch, child) {
-              final isLoading = watch(userTransactions).isLoading;
-              if (isLoading) {
-                return LoadingScreen();
-              }
-              return const SizedBox();
-            },
-          )
+          // Consumer(
+          //   builder: (context, watch, child) {
+          //     final isLoading = watch(userTransactions).isLoading;
+          //     if (isLoading) {
+          //       return LoadingScreen();
+          //     }
+          //     return const SizedBox();
+          //   },
+          // )
         ],
       ),
     );

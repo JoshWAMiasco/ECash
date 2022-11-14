@@ -7,16 +7,14 @@ import 'package:ecash/components/primary_button.dart';
 import 'package:ecash/components/primary_buttonlabeled.dart';
 import 'package:ecash/components/primary_icon_button.dart';
 import 'package:ecash/constants/app_color.dart';
-import 'package:ecash/constants/app_font.dart';
 import 'package:ecash/constants/enums.dart';
 import 'package:ecash/main.dart';
-import 'package:ecash/models/transaction_model.dart';
 import 'package:ecash/pages/primary_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CashInViaCardPage extends StatelessWidget {
-  const CashInViaCardPage({Key key}) : super(key: key);
+  const CashInViaCardPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,11 +41,11 @@ class CashInViaCardPage extends StatelessWidget {
                               const SizedBox(
                                 height: 40,
                               ),
-                              Align(
+                              const Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   'Choose from amount below (PHP)',
-                                  style: AppFont.semiBold(
+                                  style: TextStyle(
                                     fontSize: 15,
                                   ),
                                 ),
@@ -66,11 +64,11 @@ class CashInViaCardPage extends StatelessWidget {
                               ),
                               Align(
                                 alignment: Alignment.centerLeft,
-                                child: Container(
+                                child: SizedBox(
                                   width: MediaQuery.of(context).size.width * 0.75,
-                                  child: Text(
+                                  child: const Text(
                                     'A Php 200.00 convenience fee for this service will be added and reflected in the confirmation page.',
-                                    style: AppFont.regular(
+                                    style: TextStyle(
                                       fontSize: 14,
                                     ),
                                   ),
@@ -79,11 +77,11 @@ class CashInViaCardPage extends StatelessWidget {
                               const SizedBox(
                                 height: 30,
                               ),
-                              Align(
+                              const Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   'Card Details',
-                                  style: AppFont.semiBold(
+                                  style: TextStyle(
                                     fontSize: 15,
                                   ),
                                 ),
@@ -116,11 +114,11 @@ class CashInViaCardPage extends StatelessWidget {
                               const SizedBox(
                                 height: 20,
                               ),
-                              Align(
+                              const Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   'Valid Thru',
-                                  style: AppFont.semiBold(
+                                  style: TextStyle(
                                     fontSize: 14,
                                   ),
                                 ),
@@ -187,7 +185,7 @@ class CashInViaCardPage extends StatelessWidget {
                                       ),
                                       Text(
                                         'About Cash In',
-                                        style: AppFont.semiBold(
+                                        style: TextStyle(
                                           fontSize: 15,
                                         ),
                                       )
@@ -200,7 +198,7 @@ class CashInViaCardPage extends StatelessWidget {
                                     width: MediaQuery.of(context).size.width,
                                     child: Text(
                                       'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta ',
-                                      style: AppFont.regular(
+                                      style: TextStyle(
                                         fontSize: 12,
                                       ),
                                     ),
@@ -213,20 +211,20 @@ class CashInViaCardPage extends StatelessWidget {
                               PrimaryButton(
                                 title: 'Continue',
                                 onPressed: () {
-                                  TransactionModel newTransaction = TransactionModel(
-                                    amount: double.parse(amountController.text),
-                                    date: DateTime.now(),
-                                    description: 'cash in via credit card with the amount of PHP ' + amountController.text,
-                                    title: 'Cash In',
-                                    type: TransactionType.income,
-                                  );
-                                  final userWallet = context.read(userProvider).user.wallet;
-                                  context.read(userTransactions).addTransaction(
-                                        context: context,
-                                        currentUserWallet: userWallet,
-                                        transaction: newTransaction,
-                                        type: TransactionType.income,
-                                      );
+                                  // TransactionModel newTransaction = TransactionModel(
+                                  //   amount: double.parse(amountController.text),
+                                  //   date: DateTime.now(),
+                                  //   description: 'cash in via credit card with the amount of PHP ' + amountController.text,
+                                  //   title: 'Cash In',
+                                  //   type: TransactionType.income,
+                                  // );
+                                  // final userWallet = context.read(userProvider).user.wallet;
+                                  // context.read(userTransactions).addTransaction(
+                                  //       context: context,
+                                  //       currentUserWallet: userWallet,
+                                  //       transaction: newTransaction,
+                                  //       type: TransactionType.income,
+                                  //     );
                                 },
                               ),
                               const SizedBox(
@@ -246,15 +244,15 @@ class CashInViaCardPage extends StatelessWidget {
               ),
             ),
           ),
-          Consumer(
-            builder: (context, watch, child) {
-              final isloading = watch(userTransactions).isLoading;
-              if (isloading) {
-                return LoadingScreen();
-              }
-              return const SizedBox();
-            },
-          )
+          // Consumer(
+          //   builder: (context, watch, child) {
+          //     final isloading = watch(userTransactions).isLoading;
+          //     if (isloading) {
+          //       return LoadingScreen();
+          //     }
+          //     return const SizedBox();
+          //   },
+          // )
         ],
       ),
     );

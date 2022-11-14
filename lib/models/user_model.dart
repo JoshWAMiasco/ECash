@@ -1,47 +1,17 @@
-class UserModel {
-  String email;
-  String password;
-  String firstName;
-  String lastName;
-  String photo;
-  double wallet;
-  String id;
-  String mobile;
-  String accountNumber;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  UserModel({
-    this.email,
-    this.firstName,
-    this.lastName,
-    this.id,
-    this.password,
-    this.photo,
-    this.wallet,
-    this.mobile,
-    this.accountNumber,
-  });
-  UserModel.fromJson({String id, Map<String, dynamic> json}) {
-    this.email = json['email'] ?? '';
-    this.password = json['password'] ?? '';
-    this.photo = json['photo'] ?? '';
-    this.firstName = json['firstName'] ?? '';
-    this.lastName = json['lastName'] ?? '';
-    this.wallet = (json['wallet'] ?? 0).toDouble();
-    this.id = id;
-    this.mobile = json['mobile'] ?? "";
-    this.accountNumber = json['accountNumber'] ?? '';
-  }
+part 'user_model.freezed.dart';
+part 'user_model.g.dart';
 
-  Map<String, dynamic> toJson() {
-    final data = {};
-    data['email'] = this.email;
-    data['password'] = this.password;
-    data['firstName'] = this.firstName;
-    data['lastName'] = this.lastName;
-    data['photo'] = this.photo;
-    data['wallet'] = this.wallet;
-    data['mobile'] = this.mobile;
-    data['accountNamber'] = this.accountNumber;
-    return data;
-  }
+@freezed
+class UserModel with _$UserModel {
+  factory UserModel({
+    String? mobileNumber,
+    double? walletBalance,
+    String? firstname,
+    String? lastname,
+    String? mpin,
+  }) = _UserModel;
+
+  factory UserModel.fromJson(Map<String,dynamic> json) => _$UserModelFromJson(json);
 }

@@ -1,14 +1,11 @@
 import 'package:ecash/components/primary_button.dart';
 import 'package:ecash/constants/app_color.dart';
-import 'package:ecash/constants/app_font.dart';
 import 'package:ecash/main.dart';
 import 'package:ecash/pages/home_page.dart';
 import 'package:ecash/pages/main_page.dart';
-import 'package:ecash/utils/navigaton_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:page_transition/page_transition.dart';
 
 class OtpPage extends StatelessWidget {
   final TextEditingController mobileNumberController = TextEditingController();
@@ -41,7 +38,7 @@ class OtpPage extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Text(
                 'OTP',
-                style: AppFont.bold(
+                style: TextStyle(
                   fontSize: 25,
                 ),
               ),
@@ -53,7 +50,7 @@ class OtpPage extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Text(
                 'Please enter the One-Time-Password (OTP). \n we sent to +63 999-9999-999',
-                style: AppFont.regular(fontSize: 14, color: Colors.grey.shade800),
+                style: TextStyle(fontSize: 14, color: Colors.grey.shade800),
               ),
             ),
             const SizedBox(
@@ -61,7 +58,7 @@ class OtpPage extends StatelessWidget {
             ),
             Consumer(
               builder: (context, watch, child) {
-                final otp = watch(userProvider).fakeOtp;
+                final otp = null; // watch(userProvider).fakeOtp;
                 if (otp != null) {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -80,7 +77,7 @@ class OtpPage extends StatelessWidget {
                           child: Center(
                             child: Text(
                               String.fromCharCode(otp.runes.toList()[index]),
-                              style: AppFont.bold(
+                              style: TextStyle(
                                 color: AppColor.primary,
                                 fontSize: 20,
                               ),
@@ -114,17 +111,17 @@ class OtpPage extends StatelessWidget {
             ),
             Expanded(child: Container()),
             Consumer(builder: (context, watch, child) {
-              final otp = context.read(userProvider).fakeOtp;
+              final otp = null; // context.read(userProvider).fakeOtp;
               return Opacity(
                 opacity: otp == "" ? 0.5 : 1,
                 child: PrimaryButton(
                   onPressed: () {
-                    if (otp != "") {
-                      NavigationService().navigateToScreen(
-                        page: MainPage(),
-                        type: PageTransitionType.rightToLeft,
-                      );
-                    }
+                    // if (otp != "") {
+                    //   NavigationService().navigateToScreen(
+                    //     page: MainPage(),
+                    //     type: PageTransitionType.rightToLeft,
+                    //   );
+                    // }
                   },
                   title: 'Continue',
                 ),

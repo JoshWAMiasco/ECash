@@ -1,15 +1,14 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:ecash/components/primary_appbar.dart';
 import 'package:ecash/components/primary_buttonlabeled.dart';
 import 'package:ecash/components/primary_icon_button.dart';
 import 'package:ecash/constants/app_color.dart';
-import 'package:ecash/constants/app_font.dart';
 import 'package:ecash/pages/cash_in_via_card.dart';
 import 'package:ecash/pages/cash_in_via_seveneleven_page.dart';
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 
 class CashInPage extends StatelessWidget {
-  const CashInPage({Key key}) : super(key: key);
+  const CashInPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +31,7 @@ class CashInPage extends StatelessWidget {
                       height: 40,
                     ),
                     GestureDetector(
-                      onTap: () => Navigator.push(context, PageTransition(child: CashInViaCardPage(), type: PageTransitionType.rightToLeft)),
+                      //onTap: () => Navigator.push(context, PageTransition(child: CashInViaCardPage(), type: PageTransitionType.rightToLeft)),
                       child: Container(
                         height: 50,
                         decoration: BoxDecoration(
@@ -56,7 +55,7 @@ class CashInPage extends StatelessWidget {
                                 ),
                                 Text(
                                   'Debit or Credit Card',
-                                  style: AppFont.bold(
+                                  style: TextStyle(
                                     fontSize: 14,
                                   ),
                                 ),
@@ -81,7 +80,7 @@ class CashInPage extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Out Partners',
-                        style: AppFont.semiBold(
+                        style: TextStyle(
                           fontSize: 15,
                         ),
                       ),
@@ -95,7 +94,7 @@ class CashInPage extends StatelessWidget {
                         width: MediaQuery.of(context).size.width * 0.75,
                         child: Text(
                           'Select your preferred partner to learn more.',
-                          style: AppFont.regular(
+                          style: TextStyle(
                             fontSize: 14,
                           ),
                         ),
@@ -113,7 +112,9 @@ class CashInPage extends StatelessWidget {
                           asset: 'assets/seven_eleven_logo.png',
                           label: '7-Eleven',
                           large: true,
-                          onTap: () => Navigator.push(context, PageTransition(child: CashInViaSevenElevenPage(), type: PageTransitionType.rightToLeft)),
+                          onTap: () {
+                            context.router.pushNamed('/cash-in-via-seven-eleven');
+                          }
                         ),
                         PriamryButtonLabeled(
                           asset: 'assets/union_bank_logo.png',
@@ -157,9 +158,9 @@ class CashInPage extends StatelessWidget {
                             const SizedBox(
                               width: 10,
                             ),
-                            Text(
+                            const Text(
                               'About Cash In',
-                              style: AppFont.semiBold(
+                              style: TextStyle(
                                 fontSize: 15,
                               ),
                             )
@@ -168,13 +169,10 @@ class CashInPage extends StatelessWidget {
                         const SizedBox(
                           height: 5,
                         ),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: Text(
-                            'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta ',
-                            style: AppFont.regular(
-                              fontSize: 12,
-                            ),
+                        const Text(
+                          'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta ',
+                          style: TextStyle(
+                            fontSize: 12,
                           ),
                         )
                       ],

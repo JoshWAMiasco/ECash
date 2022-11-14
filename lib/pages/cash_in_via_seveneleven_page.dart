@@ -1,19 +1,30 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:ecash/components/loading_indicator.dart';
+import 'package:ecash/components/message_dialog.dart';
 import 'package:ecash/components/primary_appbar.dart';
 import 'package:ecash/components/primary_button.dart';
 import 'package:ecash/components/primary_buttonlabeled.dart';
 import 'package:ecash/components/primary_icon_button.dart';
 import 'package:ecash/constants/app_color.dart';
-import 'package:ecash/constants/app_font.dart';
 import 'package:ecash/pages/cash_in_via_card.dart';
+import 'package:ecash/pages/page_info_wrapper.dart';
 import 'package:ecash/pages/primary_textfield.dart';
 import 'package:ecash/pages/seven_eleven_recipt.dart';
+import 'package:ecash/providers/providers.dart';
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toast/toast.dart';
 
-class CashInViaSevenElevenPage extends StatelessWidget {
-  CashInViaSevenElevenPage({Key key}) : super(key: key);
+class CashInViaSevenElevenPage extends ConsumerStatefulWidget {
+ const CashInViaSevenElevenPage({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<CashInViaSevenElevenPage> createState() => _CashInViaSevenElevenPageState();
+}
+
+class _CashInViaSevenElevenPageState extends ConsumerState<CashInViaSevenElevenPage> {
   final TextEditingController amountController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,11 +45,11 @@ class CashInViaSevenElevenPage extends StatelessWidget {
                     const SizedBox(
                       height: 40,
                     ),
-                    Align(
+                    const Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Amount',
-                        style: AppFont.semiBold(
+                        style: TextStyle(
                           fontSize: 15,
                         ),
                       ),
@@ -56,11 +67,11 @@ class CashInViaSevenElevenPage extends StatelessWidget {
                     ),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Container(
+                      child: SizedBox(
                         width: MediaQuery.of(context).size.width * 0.75,
-                        child: Text(
+                        child: const Text(
                           'Provide an amount between PHP 100.00 up to PHP 10,000. Convenience fee may apply  ',
-                          style: AppFont.regular(
+                          style: TextStyle(
                             fontSize: 14,
                           ),
                         ),
@@ -70,19 +81,23 @@ class CashInViaSevenElevenPage extends StatelessWidget {
                       height: 80,
                     ),
                     PrimaryButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (amountController.text != "") {
-                          Navigator.push(
-                            context,
-                            PageTransition(
-                              child: SevenElevenReciptPage(
-                                amount: double.parse(amountController.text),
-                              ),
-                              type: PageTransitionType.rightToLeft,
-                            ),
-                          );
+                          double amount = double.tryParse(amountController.text) ?? 0;
+                          loadingIndicator(context);
+                          final user = ref.read(authProvider).getUserData()!;
+                          await ref.read(transactionProvider.notifier).cashInViaSevenEleven(amount, user).then((isSuccess){
+                            if(isSuccess){
+                              Navigator.of(context, rootNavigator: false).pop();
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => SevenElevenReciptPage(amount: amount,)));
+                            } else {
+                              Navigator.of(context, rootNavigator: false).pop();
+                              messageDialog(context, content: 'Cash in failed');
+                            }
+                          });
+                          
                         } else {
-                          Toast.show("Please enter amount", context, duration: 2, gravity: Toast.TOP);
+                          Toast.show("Please enter amount", duration: 2, gravity: Toast.top);
                         }
                       },
                       title: 'Continue',

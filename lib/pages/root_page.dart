@@ -1,32 +1,34 @@
-import 'dart:developer';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:ecash/components/ripple_animation.dart';
 import 'package:ecash/constants/app_color.dart';
-import 'package:ecash/constants/app_font.dart';
-import 'package:ecash/main.dart';
 import 'package:ecash/pages/login_page.dart';
-import 'package:ecash/pages/main_page.dart';
-import 'package:ecash/providers/user_provider.dart';
+import 'package:ecash/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:page_transition/page_transition.dart';
 
-class RootPage extends StatefulWidget {
+class RootPage extends ConsumerStatefulWidget {
+  const RootPage({Key? key}) : super(key: key);
+
   @override
-  _RootPageState createState() => _RootPageState();
+  ConsumerState<RootPage> createState() => _RootPageState();
 }
 
-class _RootPageState extends State<RootPage> {
+class _RootPageState extends ConsumerState<RootPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => context.read(userProvider).checkUser());
-    // context.read(userProvider).addListener(() {
-    //   final user = context.read(userProvider).user;
-    //   if (user == null) {
-    //     context.read(userProvider).checkUser();
-    //   }
-    // });
+    checkIsLogin();
+  }
+
+  void checkIsLogin() async {
+    final res = await ref.read(authProvider).checkIsLogin();
+    if(res.failure){
+      await context.router.replaceNamed('/login');
+    } else {
+      ref.read(authProvider).listenToUserData();
+      await context.router.replaceNamed('/main');
+    }
   }
 
   @override
@@ -47,9 +49,9 @@ class _RootPageState extends State<RootPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
-                  onTap: () => Navigator.push(context, PageTransition(child: LoginPage(), type: PageTransitionType.fade)),
+                 //onTap: () => Navigator.push(context, PageTransition(child: LoginPage(), type: PageTransitionType.fade)),
                   child: ImageIcon(
-                    AssetImage('assets/ecash_logo.png'),
+                    const AssetImage('assets/ecash_logo.png'),
                     size: 150,
                     color: Colors.white.withOpacity(0.8),
                   ),
@@ -57,9 +59,9 @@ class _RootPageState extends State<RootPage> {
                 const SizedBox(
                   height: 50,
                 ),
-                Text(
+                const Text(
                   'ECash',
-                  style: AppFont.bold(
+                  style: TextStyle(
                     color: Colors.white,
                     fontSize: 30,
                   ),
@@ -67,16 +69,16 @@ class _RootPageState extends State<RootPage> {
                 const SizedBox(
                   height: 10,
                 ),
-                Padding(
+                const Padding(
                   padding: const EdgeInsets.fromLTRB(15, 10, 10, 20),
                   child: Text(
                     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud',
-                    style: AppFont.regular(
+                    style: TextStyle(
                       color: Colors.white,
                     ),
                   ),
                 ),
-                Center(
+                const Center(
                   child: SizedBox(
                     height: 100,
                     width: 100,
@@ -85,13 +87,13 @@ class _RootPageState extends State<RootPage> {
                 ),
               ],
             ),
-            Align(
+            const Align(
               alignment: Alignment.bottomLeft,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(8.0),
                 child: Text(
                   'version 1.0.0',
-                  style: AppFont.regular(
+                  style: TextStyle(
                     fontSize: 14,
                     color: Colors.white,
                   ),

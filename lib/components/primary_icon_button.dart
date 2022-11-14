@@ -2,9 +2,9 @@ import 'package:ecash/constants/app_color.dart';
 import 'package:flutter/material.dart';
 
 class PrimaryIconButton extends StatelessWidget {
-  const PrimaryIconButton({Key key, this.onTap, this.icon}) : super(key: key);
-  final VoidCallback onTap;
-  final IconData icon;
+  const PrimaryIconButton({Key? key, this.onTap, this.icon}) : super(key: key);
+  final VoidCallback? onTap;
+  final IconData? icon;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

@@ -3,20 +3,22 @@ import 'package:ecash/constants/app_color.dart';
 import 'package:flutter/material.dart';
 
 class RippleAnimation extends StatefulWidget {
+  const RippleAnimation({Key? key}) : super(key: key);
+
   @override
   _RippleAnimationState createState() => _RippleAnimationState();
 }
 
 class _RippleAnimationState extends State<RippleAnimation> with SingleTickerProviderStateMixin {
-  AnimationController _animationController;
-  Animation<double> _animation;
+  late AnimationController _animationController;
+  late Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
     );
 
     _animation = Tween<double>(begin: 0, end: 1).animate(_animationController)

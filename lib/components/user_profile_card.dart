@@ -3,16 +3,15 @@ import 'package:ecash/components/popup_card.dart';
 import 'package:ecash/components/primary_button.dart';
 import 'package:ecash/components/primary_icon_button.dart';
 import 'package:ecash/constants/app_color.dart';
-import 'package:ecash/constants/app_font.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class UserProfileCard extends StatelessWidget {
-  const UserProfileCard({Key key, this.profilePhoto, this.displayName, this.mobileNumber, this.userAccountNumber}) : super(key: key);
-  final String profilePhoto;
-  final String displayName;
-  final String mobileNumber;
-  final String userAccountNumber;
+  const UserProfileCard({Key? key, this.profilePhoto, this.displayName, this.mobileNumber, this.userAccountNumber}) : super(key: key);
+  final String? profilePhoto;
+  final String? displayName;
+  final String? mobileNumber;
+  final String? userAccountNumber;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -41,15 +40,15 @@ class UserProfileCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          displayName,
-                          style: AppFont.bold(
+                          displayName ?? '',
+                          style: TextStyle(
                             fontSize: 20,
                             color: Colors.white,
                           ),
                         ),
                         Text(
-                          mobileNumber,
-                          style: AppFont.regular(
+                          mobileNumber ?? '',
+                          style: TextStyle(
                             fontSize: 14,
                             color: Colors.white,
                           ),
@@ -68,7 +67,7 @@ class UserProfileCard extends StatelessWidget {
                       ),
                       child: Text(
                         'Verified',
-                        style: AppFont.regular(),
+                        style: TextStyle(),
                       ),
                     )
                   ],
@@ -85,7 +84,7 @@ class UserProfileCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: CachedNetworkImage(
-                  imageUrl: profilePhoto,
+                  imageUrl: profilePhoto!,
                   imageBuilder: (context, imageProvider) {
                     return Container(
                       height: 80,
@@ -127,7 +126,7 @@ class UserProfileCard extends StatelessWidget {
                                 children: [
                                   Center(
                                     child: QrImage(
-                                      data: userAccountNumber,
+                                      data: userAccountNumber ?? '',
                                       version: QrVersions.auto,
                                       size: 220,
                                       gapless: false,
@@ -138,8 +137,8 @@ class UserProfileCard extends StatelessWidget {
                                   ),
                                   Center(
                                     child: Text(
-                                      displayName,
-                                      style: AppFont.bold(
+                                      displayName ?? '',
+                                      style: TextStyle(
                                         color: AppColor.primary,
                                         fontSize: 20,
                                       ),
@@ -147,8 +146,8 @@ class UserProfileCard extends StatelessWidget {
                                   ),
                                   Center(
                                     child: Text(
-                                      mobileNumber,
-                                      style: AppFont.regular(
+                                      mobileNumber ?? '',
+                                      style: TextStyle(
                                         fontSize: 15,
                                       ),
                                     ),

@@ -1,11 +1,10 @@
 import 'package:ecash/constants/app_color.dart';
-import 'package:ecash/constants/app_font.dart';
 import 'package:flutter/material.dart';
 
 class PrimaryAppBar extends StatelessWidget {
-  const PrimaryAppBar({Key key, this.title, this.onBack}) : super(key: key);
-  final String title;
-  final VoidCallback onBack;
+  const PrimaryAppBar({Key? key, this.title, this.onBack}) : super(key: key);
+  final String? title;
+  final VoidCallback? onBack;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,8 +28,8 @@ class PrimaryAppBar extends StatelessWidget {
             width: 20,
           ),
           Text(
-            title,
-            style: AppFont.bold(
+            title ?? '',
+            style: TextStyle(
               color: Colors.white,
               fontSize: 15,
             ),

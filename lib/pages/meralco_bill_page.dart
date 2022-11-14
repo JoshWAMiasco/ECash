@@ -4,19 +4,23 @@ import 'package:ecash/components/primary_button.dart';
 import 'package:ecash/components/primary_buttonlabeled.dart';
 import 'package:ecash/components/primary_icon_button.dart';
 import 'package:ecash/constants/app_color.dart';
-import 'package:ecash/constants/app_font.dart';
 import 'package:ecash/constants/enums.dart';
 import 'package:ecash/main.dart';
-import 'package:ecash/models/transaction_model.dart';
 import 'package:ecash/pages/primary_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:toast/toast.dart';
 
-class MeralcoBillPage extends StatelessWidget {
-  MeralcoBillPage({Key key}) : super(key: key);
+class MeralcoBillPage extends StatefulWidget {
+  const MeralcoBillPage({Key? key}) : super(key: key);
+
+  @override
+  State<MeralcoBillPage> createState() => _MeralcoBillPageState();
+}
+
+class _MeralcoBillPageState extends State<MeralcoBillPage> {
   final TextEditingController amountController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +49,7 @@ class MeralcoBillPage extends StatelessWidget {
                                 alignment: Alignment.center,
                                 child: Text(
                                   'You are paying',
-                                  style: AppFont.semiBold(fontSize: 15, color: Colors.grey.shade500),
+                                  style: TextStyle(fontSize: 15, color: Colors.grey.shade500),
                                 ),
                               ),
                               const SizedBox(
@@ -71,7 +75,7 @@ class MeralcoBillPage extends StatelessWidget {
                                   width: MediaQuery.of(context).size.width * 0.75,
                                   child: Text(
                                     '10-digit Customer Account Number found at the upper left portion of the SAO.',
-                                    style: AppFont.regular(
+                                    style: TextStyle(
                                       fontSize: 14,
                                     ),
                                   ),
@@ -94,7 +98,7 @@ class MeralcoBillPage extends StatelessWidget {
                                   width: MediaQuery.of(context).size.width * 0.75,
                                   child: Text(
                                     'Enter the total amount due on your bill',
-                                    style: AppFont.regular(
+                                    style: TextStyle(
                                       fontSize: 14,
                                     ),
                                   ),
@@ -120,7 +124,7 @@ class MeralcoBillPage extends StatelessWidget {
                                       ),
                                       Text(
                                         'Remider',
-                                        style: AppFont.semiBold(
+                                        style: TextStyle(
                                           fontSize: 15,
                                         ),
                                       )
@@ -133,7 +137,7 @@ class MeralcoBillPage extends StatelessWidget {
                                     width: MediaQuery.of(context).size.width,
                                     child: Text(
                                       'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta ',
-                                      style: AppFont.regular(
+                                      style: TextStyle(
                                         fontSize: 12,
                                       ),
                                     ),
@@ -146,24 +150,24 @@ class MeralcoBillPage extends StatelessWidget {
                               PrimaryButton(
                                 title: 'Pay',
                                 onPressed: () {
-                                  final userWallet = context.read(userProvider).user.wallet;
-                                  if (userWallet < double.parse(amountController.text)) {
-                                    Toast.show('Sorry, Unsufficient Balance', context, duration: 3, gravity: Toast.TOP);
-                                  } else {
-                                    TransactionModel newTransaction = TransactionModel(
-                                      amount: double.parse(amountController.text),
-                                      date: DateTime.now(),
-                                      description: 'You paid Meralco bill with amount of PHP ' + amountController.text,
-                                      title: 'Pay Bill',
-                                      type: TransactionType.expense,
-                                    );
-                                    context.read(userTransactions).addTransaction(
-                                          context: context,
-                                          currentUserWallet: userWallet,
-                                          transaction: newTransaction,
-                                          type: TransactionType.expense,
-                                        );
-                                  }
+                                  // final userWallet = context.read(userProvider).user.wallet;
+                                  // if (userWallet < double.parse(amountController.text)) {
+                                  //   Toast.show('Sorry, Unsufficient Balance', context, duration: 3, gravity: Toast.TOP);
+                                  // } else {
+                                  //   TransactionModel newTransaction = TransactionModel(
+                                  //     amount: double.parse(amountController.text),
+                                  //     date: DateTime.now(),
+                                  //     description: 'You paid Meralco bill with amount of PHP ' + amountController.text,
+                                  //     title: 'Pay Bill',
+                                  //     type: TransactionType.expense,
+                                  //   );
+                                  //   context.read(userTransactions).addTransaction(
+                                  //         context: context,
+                                  //         currentUserWallet: userWallet,
+                                  //         transaction: newTransaction,
+                                  //         type: TransactionType.expense,
+                                  //       );
+                                  // }
                                 },
                               ),
                               const SizedBox(
@@ -183,15 +187,15 @@ class MeralcoBillPage extends StatelessWidget {
               ),
             ),
           ),
-          Consumer(
-            builder: (context, watch, child) {
-              final isloading = context.read(userTransactions).isLoading;
-              if (isloading) {
-                return LoadingScreen();
-              }
-              return const SizedBox();
-            },
-          )
+          // Consumer(
+          //   builder: (context, watch, child) {
+          //     final isloading = context.read(userTransactions).isLoading;
+          //     if (isloading) {
+          //       return LoadingScreen();
+          //     }
+          //     return const SizedBox();
+          //   },
+          // )
         ],
       ),
     );

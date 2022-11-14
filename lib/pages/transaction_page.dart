@@ -1,15 +1,19 @@
 import 'package:ecash/components/primary_appbar.dart';
 import 'package:ecash/components/transaction_card.dart';
 import 'package:ecash/constants/app_color.dart';
-import 'package:ecash/constants/app_font.dart';
-import 'package:ecash/constants/enums.dart';
-import 'package:ecash/main.dart';
+import 'package:ecash/models/transaction_model.dart';
+import 'package:ecash/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class TransactionPage extends StatelessWidget {
-  const TransactionPage({Key key}) : super(key: key);
+class TransactionPage extends ConsumerStatefulWidget {
+  const TransactionPage({Key? key}) : super(key: key);
 
+  @override
+  ConsumerState<TransactionPage> createState() => _TransactionPageState();
+}
+
+class _TransactionPageState extends ConsumerState<TransactionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,50 +25,56 @@ class TransactionPage extends StatelessWidget {
           child: Stack(
             children: [
               SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 100,
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(left: 20, right: 20),
-                      child: Consumer(
-                        builder: (context, watch, child) {
-                          final transaction = watch(userTransactions);
-                          if (transaction.isLoading) {
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 70,
+                      ),
+                      ref.watch(transactionProvider).transactions.when(
+                          loading: () {
                             return Center(
                               child: Padding(
-                                padding: EdgeInsets.only(top: 20, bottom: 20),
+                                padding: const EdgeInsets.only(top: 20, bottom: 20),
                                 child: CircularProgressIndicator(
                                   backgroundColor: Colors.transparent,
                                   valueColor: AlwaysStoppedAnimation<Color>(AppColor.primary),
                                 ),
                               ),
+                            ); 
+                          }, 
+                          error: (_, stackTrace) {
+                            return const Center(
+                              child: Text(
+                                'Went somethinf wrong',
+                              ),
                             );
+                          },
+                          data: (transaction) {
+                            if (transaction.isNotEmpty) {
+                              return Column(
+                                children: List.generate(transaction.length, (index) {
+                                  return TransactionCard(
+                                    amount: transaction[index].amount,
+                                    date: transaction[index].date!,
+                                    description: transaction[index].description,
+                                    title: transaction[index].title,
+                                    type: transaction[index].type,
+                                  );
+                                }),
+                              );
+                            } else {
+                              return const Center(
+                                child: Text(
+                                  'No transaction yet.'
+                                ),
+                              );
+                            }
                           }
-                          if (transaction.listOfTransaction.isNotEmpty) {
-                            return Column(
-                              children: List.generate(transaction.listOfTransaction.length, (index) {
-                                return TransactionCard(
-                                  amount: transaction.listOfTransaction[index].amount,
-                                  date: transaction.listOfTransaction[index].date,
-                                  description: transaction.listOfTransaction[index].description,
-                                  title: transaction.listOfTransaction[index].title,
-                                  type: transaction.listOfTransaction[index].type,
-                                );
-                              }),
-                            );
-                          }
-                          return Center(
-                            child: Text(
-                              'No Transaction Yet',
-                              style: AppFont.bold(color: Colors.grey, fontSize: 20),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
+                        ),
+                    ],
+                  ),
                 ),
               ),
               PrimaryAppBar(

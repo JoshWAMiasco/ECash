@@ -1,36 +1,41 @@
-import 'dart:developer';
 
-import 'package:ecash/components/loading_screen.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:ecash/components/loading_indicator.dart';
+import 'package:ecash/components/message_dialog.dart';
 import 'package:ecash/components/primary_button.dart';
 import 'package:ecash/constants/app_color.dart';
-import 'package:ecash/constants/app_font.dart';
-import 'package:ecash/main.dart';
-import 'package:ecash/pages/otp_page.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:page_transition/page_transition.dart';
+import 'package:ecash/pages/main_page.dart';
+import 'package:ecash/providers/providers.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({Key key}) : super(key: key);
+import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+class LoginPage extends ConsumerStatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends ConsumerState<LoginPage> {
   final TextEditingController mobileNumberController = TextEditingController();
+  final TextEditingController mpinController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             color: AppColor.background,
             child: Column(
               children: [
                 const SizedBox(
                   height: 50,
                 ),
-                Align(
+                const Align(
                   alignment: Alignment.centerRight,
                   child: Image(
                     image: AssetImage('assets/ecash_app_icon.png'),
@@ -41,11 +46,11 @@ class LoginPage extends StatelessWidget {
                 const SizedBox(
                   height: 30,
                 ),
-                Align(
+                const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
                     'Login',
-                    style: AppFont.bold(
+                    style: TextStyle(
                       fontSize: 25,
                     ),
                   ),
@@ -57,7 +62,7 @@ class LoginPage extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud',
-                    style: AppFont.regular(fontSize: 14, color: Colors.grey.shade800),
+                    style: TextStyle(fontSize: 14, color: Colors.grey.shade800),
                   ),
                 ),
                 const SizedBox(
@@ -74,9 +79,9 @@ class LoginPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       alignment: Alignment.center,
-                      child: Text(
+                      child: const  Text(
                         '+63',
-                        style: AppFont.bold(
+                        style: TextStyle(
                           color: Colors.white,
                           fontSize: 15,
                         ),
@@ -90,7 +95,7 @@ class LoginPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: TextFormField(
-                        maxLength: 10,
+                        maxLength: 11,
                         keyboardType: TextInputType.phone,
                         controller: mobileNumberController,
                         decoration: InputDecoration(
@@ -98,25 +103,75 @@ class LoginPage extends StatelessWidget {
                           enabledBorder: InputBorder.none,
                           errorBorder: InputBorder.none,
                           hintText: 'Mobile Number',
-                          hintStyle: AppFont.regular(
+                          hintStyle: TextStyle(
                             color: Colors.grey.shade600,
                             fontSize: 18,
                           ),
                           counterText: "",
-                          contentPadding: EdgeInsets.only(
+                          contentPadding: const  EdgeInsets.only(
                             left: 10,
                             bottom: 10,
                           ),
                         ),
-                        style: AppFont.semiBold(color: AppColor.primary, fontSize: 25),
+                        style: TextStyle(color: AppColor.primary, fontSize: 25),
                       ),
                     ),
                   ],
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: TextFormField(
+                        maxLength: 4,
+                        keyboardType: TextInputType.phone,
+                        controller: mpinController,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          hintText: 'Mpin',
+                          hintStyle: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontSize: 18,
+                          ),
+                          counterText: "",
+                          contentPadding: const  EdgeInsets.only(
+                            left: 10,
+                            bottom: 10,
+                          ),
+                        ),
+                        style: TextStyle(color: AppColor.primary, fontSize: 25),
+                      ),
+                    ),
                 Expanded(child: Container()),
                 PrimaryButton(
-                  onPressed: () {
-                    context.read(userProvider).logIn("0" + mobileNumberController.text, context);
+                  onPressed: () async {
+                    String mobile = mobileNumberController.text;
+                    String mpin = mpinController.text;
+                    if(mobile.isNotEmpty || mpin.isNotEmpty){
+                      if(mobile.length == 11 && mobile.startsWith('0')){
+                        loadingIndicator(context);
+                        await ref.read(authProvider).login(mobile, mpin).then((res){
+                          if(res.failure) {
+                            Navigator.of(context, rootNavigator: false).pop();
+                            messageDialog(context, content: res.message);
+                          } else {
+                            Navigator.of(context, rootNavigator: false).pop();
+                            AutoRouter.of(context).replaceNamed('/main');
+                          }
+                        });
+                      } else {
+                        messageDialog(context, content: 'Invalid number');
+                      }
+                    } else {
+                      messageDialog(context, content: 'Please fill up all fields');
+                    }
                   },
                   title: 'Login',
                 ),
@@ -125,15 +180,6 @@ class LoginPage extends StatelessWidget {
                 )
               ],
             ),
-          ),
-          Consumer(
-            builder: (context, watch, child) {
-              final isLaoding = watch(userProvider).isLoading;
-              if (isLaoding) {
-                return LoadingScreen();
-              }
-              return const SizedBox();
-            },
           ),
         ],
       ),

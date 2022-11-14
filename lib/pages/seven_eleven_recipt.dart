@@ -1,20 +1,26 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:ecash/components/loading_screen.dart';
 import 'package:ecash/components/primary_button.dart';
 import 'package:ecash/constants/app_color.dart';
-import 'package:ecash/constants/app_font.dart';
 import 'package:ecash/constants/enums.dart';
 import 'package:ecash/constants/functions.dart';
 import 'package:ecash/main.dart';
-
 import 'package:ecash/models/transaction_model.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:qr_flutter/qr_flutter.dart';
 
-class SevenElevenReciptPage extends StatelessWidget {
-  const SevenElevenReciptPage({Key key, this.amount}) : super(key: key);
-  final double amount;
+class SevenElevenReciptPage extends ConsumerStatefulWidget {
+  const SevenElevenReciptPage({Key? key, this.amount}) : super(key: key);
+  final double? amount;
+
+  @override
+  ConsumerState<SevenElevenReciptPage> createState() => _SevenElevenReciptPageState();
+}
+
+class _SevenElevenReciptPageState extends ConsumerState<SevenElevenReciptPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +70,7 @@ class SevenElevenReciptPage extends StatelessWidget {
                             ),
                             Text(
                               'About Cash In',
-                              style: AppFont.semiBold(
+                              style: TextStyle(
                                 fontSize: 15,
                               ),
                             )
@@ -77,7 +83,7 @@ class SevenElevenReciptPage extends StatelessWidget {
                           width: MediaQuery.of(context).size.width,
                           child: Text(
                             'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta ',
-                            style: AppFont.regular(
+                            style: TextStyle(
                               fontSize: 12,
                             ),
                           ),
@@ -87,20 +93,14 @@ class SevenElevenReciptPage extends StatelessWidget {
                         ),
                         PrimaryButton(
                           onPressed: () {
-                            TransactionModel newTransaction = TransactionModel(
-                              amount: amount,
-                              date: DateTime.now(),
-                              description: 'cash in via 7-Eleven with amount of PHP ' + amount.toString(),
-                              title: 'Cash In',
-                              type: TransactionType.income,
-                            );
-                            final userWaller = context.read(userProvider).user.wallet;
-                            context.read(userTransactions).addTransaction(
-                                  context: context,
-                                  currentUserWallet: userWaller,
-                                  transaction: newTransaction,
-                                  type: TransactionType.income,
-                                );
+                            // TransactionModel newTransaction = TransactionModel(
+                            //   amount: widget.amount,
+                            //   date: DateTime.now(),
+                            //   description: 'cash in via 7-Eleven with amount of PHP ' + widget.amount.toString(),
+                            //   title: 'Cash In',
+                            //   type: TransactionType.income,
+                            // );
+                            context.router.replaceNamed('/main');
                           },
                           title: 'Done',
                         )
@@ -130,7 +130,7 @@ class SevenElevenReciptPage extends StatelessWidget {
                           Center(
                             child: Text(
                               'Show the barcode below to the cashier for payment',
-                              style: AppFont.regular(
+                              style: TextStyle(
                                 fontSize: 14,
                               ),
                               textAlign: TextAlign.center,
@@ -146,11 +146,11 @@ class SevenElevenReciptPage extends StatelessWidget {
                               children: [
                                 Text(
                                   'Amount to be paid',
-                                  style: AppFont.semiBold(fontSize: 15, color: Colors.grey.shade600),
+                                  style: TextStyle(fontSize: 15, color: Colors.grey.shade600),
                                 ),
                                 Text(
-                                  'PHP ' + moneyFormatter(amount + 15.0),
-                                  style: AppFont.regular(
+                                  'PHP ${moneyFormatter(widget.amount ?? 0 + 15.0)}',
+                                  style: TextStyle(
                                     fontSize: 14,
                                   ),
                                 ),
@@ -167,11 +167,11 @@ class SevenElevenReciptPage extends StatelessWidget {
                               children: [
                                 Text(
                                   'Money sent to your \n Ecash waller',
-                                  style: AppFont.semiBold(fontSize: 15, color: Colors.grey.shade600),
+                                  style: TextStyle(fontSize: 15, color: Colors.grey.shade600),
                                 ),
                                 Text(
-                                  'PHP ' + moneyFormatter(amount),
-                                  style: AppFont.regular(
+                                  'PHP ${moneyFormatter(widget.amount ?? 0)}',
+                                  style: TextStyle(
                                     fontSize: 14,
                                   ),
                                 ),
@@ -188,11 +188,11 @@ class SevenElevenReciptPage extends StatelessWidget {
                               children: [
                                 Text(
                                   'Convenience Fee',
-                                  style: AppFont.semiBold(fontSize: 15, color: Colors.grey.shade600),
+                                  style: TextStyle(fontSize: 15, color: Colors.grey.shade600),
                                 ),
                                 Text(
-                                  'PHP ' + moneyFormatter(15.0),
-                                  style: AppFont.regular(
+                                  'PHP ${moneyFormatter(15.0)}',
+                                  style: TextStyle(
                                     fontSize: 14,
                                   ),
                                 ),
@@ -212,20 +212,20 @@ class SevenElevenReciptPage extends StatelessWidget {
                               children: [
                                 Text(
                                   'Valid until',
-                                  style: AppFont.semiBold(fontSize: 15),
+                                  style: TextStyle(fontSize: 15),
                                 ),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       dateFormatter(DateTime.now()),
-                                      style: AppFont.regular(
+                                      style: TextStyle(
                                         fontSize: 14,
                                       ),
                                     ),
                                     Text(
                                       '12:00 PM',
-                                      style: AppFont.regular(
+                                      style: TextStyle(
                                         fontSize: 12,
                                       ),
                                     ),
@@ -252,15 +252,15 @@ class SevenElevenReciptPage extends StatelessWidget {
                 ),
               ),
             ),
-            Consumer(
-              builder: (context, watch, child) {
-                final isloading = watch(userTransactions).isLoading;
-                if (isloading) {
-                  return LoadingScreen();
-                }
-                return const SizedBox();
-              },
-            )
+            // Consumer(
+            //   builder: (context, watch, child) {
+            //     final isloading = watch(userTransactions).isLoading;
+            //     if (isloading) {
+            //       return LoadingScreen();
+            //     }
+            //     return const SizedBox();
+            //   },
+            // )
           ],
         ),
       ),

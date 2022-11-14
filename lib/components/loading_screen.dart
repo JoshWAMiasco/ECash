@@ -1,9 +1,8 @@
 import 'package:ecash/constants/app_color.dart';
-import 'package:ecash/constants/app_font.dart';
 import 'package:flutter/material.dart';
 
 class LoadingScreen extends StatelessWidget {
-  const LoadingScreen({Key key}) : super(key: key);
+  const LoadingScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +22,7 @@ class LoadingScreen extends StatelessWidget {
             children: [
               Text(
                 'Loading...',
-                style: AppFont.bold(
+                style: TextStyle(
                   fontSize: 18,
                   color: Colors.white,
                 ),

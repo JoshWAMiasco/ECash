@@ -3,17 +3,15 @@ import 'package:ecash/components/primary_button.dart';
 import 'package:ecash/components/primary_buttonlabeled.dart';
 import 'package:ecash/components/primary_icon_button.dart';
 import 'package:ecash/constants/app_color.dart';
-import 'package:ecash/constants/app_font.dart';
 import 'package:ecash/pages/cash_in_via_card.dart';
 import 'package:ecash/pages/cash_in_via_seveneleven_page.dart';
 import 'package:ecash/pages/grab_bill_page.dart';
 import 'package:ecash/pages/home_credit_billpage.dart';
 import 'package:ecash/pages/meralco_bill_page.dart';
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 
 class PayBillsPage extends StatelessWidget {
-  const PayBillsPage({Key key}) : super(key: key);
+  const PayBillsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +40,7 @@ class PayBillsPage extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Our Support Payment',
-                        style: AppFont.semiBold(
+                        style: TextStyle(
                           fontSize: 15,
                         ),
                       ),
@@ -56,7 +54,7 @@ class PayBillsPage extends StatelessWidget {
                         width: MediaQuery.of(context).size.width * 0.75,
                         child: Text(
                           'Select your preferred partner to learn more.',
-                          style: AppFont.regular(
+                          style: TextStyle(
                             fontSize: 14,
                           ),
                         ),
@@ -74,19 +72,19 @@ class PayBillsPage extends StatelessWidget {
                           asset: 'assets/meralco_logo.png',
                           label: 'Mercalco',
                           large: true,
-                          onTap: () => Navigator.push(context, PageTransition(child: MeralcoBillPage(), type: PageTransitionType.rightToLeft)),
+                          //onTap: () => Navigator.push(context, PageTransition(child: MeralcoBillPage(), type: PageTransitionType.rightToLeft)),
                         ),
                         PriamryButtonLabeled(
                           asset: 'assets/grab_logo.png',
                           label: 'Grab',
                           large: true,
-                          onTap: () => Navigator.push(context, PageTransition(child: GrabBillPage(), type: PageTransitionType.rightToLeft)),
+                          //onTap: () => Navigator.push(context, PageTransition(child: GrabBillPage(), type: PageTransitionType.rightToLeft)),
                         ),
                         PriamryButtonLabeled(
                           asset: 'assets/home_credit_logo.png',
                           label: 'Home Credit',
                           large: true,
-                          onTap: () => Navigator.push(context, PageTransition(child: HomeCreditBillPage(), type: PageTransitionType.rightToLeft)),
+                          //onTap: () => Navigator.push(context, PageTransition(child: HomeCreditBillPage(), type: PageTransitionType.rightToLeft)),
                         ),
                       ],
                     ),

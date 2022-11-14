@@ -1,17 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecash/constants/app_color.dart';
-import 'package:ecash/constants/app_font.dart';
 import 'package:ecash/constants/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 class UserWalletCard extends StatelessWidget {
-  const UserWalletCard({Key key, this.photoUrl, this.balance, this.onTap, this.displayName, this.accountNumber}) : super(key: key);
-  final String photoUrl;
-  final double balance;
-  final VoidCallback onTap;
-  final String displayName;
-  final String accountNumber;
+  const UserWalletCard({Key? key, this.photoUrl, this.balance, this.onTap, this.displayName, this.accountNumber}) : super(key: key);
+  final String? photoUrl;
+  final double? balance;
+  final VoidCallback? onTap;
+  final String? displayName;
+  final String? accountNumber;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,8 +41,8 @@ class UserWalletCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'PHP ' + moneyFormatter(balance),
-                      style: AppFont.bold(
+                      'PHP ${moneyFormatter(balance ?? 0)}',
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 25,
                       ),
@@ -51,9 +50,9 @@ class UserWalletCard extends StatelessWidget {
                     const SizedBox(
                       height: 5,
                     ),
-                    Text(
+                    const Text(
                       'wallet balance',
-                      style: AppFont.regular(
+                      style: TextStyle(
                         color: Colors.white,
                         fontSize: 14,
                       ),
@@ -63,8 +62,8 @@ class UserWalletCard extends StatelessWidget {
                       height: 5,
                     ),
                     Text(
-                      displayName,
-                      style: AppFont.semiBold(
+                      displayName ?? '',
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 15,
                       ),
@@ -73,8 +72,8 @@ class UserWalletCard extends StatelessWidget {
                       height: 5,
                     ),
                     Text(
-                      accountNumber,
-                      style: AppFont.regular(
+                      accountNumber ?? '',
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 14,
                       ),
@@ -86,7 +85,7 @@ class UserWalletCard extends StatelessWidget {
                     GestureDetector(
                       onTap: onTap,
                       child: CachedNetworkImage(
-                        imageUrl: photoUrl,
+                        imageUrl: photoUrl!,
                         imageBuilder: (context, imageProvider) {
                           return Container(
                             height: 40,
@@ -95,8 +94,8 @@ class UserWalletCard extends StatelessWidget {
                               border: Border.all(
                                 color: Colors.white,
                               ),
-                              boxShadow: [
-                                BoxShadow(
+                              boxShadow: const [
+                                 BoxShadow(
                                   offset: Offset(1, 2),
                                   color: Colors.grey,
                                 )
@@ -120,7 +119,7 @@ class UserWalletCard extends StatelessWidget {
                                 border: Border.all(
                                   color: Colors.white,
                                 ),
-                                boxShadow: [
+                                boxShadow: const [
                                   BoxShadow(
                                     offset: Offset(1, 2),
                                     color: Colors.grey,
@@ -136,9 +135,9 @@ class UserWalletCard extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    Text(
+                    const Text(
                       'Profile',
-                      style: AppFont.regular(
+                      style: TextStyle(
                         color: Colors.white,
                         fontSize: 10,
                       ),

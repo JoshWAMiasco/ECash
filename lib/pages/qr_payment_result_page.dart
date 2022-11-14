@@ -4,24 +4,22 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecash/components/loading_screen.dart';
 import 'package:ecash/components/primary_button.dart';
 import 'package:ecash/constants/app_color.dart';
-import 'package:ecash/constants/app_font.dart';
 import 'package:ecash/constants/enums.dart';
 import 'package:ecash/constants/functions.dart';
 import 'package:ecash/main.dart';
 import 'package:ecash/models/transaction_model.dart';
-import 'package:ecash/pages/sucess_transaction_page.dart';
+import 'package:ecash/pages/success_transaction_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:toast/toast.dart';
 
 class QrPaymentResult extends StatelessWidget {
-  QrPaymentResult({Key key, this.amount}) : super(key: key);
-  final double amount;
+  QrPaymentResult({Key? key, this.amount}) : super(key: key);
+  final double? amount;
   @override
   Widget build(BuildContext context) {
-    final userWallet = context.read(userProvider).user.wallet;
+    final userWallet = null; //context.read(userProvider).user.wallet;
     return Scaffold(
       body: Stack(
         children: [
@@ -72,7 +70,7 @@ class QrPaymentResult extends StatelessWidget {
                                 ),
                                 Text(
                                   'About Cash In',
-                                  style: AppFont.semiBold(
+                                  style: TextStyle(
                                     fontSize: 15,
                                   ),
                                 )
@@ -85,7 +83,7 @@ class QrPaymentResult extends StatelessWidget {
                               width: MediaQuery.of(context).size.width,
                               child: Text(
                                 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta ',
-                                style: AppFont.regular(
+                                style: TextStyle(
                                   fontSize: 12,
                                 ),
                               ),
@@ -97,7 +95,7 @@ class QrPaymentResult extends StatelessWidget {
                               title: 'Pay',
                               onPressed: () {
                                 if (userWallet < amount) {
-                                  Toast.show('Sorry, Unsufficient Balance', context, duration: 3, gravity: Toast.TOP);
+                                  Toast.show('Sorry, Unsufficient Balance', duration: 3, gravity: Toast.top);
                                 } else {
                                   TransactionModel newTransaction = TransactionModel(
                                     amount: amount,
@@ -106,12 +104,12 @@ class QrPaymentResult extends StatelessWidget {
                                     title: 'Pay Bill',
                                     type: TransactionType.expense,
                                   );
-                                  context.read(userTransactions).addTransaction(
-                                        context: context,
-                                        currentUserWallet: userWallet,
-                                        transaction: newTransaction,
-                                        type: TransactionType.expense,
-                                      );
+                                  // context.read(userTransactions).addTransaction(
+                                  //       context: context,
+                                  //       currentUserWallet: userWallet,
+                                  //       transaction: newTransaction,
+                                  //       type: TransactionType.expense,
+                                  //     );
                                 }
                               },
                             ),
@@ -163,7 +161,7 @@ class QrPaymentResult extends StatelessWidget {
                               Center(
                                 child: Text(
                                   'Align Puring Store',
-                                  style: AppFont.bold(
+                                  style: TextStyle(
                                     fontSize: 20,
                                   ),
                                 ),
@@ -178,11 +176,11 @@ class QrPaymentResult extends StatelessWidget {
                                   children: [
                                     Text(
                                       'Your Wallet',
-                                      style: AppFont.semiBold(fontSize: 15, color: Colors.grey.shade600),
+                                      style: TextStyle(fontSize: 15, color: Colors.grey.shade600),
                                     ),
                                     Text(
                                       'PHP ' + moneyFormatter(userWallet),
-                                      style: AppFont.regular(
+                                      style: TextStyle(
                                         fontSize: 14,
                                       ),
                                     ),
@@ -199,11 +197,11 @@ class QrPaymentResult extends StatelessWidget {
                                   children: [
                                     Text(
                                       'Amount to be paid',
-                                      style: AppFont.semiBold(fontSize: 15, color: Colors.grey.shade600),
+                                      style: TextStyle(fontSize: 15, color: Colors.grey.shade600),
                                     ),
                                     Text(
-                                      '- PHP ' + moneyFormatter(amount),
-                                      style: AppFont.regular(
+                                      '- PHP ' + moneyFormatter(amount ?? 0),
+                                      style: TextStyle(
                                         fontSize: 14,
                                         color: AppColor.red,
                                       ),
@@ -226,12 +224,12 @@ class QrPaymentResult extends StatelessWidget {
                                       width: MediaQuery.of(context).size.width * 0.5,
                                       child: Text(
                                         'Your Balance after this transaction',
-                                        style: AppFont.semiBold(fontSize: 15, color: Colors.grey.shade600),
+                                        style: TextStyle(fontSize: 15, color: Colors.grey.shade600),
                                       ),
                                     ),
                                     Text(
-                                      'PHP ' + moneyFormatter(userWallet - amount),
-                                      style: AppFont.regular(
+                                      'PHP ' + moneyFormatter(userWallet - amount ?? 0),
+                                      style: TextStyle(
                                         fontSize: 14,
                                       ),
                                     ),
@@ -251,15 +249,15 @@ class QrPaymentResult extends StatelessWidget {
               ],
             ),
           ),
-          Consumer(
-            builder: (context, watch, child) {
-              final isloading = watch(userProvider).isLoading;
-              if (isloading) {
-                return LoadingScreen();
-              }
-              return const SizedBox();
-            },
-          )
+          // Consumer(
+          //   builder: (context, watch, child) {
+          //     final isloading = watch(userProvider).isLoading;
+          //     if (isloading) {
+          //       return LoadingScreen();
+          //     }
+          //     return const SizedBox();
+          //   },
+          // )
         ],
       ),
     );

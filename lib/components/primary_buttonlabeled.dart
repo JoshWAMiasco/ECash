@@ -2,13 +2,12 @@ import 'dart:ffi';
 
 import 'package:ecash/components/primary_icon_button.dart';
 import 'package:ecash/constants/app_color.dart';
-import 'package:ecash/constants/app_font.dart';
 import 'package:flutter/material.dart';
 
 class PriamryButtonLabeled extends StatelessWidget {
-  const PriamryButtonLabeled({Key key, this.onTap, this.label, this.asset, this.large = false}) : super(key: key);
-  final VoidCallback onTap;
-  final String label;
+  const PriamryButtonLabeled({Key? key, this.onTap, this.label,required this.asset, this.large = false}) : super(key: key);
+  final VoidCallback? onTap;
+  final String? label;
   final String asset;
   final bool large;
   @override
@@ -47,8 +46,8 @@ class PriamryButtonLabeled extends StatelessWidget {
                     height: 2,
                   ),
                   Text(
-                    label,
-                    style: AppFont.regular(
+                    label ?? '',
+                    style: TextStyle(
                       color: Colors.grey.shade900,
                       fontSize: 13,
                     ),
@@ -89,8 +88,8 @@ class PriamryButtonLabeled extends StatelessWidget {
                     height: 2,
                   ),
                   Text(
-                    label,
-                    style: AppFont.regular(
+                    label ?? '',
+                    style: TextStyle(
                       color: Colors.grey.shade900,
                       fontSize: 13,
                     ),

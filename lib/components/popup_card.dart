@@ -2,27 +2,27 @@ import 'package:flutter/material.dart';
 
 class PopupCard extends StatefulWidget {
   const PopupCard({
-    Key key,
+    Key? key,
     this.body,
     this.margin,
     this.borderRadius,
   }) : super(key: key);
-  final Widget body;
-  final EdgeInsets margin;
-  final double borderRadius;
+  final Widget? body;
+  final EdgeInsets? margin;
+  final double? borderRadius;
 
   @override
   _PopupCardState createState() => _PopupCardState();
 }
 
 class _PopupCardState extends State<PopupCard> with SingleTickerProviderStateMixin {
-  AnimationController controller;
-  Animation<double> scaleAnimation;
+  late AnimationController controller;
+  late Animation<double> scaleAnimation;
   @override
   void initState() {
     super.initState();
 
-    controller = AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
     scaleAnimation = CurvedAnimation(parent: controller, curve: Curves.elasticInOut);
 
     controller.addListener(() {
