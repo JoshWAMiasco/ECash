@@ -47,4 +47,4 @@ import 'package:ecash/pages/transaction_page.dart';
   ], 
 )
 
-class $AppRouter {}
+class $AppRouter{} 

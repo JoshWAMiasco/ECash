@@ -10,11 +10,7 @@ import 'package:ecash/components/primary_icon_button.dart';
 import 'package:ecash/components/user_waller_card.dart';
 import 'package:ecash/constants/app_color.dart';
 import 'package:ecash/constants/banner_data.dart';
-import 'package:ecash/constants/photos.dart';
-import 'package:ecash/main.dart';
-import 'package:ecash/pages/cash_in_page.dart';
-import 'package:ecash/pages/pay_bills_page.dart';
-import 'package:ecash/pages/pay_qr_scanner.dart';
+import 'package:ecash/pages/root_page.dart';
 import 'package:ecash/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -40,14 +36,17 @@ class _HomePageState extends ConsumerState<HomePage> {
     return Scaffold(
       endDrawer: PrimaryDrawer(
         onLogout: () async {
+          _scaffoldKey.currentState!.closeEndDrawer();
           loadingIndicator(context);
-          await ref.read(authProvider).logout().then((res){
+          await ref.read(authProvider.notifier).logout().then((res){
             if(res.failure){
               Navigator.of(context, rootNavigator: false).pop();
               messageDialog(context, content: res.message);
             } else {
-              Navigator.of(context, rootNavigator: false).pop();
-              context.router.popUntil((route) => route.isFirst);
+              Future.delayed(const Duration(seconds: 3), ()  {
+                Navigator.of(context, rootNavigator: false).pop();
+                AutoRouter.of(context).popUntil((route) => route.isFirst);
+              });
             }
           });
           
@@ -89,11 +88,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       height: 20,
                     ),
                     UserWalletCard(
-                      balance: ref.watch(authProvider).getUserData()!.walletBalance,
-                      photoUrl: profilePlaceHolder,
                       onTap: widget.onProfile,
-                      accountNumber: ref.watch(authProvider).getUserData()!.mobileNumber,
-                      displayName: '${ref.watch(authProvider).getUserData()!.firstname} ${ref.watch(authProvider).getUserData()!.lastname!}'
                     ),
                     const SizedBox(
                       height: 20,

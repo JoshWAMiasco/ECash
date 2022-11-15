@@ -41,9 +41,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 height: 50,
               ),
               UserProfileCard(
-                displayName: '${ref.watch(authProvider).getUserData()!.firstname} ${ref.watch(authProvider).getUserData()!.lastname!}',
-                profilePhoto: profilePlaceHolder,
-                mobileNumber: ref.watch(authProvider).getUserData()!.mobileNumber,
+                displayName: '${ref.watch(authProvider.notifier).getUserData()!.firstname} ${ref.watch(authProvider.notifier).getUserData()!.lastname!}',
+                profilePhoto: ref.watch(authProvider.notifier).getUserData()!.profilePicture,
+                mobileNumber: ref.watch(authProvider.notifier).getUserData()!.mobileNumber,
                 userAccountNumber: '1234-1233-999',
               ),
               const SizedBox(

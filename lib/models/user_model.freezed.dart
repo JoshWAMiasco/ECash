@@ -25,6 +25,7 @@ mixin _$UserModel {
   String? get firstname => throw _privateConstructorUsedError;
   String? get lastname => throw _privateConstructorUsedError;
   String? get mpin => throw _privateConstructorUsedError;
+  String? get profilePicture => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -42,7 +43,8 @@ abstract class $UserModelCopyWith<$Res> {
       double? walletBalance,
       String? firstname,
       String? lastname,
-      String? mpin});
+      String? mpin,
+      String? profilePicture});
 }
 
 /// @nodoc
@@ -63,6 +65,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? firstname = freezed,
     Object? lastname = freezed,
     Object? mpin = freezed,
+    Object? profilePicture = freezed,
   }) {
     return _then(_value.copyWith(
       mobileNumber: freezed == mobileNumber
@@ -85,6 +88,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.mpin
           : mpin // ignore: cast_nullable_to_non_nullable
               as String?,
+      profilePicture: freezed == profilePicture
+          ? _value.profilePicture
+          : profilePicture // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -101,7 +108,8 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
       double? walletBalance,
       String? firstname,
       String? lastname,
-      String? mpin});
+      String? mpin,
+      String? profilePicture});
 }
 
 /// @nodoc
@@ -120,6 +128,7 @@ class __$$_UserModelCopyWithImpl<$Res>
     Object? firstname = freezed,
     Object? lastname = freezed,
     Object? mpin = freezed,
+    Object? profilePicture = freezed,
   }) {
     return _then(_$_UserModel(
       mobileNumber: freezed == mobileNumber
@@ -142,6 +151,10 @@ class __$$_UserModelCopyWithImpl<$Res>
           ? _value.mpin
           : mpin // ignore: cast_nullable_to_non_nullable
               as String?,
+      profilePicture: freezed == profilePicture
+          ? _value.profilePicture
+          : profilePicture // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -154,7 +167,8 @@ class _$_UserModel implements _UserModel {
       this.walletBalance,
       this.firstname,
       this.lastname,
-      this.mpin});
+      this.mpin,
+      this.profilePicture});
 
   factory _$_UserModel.fromJson(Map<String, dynamic> json) =>
       _$$_UserModelFromJson(json);
@@ -169,10 +183,12 @@ class _$_UserModel implements _UserModel {
   final String? lastname;
   @override
   final String? mpin;
+  @override
+  final String? profilePicture;
 
   @override
   String toString() {
-    return 'UserModel(mobileNumber: $mobileNumber, walletBalance: $walletBalance, firstname: $firstname, lastname: $lastname, mpin: $mpin)';
+    return 'UserModel(mobileNumber: $mobileNumber, walletBalance: $walletBalance, firstname: $firstname, lastname: $lastname, mpin: $mpin, profilePicture: $profilePicture)';
   }
 
   @override
@@ -188,13 +204,15 @@ class _$_UserModel implements _UserModel {
                 other.firstname == firstname) &&
             (identical(other.lastname, lastname) ||
                 other.lastname == lastname) &&
-            (identical(other.mpin, mpin) || other.mpin == mpin));
+            (identical(other.mpin, mpin) || other.mpin == mpin) &&
+            (identical(other.profilePicture, profilePicture) ||
+                other.profilePicture == profilePicture));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, mobileNumber, walletBalance, firstname, lastname, mpin);
+  int get hashCode => Object.hash(runtimeType, mobileNumber, walletBalance,
+      firstname, lastname, mpin, profilePicture);
 
   @JsonKey(ignore: true)
   @override
@@ -216,7 +234,8 @@ abstract class _UserModel implements UserModel {
       final double? walletBalance,
       final String? firstname,
       final String? lastname,
-      final String? mpin}) = _$_UserModel;
+      final String? mpin,
+      final String? profilePicture}) = _$_UserModel;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$_UserModel.fromJson;
@@ -231,6 +250,8 @@ abstract class _UserModel implements UserModel {
   String? get lastname;
   @override
   String? get mpin;
+  @override
+  String? get profilePicture;
   @override
   @JsonKey(ignore: true)
   _$$_UserModelCopyWith<_$_UserModel> get copyWith =>

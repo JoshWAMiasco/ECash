@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 
 String moneyFormatter(double number) {
   var f = NumberFormat("###,###,###.##");
-  return f.format(number) + ".00";
+  return f.format(number);
 }
 
 String shortDateFormatter(DateTime date) {

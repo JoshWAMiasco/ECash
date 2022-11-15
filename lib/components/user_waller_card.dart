@@ -1,19 +1,22 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecash/constants/app_color.dart';
 import 'package:ecash/constants/functions.dart';
+import 'package:ecash/providers/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
 
-class UserWalletCard extends StatelessWidget {
-  const UserWalletCard({Key? key, this.photoUrl, this.balance, this.onTap, this.displayName, this.accountNumber}) : super(key: key);
-  final String? photoUrl;
-  final double? balance;
+class UserWalletCard extends ConsumerStatefulWidget {
+  const UserWalletCard({this.onTap,Key? key,}) : super(key: key);
   final VoidCallback? onTap;
-  final String? displayName;
-  final String? accountNumber;
+  @override
+  ConsumerState<UserWalletCard> createState() => _UserWalletCardState();
+}
+
+class _UserWalletCardState extends ConsumerState<UserWalletCard> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height * 0.25,
       child: Stack(
         children: [
@@ -26,7 +29,7 @@ class UserWalletCard extends StatelessWidget {
             ),
             alignment: Alignment.bottomRight,
             child: ImageIcon(
-              AssetImage('assets/ecash_logo.png'),
+              const AssetImage('assets/ecash_logo.png'),
               size: MediaQuery.of(context).size.height * 0.25,
               color: Colors.white.withOpacity(0.3),
             ),
@@ -41,7 +44,7 @@ class UserWalletCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'PHP ${moneyFormatter(balance ?? 0)}',
+                      'PHP ${moneyFormatter(ref.watch(authProvider.notifier).user!.walletBalance ?? 0)}',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 25,
@@ -62,7 +65,7 @@ class UserWalletCard extends StatelessWidget {
                       height: 5,
                     ),
                     Text(
-                      displayName ?? '',
+                      ref.watch(authProvider.notifier).state.user!.firstname! + ' ' + ref.watch(authProvider.notifier).state.user!.lastname!,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 15,
@@ -72,7 +75,7 @@ class UserWalletCard extends StatelessWidget {
                       height: 5,
                     ),
                     Text(
-                      accountNumber ?? '',
+                     ref.watch(authProvider.notifier).state.user!.mobileNumber ?? '',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 14,
@@ -83,9 +86,9 @@ class UserWalletCard extends StatelessWidget {
                 Column(
                   children: [
                     GestureDetector(
-                      onTap: onTap,
+                      onTap: widget.onTap,
                       child: CachedNetworkImage(
-                        imageUrl: photoUrl!,
+                        imageUrl: ref.watch(authProvider.notifier).state.user!.profilePicture ?? '',
                         imageBuilder: (context, imageProvider) {
                           return Container(
                             height: 40,

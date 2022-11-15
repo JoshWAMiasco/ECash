@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:ecash/components/primary_button.dart';
 import 'package:ecash/constants/app_color.dart';
 import 'package:ecash/pages/main_page.dart';
+import 'package:ecash/router/app_router.gr.dart';
 import 'package:flutter/material.dart';
 
 
@@ -67,7 +69,7 @@ class SuccessTransactionPage extends StatelessWidget {
                             height: 20,
                           ),
                           PrimaryButton(
-                            //onPressed: () => Navigator.pushReplacement(context, PageTransition(child: MainPage(), type: PageTransitionType.fade)),
+                            onPressed: () => AutoRouter.of(context).replaceNamed('/main'),
                             title: 'Back to Home',
                           ),
                         ],

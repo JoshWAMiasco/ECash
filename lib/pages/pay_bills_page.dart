@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:ecash/components/primary_appbar.dart';
 import 'package:ecash/components/primary_button.dart';
 import 'package:ecash/components/primary_buttonlabeled.dart';
@@ -36,7 +37,7 @@ class PayBillsPage extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
-                    Align(
+                    const Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Our Support Payment',
@@ -50,9 +51,9 @@ class PayBillsPage extends StatelessWidget {
                     ),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Container(
+                      child: SizedBox(
                         width: MediaQuery.of(context).size.width * 0.75,
-                        child: Text(
+                        child: const Text(
                           'Select your preferred partner to learn more.',
                           style: TextStyle(
                             fontSize: 14,
@@ -72,19 +73,25 @@ class PayBillsPage extends StatelessWidget {
                           asset: 'assets/meralco_logo.png',
                           label: 'Mercalco',
                           large: true,
-                          //onTap: () => Navigator.push(context, PageTransition(child: MeralcoBillPage(), type: PageTransitionType.rightToLeft)),
+                          onTap: () {
+                            context.router.pushNamed('/meralco_bill');
+                          },
                         ),
                         PriamryButtonLabeled(
                           asset: 'assets/grab_logo.png',
                           label: 'Grab',
                           large: true,
-                          //onTap: () => Navigator.push(context, PageTransition(child: GrabBillPage(), type: PageTransitionType.rightToLeft)),
+                          onTap: () {
+                            context.router.pushNamed('/grab_bill');
+                          },
                         ),
                         PriamryButtonLabeled(
                           asset: 'assets/home_credit_logo.png',
                           label: 'Home Credit',
                           large: true,
-                          //onTap: () => Navigator.push(context, PageTransition(child: HomeCreditBillPage(), type: PageTransitionType.rightToLeft)),
+                          onTap: () {
+                            context.router.pushNamed('/home-credit_bill');
+                          },
                         ),
                       ],
                     ),

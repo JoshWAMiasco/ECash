@@ -24,4 +24,13 @@ class TransactionController extends StateNotifier<TransactionState> {
       return false;
     }
   }
+
+  Future<bool> paybill(double amount, UserModel user, String merchant) async {
+    final isSuccess = await _transactionRepository.payBill(amount, user, merchant);
+    if(isSuccess){
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

@@ -1,11 +1,11 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecash/constants/enums.dart';
+import 'package:ecash/constants/functions.dart';
 import 'package:ecash/models/transaction_model.dart';
 import 'package:ecash/models/user_model.dart';
 import 'package:ecash/repository/transaction_responce.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 class TransactionRepository {
 
@@ -17,7 +17,7 @@ class TransactionRepository {
   Future<TransactionResponce> getTransactionsList() async {
     try {
       List<TransactionModel> transactions = <TransactionModel>[];
-      await transactionCollection.orderBy('date', descending: false).get().then((query){
+      await transactionCollection.orderBy('date', descending: true).get().then((query){
         if(query.docs.isNotEmpty){
           for(var doc in query.docs){
             transactions.add(TransactionModel.fromJson(doc.data()));
@@ -62,5 +62,28 @@ class TransactionRepository {
       return false;
     }
   }
+
+  Future<bool> payBill(double amount, UserModel user, String merchant)async{
+    var updatedUserData = user;
+    updatedUserData = updatedUserData.copyWith(
+      walletBalance: updatedUserData.walletBalance! - amount,
+    );
+    TransactionModel newTransaction = TransactionModel(
+      amount: amount,
+      date: DateTime.now(),
+      description: 'You Pay ${moneyFormatter(amount)} to $merchant',
+      title: 'Pay Bill',
+      type: TransactionType.expense,
+    );
+    final userUid = FirebaseAuth.instance.currentUser!.uid;
+    try {
+      await transactionCollection.doc().set(newTransaction.toJson());
+      await userCollection.doc(userUid).update(updatedUserData.toJson());
+      return true;
+    } on FirebaseAuthException catch (e) {
+      return false;
+    }
+  }
+
 
 }

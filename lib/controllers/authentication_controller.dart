@@ -12,7 +12,7 @@ class AuthenticationController extends StateNotifier<UserState> {
 
   final _userRepository = UserRepositpory();
   StreamSubscription? _streamSubscription;
-  
+  UserModel? user;
   UserModel? getUserData() {
     return state.user;
   }
@@ -21,6 +21,7 @@ class AuthenticationController extends StateNotifier<UserState> {
     final res = await _userRepository.login(mobileNumber, mpin);
     if(res.failure == false){
       state.user = res.user;
+      user = res.user;
     }
     return res;
   }
@@ -29,6 +30,7 @@ class AuthenticationController extends StateNotifier<UserState> {
     return await _userRepository.logout().then((res){
       if(res.failure == false){
         state.user = null;
+        _streamSubscription?.cancel();
         return UserResponce(
           failure: false,
         );
@@ -45,6 +47,7 @@ class AuthenticationController extends StateNotifier<UserState> {
     final res = await _userRepository.checkIsLogin();
     if(res.failure == false){
       state.user = res.user;
+      user = res.user;
     }
     return res;
   }
@@ -53,6 +56,8 @@ class AuthenticationController extends StateNotifier<UserState> {
     _streamSubscription = _userRepository.addListner().listen((res) {
       if(res.failure == false){
         state.user = res.user;
+        user = res.user;
+        
       }
     });
   }

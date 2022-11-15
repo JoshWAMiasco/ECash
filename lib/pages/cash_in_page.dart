@@ -1,9 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:ecash/components/primary_appbar.dart';
 import 'package:ecash/components/primary_buttonlabeled.dart';
-import 'package:ecash/components/primary_icon_button.dart';
 import 'package:ecash/constants/app_color.dart';
-import 'package:ecash/pages/cash_in_via_card.dart';
 import 'package:ecash/pages/cash_in_via_seveneleven_page.dart';
 import 'package:flutter/material.dart';
 
@@ -76,7 +74,7 @@ class CashInPage extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
-                    Align(
+                    const Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Out Partners',
@@ -90,9 +88,9 @@ class CashInPage extends StatelessWidget {
                     ),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Container(
+                      child: SizedBox(
                         width: MediaQuery.of(context).size.width * 0.75,
-                        child: Text(
+                        child: const Text(
                           'Select your preferred partner to learn more.',
                           style: TextStyle(
                             fontSize: 14,
@@ -113,6 +111,7 @@ class CashInPage extends StatelessWidget {
                           label: '7-Eleven',
                           large: true,
                           onTap: () {
+                            
                             context.router.pushNamed('/cash-in-via-seven-eleven');
                           }
                         ),
@@ -120,26 +119,31 @@ class CashInPage extends StatelessWidget {
                           asset: 'assets/union_bank_logo.png',
                           label: 'UnionBank',
                           large: true,
+                          onTap: (){},
                         ),
                         PriamryButtonLabeled(
                           asset: 'assets/sm_logo.png',
                           label: 'The Sm Store',
                           large: true,
+                          onTap: (){},
                         ),
                         PriamryButtonLabeled(
                           asset: 'assets/ecpay_logo.png',
                           label: 'ECPay',
                           large: true,
+                          onTap: (){},
                         ),
                         PriamryButtonLabeled(
                           asset: 'assets/cebuana_logo.png',
                           label: 'Cabuana Lhuillier',
                           large: true,
+                          onTap: (){},
                         ),
                         PriamryButtonLabeled(
                           asset: 'assets/bdo_logo.png',
                           label: 'BDO',
                           large: true,
+                          onTap: (){},
                         ),
                       ],
                     ),

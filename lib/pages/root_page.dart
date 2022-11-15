@@ -22,11 +22,11 @@ class _RootPageState extends ConsumerState<RootPage> {
   }
 
   void checkIsLogin() async {
-    final res = await ref.read(authProvider).checkIsLogin();
+    final res = await ref.read(authProvider.notifier).checkIsLogin();
     if(res.failure){
       await context.router.replaceNamed('/login');
     } else {
-      ref.read(authProvider).listenToUserData();
+      ref.read(authProvider.notifier).listenToUserData();
       await context.router.replaceNamed('/main');
     }
   }

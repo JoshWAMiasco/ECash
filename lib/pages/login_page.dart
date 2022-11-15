@@ -4,7 +4,6 @@ import 'package:ecash/components/loading_indicator.dart';
 import 'package:ecash/components/message_dialog.dart';
 import 'package:ecash/components/primary_button.dart';
 import 'package:ecash/constants/app_color.dart';
-import 'package:ecash/pages/main_page.dart';
 import 'package:ecash/providers/providers.dart';
 
 import 'package:flutter/material.dart';
@@ -157,7 +156,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     if(mobile.isNotEmpty || mpin.isNotEmpty){
                       if(mobile.length == 11 && mobile.startsWith('0')){
                         loadingIndicator(context);
-                        await ref.read(authProvider).login(mobile, mpin).then((res){
+                        await ref.read(authProvider.notifier).login(mobile, mpin).then((res){
                           if(res.failure) {
                             Navigator.of(context, rootNavigator: false).pop();
                             messageDialog(context, content: res.message);

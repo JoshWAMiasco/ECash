@@ -85,7 +85,7 @@ class _CashInViaSevenElevenPageState extends ConsumerState<CashInViaSevenElevenP
                         if (amountController.text != "") {
                           double amount = double.tryParse(amountController.text) ?? 0;
                           loadingIndicator(context);
-                          final user = ref.read(authProvider).getUserData()!;
+                          final user = ref.read(authProvider.notifier).getUserData()!;
                           await ref.read(transactionProvider.notifier).cashInViaSevenEleven(amount, user).then((isSuccess){
                             if(isSuccess){
                               Navigator.of(context, rootNavigator: false).pop();

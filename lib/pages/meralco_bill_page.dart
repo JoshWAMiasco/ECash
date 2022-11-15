@@ -1,4 +1,6 @@
+import 'package:ecash/components/loading_indicator.dart';
 import 'package:ecash/components/loading_screen.dart';
+import 'package:ecash/components/message_dialog.dart';
 import 'package:ecash/components/primary_appbar.dart';
 import 'package:ecash/components/primary_button.dart';
 import 'package:ecash/components/primary_buttonlabeled.dart';
@@ -7,18 +9,20 @@ import 'package:ecash/constants/app_color.dart';
 import 'package:ecash/constants/enums.dart';
 import 'package:ecash/main.dart';
 import 'package:ecash/pages/primary_textfield.dart';
+import 'package:ecash/pages/success_transaction_page.dart';
+import 'package:ecash/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-class MeralcoBillPage extends StatefulWidget {
+class MeralcoBillPage extends ConsumerStatefulWidget {
   const MeralcoBillPage({Key? key}) : super(key: key);
 
   @override
-  State<MeralcoBillPage> createState() => _MeralcoBillPageState();
+  ConsumerState<MeralcoBillPage> createState() => _MeralcoBillPageState();
 }
 
-class _MeralcoBillPageState extends State<MeralcoBillPage> {
+class _MeralcoBillPageState extends ConsumerState<MeralcoBillPage> {
   final TextEditingController amountController = TextEditingController();
 
   @override
@@ -63,17 +67,19 @@ class _MeralcoBillPageState extends State<MeralcoBillPage> {
                               const SizedBox(
                                 height: 30,
                               ),
-                              PrimaryTextField(
+                              const PrimaryTextField(
                                 hint: 'Account Number',
+                                maxLength: 10,
+                                
                               ),
                               const SizedBox(
                                 height: 10,
                               ),
                               Align(
                                 alignment: Alignment.centerLeft,
-                                child: Container(
+                                child: SizedBox(
                                   width: MediaQuery.of(context).size.width * 0.75,
-                                  child: Text(
+                                  child: const Text(
                                     '10-digit Customer Account Number found at the upper left portion of the SAO.',
                                     style: TextStyle(
                                       fontSize: 14,
@@ -94,9 +100,9 @@ class _MeralcoBillPageState extends State<MeralcoBillPage> {
                               ),
                               Align(
                                 alignment: Alignment.centerLeft,
-                                child: Container(
+                                child: SizedBox(
                                   width: MediaQuery.of(context).size.width * 0.75,
-                                  child: Text(
+                                  child: const Text(
                                     'Enter the total amount due on your bill',
                                     style: TextStyle(
                                       fontSize: 14,
@@ -122,7 +128,7 @@ class _MeralcoBillPageState extends State<MeralcoBillPage> {
                                       const SizedBox(
                                         width: 10,
                                       ),
-                                      Text(
+                                      const Text(
                                         'Remider',
                                         style: TextStyle(
                                           fontSize: 15,
@@ -133,9 +139,9 @@ class _MeralcoBillPageState extends State<MeralcoBillPage> {
                                   const SizedBox(
                                     height: 5,
                                   ),
-                                  Container(
+                                  SizedBox(
                                     width: MediaQuery.of(context).size.width,
-                                    child: Text(
+                                    child: const Text(
                                       'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta ',
                                       style: TextStyle(
                                         fontSize: 12,
@@ -149,25 +155,19 @@ class _MeralcoBillPageState extends State<MeralcoBillPage> {
                               ),
                               PrimaryButton(
                                 title: 'Pay',
-                                onPressed: () {
-                                  // final userWallet = context.read(userProvider).user.wallet;
-                                  // if (userWallet < double.parse(amountController.text)) {
-                                  //   Toast.show('Sorry, Unsufficient Balance', context, duration: 3, gravity: Toast.TOP);
-                                  // } else {
-                                  //   TransactionModel newTransaction = TransactionModel(
-                                  //     amount: double.parse(amountController.text),
-                                  //     date: DateTime.now(),
-                                  //     description: 'You paid Meralco bill with amount of PHP ' + amountController.text,
-                                  //     title: 'Pay Bill',
-                                  //     type: TransactionType.expense,
-                                  //   );
-                                  //   context.read(userTransactions).addTransaction(
-                                  //         context: context,
-                                  //         currentUserWallet: userWallet,
-                                  //         transaction: newTransaction,
-                                  //         type: TransactionType.expense,
-                                  //       );
-                                  // }
+                                onPressed: ()async {
+                                  final user = ref.read(authProvider).user;
+                                  double amount = double.tryParse(amountController.text) ?? 0;
+                                  loadingIndicator(context);
+                                  await ref.read(transactionProvider.notifier).paybill(amount, user!, 'Meraclo').then((isSuccess){
+                                     if(isSuccess){
+                                        Navigator.of(context, rootNavigator: false).pop();
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => const SuccessTransactionPage()));
+                                      } else {
+                                        Navigator.of(context, rootNavigator: false).pop();
+                                        messageDialog(context, content: 'Went Something wrong');
+                                      }
+                                  });
                                 },
                               ),
                               const SizedBox(
