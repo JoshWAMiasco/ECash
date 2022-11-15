@@ -118,7 +118,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                               PriamryButtonLabeled(
                                 asset: 'assets/money_transfer.png',
                                 label: 'Bank \n transfer',
-                                onTap: (){},
+                                onTap: () {
+
+                                },
                               ),
                               PriamryButtonLabeled(
                                 asset: 'assets/pay_bills.png',

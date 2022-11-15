@@ -1,41 +1,34 @@
 {
   "project_info": {
-    "project_number": "296547514192",
-    "project_id": "ecash-8339e",
-    "storage_bucket": "ecash-8339e.appspot.com"
+    "project_number": "166065855735",
+    "project_id": "winterbrewed",
+    "storage_bucket": "winterbrewed.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:296547514192:android:77a4af1a09abb220ab9e55",
+        "mobilesdk_app_id": "1:166065855735:android:4e60ee19975983798cc7f2",
         "android_client_info": {
-          "package_name": "com.joshua.ecash"
+          "package_name": "com.joshua.winterbrewed"
         }
       },
       "oauth_client": [
         {
-          "client_id": "296547514192-pfe04mamf1ad02vmu5u5agll6jjd5l5p.apps.googleusercontent.com",
+          "client_id": "166065855735-eakuel8hpbtl8sh5gabjmvrpvav54vbs.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDUF02fhvVtFmDcXG6SsyhSyJVD2LB2LEM"
+          "current_key": "AIzaSyBua1NAKBfyIyP6A59n5n9PPFxz748FGGc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "296547514192-pfe04mamf1ad02vmu5u5agll6jjd5l5p.apps.googleusercontent.com",
+              "client_id": "166065855735-eakuel8hpbtl8sh5gabjmvrpvav54vbs.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "296547514192-fs9041npdu30r1vripai30cm51nckfbi.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.joshua.ecash"
-              }
             }
           ]
         }
