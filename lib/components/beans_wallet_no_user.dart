@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:ecash/components/primary_button.dart';
 import 'package:ecash/constants/app_color.dart';
 import 'package:ecash/constants/image.dart';
@@ -59,7 +60,9 @@ class BeansWalletNoUSer extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                context.router.pushNamed('/login');
+                              },
                               style: TextButton.styleFrom(
                                 backgroundColor: AppColor.primary,
                                 shape: RoundedRectangleBorder(
@@ -74,11 +77,16 @@ class BeansWalletNoUSer extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            Text(
-                              'Create Account',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: AppColor.primary,
+                            InkWell(
+                              onTap: () {
+                                context.router.pushNamed('/registration');
+                              },
+                              child: Text(
+                                'Create Account',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColor.primary,
+                                ),
                               ),
                             )
                           ],

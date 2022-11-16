@@ -8,20 +8,22 @@ import 'package:ecash/components/slidable_card.dart';
 import 'package:ecash/constants/app_color.dart';
 import 'package:ecash/constants/banner_data.dart';
 import 'package:ecash/constants/image.dart';
+import 'package:ecash/providers/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shimmer/shimmer.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,7 +65,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     child: InkWell(
                       onTap: () {
-                        context.router.pushNamed('/recipt');
+                        context.router.pushNamed('/cart');
                       },
                       child: Container(
                         height: 25.sp,
@@ -91,7 +93,7 @@ class _HomePageState extends State<HomePage> {
               child: Align(
                 alignment: Alignment.centerRight,
                 child: Text(
-                  'Good Morning, Joshua!',
+                  ref.watch(authProvider.notifier).user == null ? 'Good Morning! ' : 'Good Morning, Joshua!',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp),
                 ),
               ),
@@ -99,7 +101,15 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               height: 0.5.h,
             ),
-            BeansWalletWithUSer(),
+            Builder(
+              builder: (context) {
+                if (ref.watch(authProvider.notifier).user == null) {
+                  return const BeansWalletNoUSer();
+                } else {
+                  return const BeansWalletWithUSer();
+                }
+              },
+            ),
             SizedBox(
               height: 5.h,
             ),
@@ -148,12 +158,18 @@ class _HomePageState extends State<HomePage> {
                       'Menu',
                       style: GoogleFonts.charmonman(fontSize: 25.sp, fontWeight: FontWeight.bold, color: AppColor.primary),
                     ),
-                    Text(
-                      'View All',
-                      style: TextStyle(
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
+                    InkWell(
+                      onTap: () {
+                        context.router.pushNamed('/menu');
+                      },
+                      child: Text(
+                        'View All',
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline,
+                          color: AppColor.primary,
+                        ),
                       ),
                     ),
                   ],

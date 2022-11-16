@@ -7,20 +7,22 @@ part of 'user_model.dart';
 // **************************************************************************
 
 _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
-      mobileNumber: json['mobileNumber'] as String?,
-      walletBalance: (json['walletBalance'] as num?)?.toDouble(),
-      firstname: json['firstname'] as String?,
-      lastname: json['lastname'] as String?,
-      mpin: json['mpin'] as String?,
-      profilePicture: json['profilePicture'] as String?,
+      userName: json['userName'] as String?,
+      beansPoint: json['beansPoint'] as int?,
+      realName: json['realName'] as String?,
+      dateCreated: json['dateCreated'] == null
+          ? null
+          : DateTime.parse(json['dateCreated'] as String),
+      password: json['password'] as String?,
+      qrCode: json['qrCode'] as String?,
     );
 
 Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) =>
     <String, dynamic>{
-      'mobileNumber': instance.mobileNumber,
-      'walletBalance': instance.walletBalance,
-      'firstname': instance.firstname,
-      'lastname': instance.lastname,
-      'mpin': instance.mpin,
-      'profilePicture': instance.profilePicture,
+      'userName': instance.userName,
+      'beansPoint': instance.beansPoint,
+      'realName': instance.realName,
+      'dateCreated': instance.dateCreated?.toIso8601String(),
+      'password': instance.password,
+      'qrCode': instance.qrCode,
     };

@@ -2,7 +2,6 @@ import 'package:ecash/constants/app_color.dart';
 import 'package:ecash/constants/image.dart';
 import 'package:ecash/pages/home_page.dart';
 import 'package:ecash/pages/my_order_page.dart';
-import 'package:ecash/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 

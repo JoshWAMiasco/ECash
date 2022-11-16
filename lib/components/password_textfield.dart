@@ -21,7 +21,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
   Widget build(BuildContext context) {
     return Container(
       width: widget.width ?? MediaQuery.of(context).size.width,
-      height: 35,
+      height: 28.sp,
       decoration: BoxDecoration(
         color: const Color(0xFFEEECEC),
         borderRadius: BorderRadius.circular(10),
@@ -40,12 +40,12 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
               hintText: widget.hint,
               hintStyle: TextStyle(
                 color: Colors.grey.shade500,
-                fontSize: 14,
+                fontSize: 17.sp,
               ),
               counterText: "",
               contentPadding: EdgeInsets.only(
-                left: 10,
-                bottom: 10,
+                left: 15.sp,
+                bottom: 10.sp,
               ),
             ),
             style: TextStyle(color: AppColor.primary, fontWeight: FontWeight.bold, fontSize: 17.sp),
