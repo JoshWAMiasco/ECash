@@ -1,0 +1,10 @@
+const String profilePlaceHolder = 'https://firebasestorage.googleapis.com/v0/b/ecash-8339e.appspot.com/o/profile.jpeg?alt=media&token=69378063-992f-44dc-82c2-558d929fb842';
+const String bagIcon = 'assets/bag_icon.svg';
+const String cupLogo = 'assets/cup_logo.svg';
+const String storeIcon = 'assets/store_icon.png';
+const String orderIcon = 'assets/order_icon.png';
+const String expressoImage = 'assets/expresso.png';
+const String classicDivider = 'assets/classic_divider.svg';
+const String appLogo = 'assets/app_logo.png';
+const String coffeeLoading = 'assets/coffee_loading.json';
+const String flakesIcon = 'assets/flakes.svg';

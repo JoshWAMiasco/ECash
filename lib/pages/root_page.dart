@@ -1,4 +1,3 @@
-
 import 'package:auto_route/auto_route.dart';
 import 'package:ecash/components/ripple_animation.dart';
 import 'package:ecash/constants/app_color.dart';
@@ -23,8 +22,8 @@ class _RootPageState extends ConsumerState<RootPage> {
 
   void checkIsLogin() async {
     final res = await ref.read(authProvider.notifier).checkIsLogin();
-    if(res.failure){
-      await context.router.replaceNamed('/login');
+    if (res.failure) {
+      await context.router.replaceNamed('/main');
     } else {
       ref.read(authProvider.notifier).listenToUserData();
       await context.router.replaceNamed('/main');
@@ -49,7 +48,7 @@ class _RootPageState extends ConsumerState<RootPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
-                 //onTap: () => Navigator.push(context, PageTransition(child: LoginPage(), type: PageTransitionType.fade)),
+                  //onTap: () => Navigator.push(context, PageTransition(child: LoginPage(), type: PageTransitionType.fade)),
                   child: ImageIcon(
                     const AssetImage('assets/ecash_logo.png'),
                     size: 150,
@@ -70,7 +69,7 @@ class _RootPageState extends ConsumerState<RootPage> {
                   height: 10,
                 ),
                 const Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 10, 10, 20),
+                  padding: EdgeInsets.fromLTRB(15, 10, 10, 20),
                   child: Text(
                     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud',
                     style: TextStyle(

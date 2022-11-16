@@ -1,5 +1,6 @@
 import 'package:ecash/constants/app_color.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class PrimaryTextField extends StatelessWidget {
   const PrimaryTextField({Key? key, this.width, this.hint, this.controller, this.maxLength, this.textInputType}) : super(key: key);
@@ -14,7 +15,7 @@ class PrimaryTextField extends StatelessWidget {
       width: width ?? MediaQuery.of(context).size.width,
       height: 35,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: const Color(0xFFEEECEC),
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextFormField(
@@ -27,7 +28,7 @@ class PrimaryTextField extends StatelessWidget {
           errorBorder: InputBorder.none,
           hintText: hint,
           hintStyle: TextStyle(
-            color: Colors.grey.shade600,
+            color: Colors.grey.shade500,
             fontSize: 14,
           ),
           counterText: "",
@@ -36,7 +37,7 @@ class PrimaryTextField extends StatelessWidget {
             bottom: 10,
           ),
         ),
-        style: TextStyle(color: AppColor.primary, fontSize: 14),
+        style: TextStyle(color: AppColor.primary, fontWeight: FontWeight.bold, fontSize: 17.sp),
       ),
     );
   }

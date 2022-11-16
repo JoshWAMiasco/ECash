@@ -1,5 +1,6 @@
-
+import 'package:ecash/constants/image.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 void loadingIndicator(BuildContext context, {String? title, String? content}) {
   showDialog(
@@ -7,30 +8,20 @@ void loadingIndicator(BuildContext context, {String? title, String? content}) {
     context: context,
     builder: (context) {
       return AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20)
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         insetPadding: EdgeInsets.fromLTRB(
           MediaQuery.of(context).size.width * 0.3,
           MediaQuery.of(context).size.height * 0.4,
           MediaQuery.of(context).size.width * 0.3,
           MediaQuery.of(context).size.height * 0.4,
         ),
-        content: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Center(
-              child: CircularProgressIndicator(),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              'Processing...'
-            )
-          ],
+        contentPadding: EdgeInsets.zero,
+        content: Center(
+          child: Lottie.asset(
+            coffeeLoading,
+          ),
         ),
       );
-    }
+    },
   );
 }

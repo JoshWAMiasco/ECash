@@ -1,344 +1,216 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:ecash/components/loading_indicator.dart';
-import 'package:ecash/components/loading_screen.dart';
-import 'package:ecash/components/message_dialog.dart';
-import 'package:ecash/components/primary_buttonlabeled.dart';
-import 'package:ecash/components/primary_drawer.dart';
-import 'package:ecash/components/primary_icon_button.dart';
-import 'package:ecash/components/user_waller_card.dart';
+import 'package:ecash/components/beans_wallet_no_user.dart';
+import 'package:ecash/components/beans_wallet_with_user.dart';
+import 'package:ecash/components/slidable_card.dart';
 import 'package:ecash/constants/app_color.dart';
 import 'package:ecash/constants/banner_data.dart';
-import 'package:ecash/pages/root_page.dart';
-import 'package:ecash/providers/providers.dart';
+import 'package:ecash/constants/image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shimmer/shimmer.dart';
 
-class HomePage extends ConsumerStatefulWidget {
-  const HomePage({Key? key, this.onProfile}) : super(key: key);
-  final VoidCallback? onProfile;
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends ConsumerState<HomePage> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+class _HomePageState extends State<HomePage> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context,) {
+  Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: PrimaryDrawer(
-        onLogout: () async {
-          _scaffoldKey.currentState!.closeEndDrawer();
-          loadingIndicator(context);
-          await ref.read(authProvider.notifier).logout().then((res){
-            if(res.failure){
-              Navigator.of(context, rootNavigator: false).pop();
-              messageDialog(context, content: res.message);
-            } else {
-              Future.delayed(const Duration(seconds: 3), ()  {
-                Navigator.of(context, rootNavigator: false).pop();
-                AutoRouter.of(context).popUntil((route) => route.isFirst);
-              });
-            }
-          });
-          
-        },
-      ),
-      key: _scaffoldKey,
-      body: Container(
-        color: AppColor.background,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    Row(
+      appBar: null,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 5.h,
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                right: 5.w,
+                left: 5.w,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 80.w,
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.5,
-                          child: const Text(
-                            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore ',
-                            style: TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
+                        Text(
+                          'Winter Brewed',
+                          style: GoogleFonts.charmonman(fontWeight: FontWeight.bold, color: AppColor.primary, fontSize: 22.sp),
                         ),
-                        PrimaryIconButton(
-                          icon: Icons.menu,
-                          onTap: () => _scaffoldKey.currentState!.openEndDrawer(),
+                        Text(
+                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore ',
+                          style: TextStyle(fontSize: 15.sp),
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    UserWalletCard(
-                      onTap: widget.onProfile,
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: AppColor.lightGreen,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      padding: const EdgeInsets.all(15),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              PriamryButtonLabeled(
-                                asset: 'assets/cash_in.png',
-                                label: 'Cash In',
-                                onTap: () => context.router.pushNamed('/cash-in'),
-                              ),
-                              PriamryButtonLabeled(
-                                asset: 'assets/request.png',
-                                label: 'Request \n money',
-                                onTap: (){},
-                              ),
-                              PriamryButtonLabeled(
-                                asset: 'assets/money_transfer.png',
-                                label: 'Bank \n transfer',
-                                onTap: () {
-
-                                },
-                              ),
-                              PriamryButtonLabeled(
-                                asset: 'assets/pay_bills.png',
-                                label: 'Pay \n bills',
-                                onTap: () => context.router.pushNamed('/pay-bills'),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              PriamryButtonLabeled(
-                                asset: 'assets/load.png',
-                                label: 'Load',
-                                onTap: (){},
-                              ),
-                              PriamryButtonLabeled(
-                                asset: 'assets/savings.png',
-                                label: 'Savings',
-                                onTap: (){},
-                              ),
-                              PriamryButtonLabeled(
-                                asset: 'assets/credit.png',
-                                label: 'Credit',
-                                onTap: (){},
-                              ),
-                              PriamryButtonLabeled(
-                                asset: 'assets/qr_icon.png',
-                                label: 'Pay QR',
-                                onTap: () => context.router.pushNamed('/pay-qr-scanner'),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'What\'s New ?',
-                        style: TextStyle(
-                          color: Colors.grey.shade800,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore ',
-                        style: TextStyle(
-                          color: Colors.grey.shade800,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              SizedBox(
-                height: 80,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: List.generate(BannerData.news.length, (index) {
-                      return CachedNetworkImage(
-                        imageUrl: BannerData.news[index],
-                        imageBuilder: (context, imageProvider) {
-                          return Container(
-                            margin: EdgeInsets.only(
-                              left: 10,
-                            ),
-                            height: 80,
-                            width: 180,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: imageProvider,
-                                fit: BoxFit.cover,
-                              ),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          );
-                        },
-                        placeholder: (context, url) {
-                          return Shimmer.fromColors(
-                            baseColor: Colors.grey.shade300,
-                            highlightColor: Colors.white.withOpacity(0.7),
-                            child: Container(
-                              margin: const EdgeInsets.only(
-                                left: 10,
-                              ),
-                              height: 80,
-                              width: 180,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.grey,
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    }),
                   ),
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Container(
-                padding: EdgeInsets.only(left: 20, right: 20),
-                child: Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Announcement',
-                        style: TextStyle(
-                          color: Colors.grey.shade800,
-                          fontSize: 20,
+                  Badge(
+                    badgeContent: const Text(
+                      '2',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    child: InkWell(
+                      onTap: () {
+                        context.router.pushNamed('/recipt');
+                      },
+                      child: Container(
+                        height: 25.sp,
+                        width: 25.sp,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColor.primary,
+                        ),
+                        child: Icon(
+                          Icons.shopping_bag,
+                          color: Colors.white,
+                          size: 20.sp,
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 10,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 2.h,
+            ),
+            Padding(
+              padding: EdgeInsets.only(right: 15.w),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  'Good Morning, Joshua!',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 0.5.h,
+            ),
+            BeansWalletWithUSer(),
+            SizedBox(
+              height: 5.h,
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Divider(
+                    color: AppColor.primary,
+                    thickness: 10.sp,
+                    indent: 30.w,
+                  ),
+                  SizedBox(
+                    height: 1.h,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 5.w),
+                    child: Text(
+                      'TARA KAPE!',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp, color: AppColor.primary),
                     ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore ',
-                        style: TextStyle(
-                          color: Colors.grey.shade800,
-                          fontSize: 14,
-                        ),
+                  ),
+                  SizedBox(
+                    height: 1.h,
+                  ),
+                  Divider(
+                    color: AppColor.primary,
+                    thickness: 10.sp,
+                    indent: 30.w,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 2.h,
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.only(left: 5.w, right: 5.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Menu',
+                      style: GoogleFonts.charmonman(fontSize: 25.sp, fontWeight: FontWeight.bold, color: AppColor.primary),
+                    ),
+                    Text(
+                      'View All',
+                      style: TextStyle(
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline,
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 20,
+            ),
+            CarouselSlider(
+              options: CarouselOptions(
+                autoPlay: true,
+                enlargeCenterPage: true,
+                aspectRatio: 2,
+                pauseAutoPlayOnTouch: true,
               ),
-              CarouselSlider(
-                options: CarouselOptions(
-                  autoPlay: true,
-                  enlargeCenterPage: true,
-                  aspectRatio: 2,
-                  pauseAutoPlayOnTouch: true,
-                ),
-                items: List.generate(BannerData.announcement.length, (index) {
-                  return CachedNetworkImage(
-                    imageUrl: BannerData.announcement[index],
-                    imageBuilder: (context, imageProvider) {
-                      return Container(
-                        margin: const EdgeInsets.only(
-                          left: 10,
+              items: List.generate(BannerData.announcement.length, (index) {
+                return CachedNetworkImage(
+                  imageUrl: BannerData.announcement[index],
+                  imageBuilder: (context, imageProvider) {
+                    return Container(
+                      margin: const EdgeInsets.only(
+                        left: 10,
+                      ),
+                      height: MediaQuery.of(context).size.height * 0.12,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
                         ),
-                        height: MediaQuery.of(context).size.height * 0.12,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.cover,
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      );
-                    },
-                    placeholder: (context, url) {
-                      return SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.12,
-                        width: MediaQuery.of(context).size.width,
-                        child: Shimmer.fromColors(
-                          baseColor: Colors.grey.shade300,
-                          highlightColor: Colors.white.withOpacity(0.7),
-                          child: Container(
-                            height: MediaQuery.of(context).size.height * 0.12,
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade300,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    );
+                  },
+                  placeholder: (context, url) {
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.12,
+                      width: MediaQuery.of(context).size.width,
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey.shade300,
+                        highlightColor: Colors.white.withOpacity(0.7),
+                        child: Container(
+                          height: MediaQuery.of(context).size.height * 0.12,
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade300,
+                            borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                      );
-                    },
-                  );
-                }),
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              const Center(
-                child: Text(
-                  'ECash Company 2022',
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-            ],
-          ),
+                      ),
+                    );
+                  },
+                );
+              }),
+            ),
+            SizedBox(
+              height: 20.h,
+            )
+          ],
         ),
       ),
     );

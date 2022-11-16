@@ -5,7 +5,7 @@ import 'package:ecash/components/primary_icon_button.dart';
 import 'package:ecash/components/transaction_card.dart';
 import 'package:ecash/components/user_profile_card.dart';
 import 'package:ecash/constants/app_color.dart';
-import 'package:ecash/constants/photos.dart';
+import 'package:ecash/constants/image.dart';
 import 'package:ecash/models/transaction_model.dart';
 import 'package:ecash/pages/transaction_page.dart';
 import 'package:ecash/providers/providers.dart';
@@ -24,8 +24,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => ref.read(transactionProvider.notifier).getUserTransactionsHistory());
+    //WidgetsBinding.instance.addPostFrameCallback((_) => ref.read(transactionProvider.notifier).getUserTransactionsHistory());
   }
 
   @override
@@ -41,9 +40,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 height: 50,
               ),
               UserProfileCard(
-                displayName: '${ref.watch(authProvider.notifier).getUserData()!.firstname} ${ref.watch(authProvider.notifier).getUserData()!.lastname!}',
-                profilePhoto: ref.watch(authProvider.notifier).getUserData()!.profilePicture,
-                mobileNumber: ref.watch(authProvider.notifier).getUserData()!.mobileNumber,
+                displayName: 'Joshua',
+                profilePhoto: profilePlaceHolder,
+                mobileNumber: '099999',
                 userAccountNumber: '1234-1233-999',
               ),
               const SizedBox(
@@ -56,22 +55,22 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   PriamryButtonLabeled(
                     asset: 'assets/heart.png',
                     label: 'Favorites',
-                    onTap: (){},
+                    onTap: () {},
                   ),
                   PriamryButtonLabeled(
                     asset: 'assets/book.png',
                     label: 'Quick \n Guide',
-                    onTap: (){},
+                    onTap: () {},
                   ),
                   PriamryButtonLabeled(
                     asset: 'assets/account.png',
                     label: 'Account \n Limit',
-                    onTap: (){},
+                    onTap: () {},
                   ),
                   PriamryButtonLabeled(
                     asset: 'assets/settings.png',
                     label: 'Settings',
-                    onTap: (){},
+                    onTap: () {},
                   ),
                 ],
               ),
@@ -130,53 +129,47 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     const SizedBox(
                       height: 10,
                     ),
-                    ref.watch(transactionProvider).transactions.when(
-                      loading: () {
-                        return Center(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 20, bottom: 20),
-                            child: CircularProgressIndicator(
-                              backgroundColor: Colors.transparent,
-                              valueColor: AlwaysStoppedAnimation<Color>(AppColor.primary),
-                            ),
-                          ),
-                        ); 
-                      }, 
-                      error: (_, stackTrace) {
-                        return const Center(
-                          child: Text(
-                            'Went somethinf wrong',
-                          ),
-                        );
-                      },
-                      data: (transaction) {
-                        if (transaction.isNotEmpty) {
-                          List<TransactionModel> recentList = <TransactionModel>[];
-                          for (int count = 0; count < 3; count++) {
-                            try {
-                              recentList.add(transaction[count]);
-                            } catch (e) {}
-                          }
-                          return Column(
-                            children: List.generate(recentList.length, (index) {
-                              return TransactionCard(
-                                amount: recentList[index].amount,
-                                date: recentList[index].date!,
-                                description: recentList[index].description,
-                                title: recentList[index].title,
-                                type: recentList[index].type,
-                              );
-                            }),
-                          );
-                        } else {
-                          return const Center(
-                            child: Text(
-                              'No transaction yet.'
-                            ),
-                          );
-                        }
-                      }
-                    ),
+                    // ref.watch(transactionProvider).transactions.when(loading: () {
+                    //   return Center(
+                    //     child: Padding(
+                    //       padding: const EdgeInsets.only(top: 20, bottom: 20),
+                    //       child: CircularProgressIndicator(
+                    //         backgroundColor: Colors.transparent,
+                    //         valueColor: AlwaysStoppedAnimation<Color>(AppColor.primary),
+                    //       ),
+                    //     ),
+                    //   );
+                    // }, error: (_, stackTrace) {
+                    //   return const Center(
+                    //     child: Text(
+                    //       'Went somethinf wrong',
+                    //     ),
+                    //   );
+                    // }, data: (transaction) {
+                    //   if (transaction.isNotEmpty) {
+                    //     List<TransactionModel> recentList = <TransactionModel>[];
+                    //     for (int count = 0; count < 3; count++) {
+                    //       try {
+                    //         recentList.add(transaction[count]);
+                    //       } catch (e) {}
+                    //     }
+                    //     return Column(
+                    //       children: List.generate(recentList.length, (index) {
+                    //         return TransactionCard(
+                    //           amount: recentList[index].amount,
+                    //           date: recentList[index].date!,
+                    //           description: recentList[index].description,
+                    //           title: recentList[index].title,
+                    //           type: recentList[index].type,
+                    //         );
+                    //       }),
+                    //     );
+                    //   } else {
+                    //     return const Center(
+                    //       child: Text('No transaction yet.'),
+                    //     );
+                    //   }
+                    // }),
                   ],
                 ),
               ),
@@ -196,7 +189,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     onPressed: widget.onHome,
                     child: Row(
                       children: const [
-                       Icon(
+                        Icon(
                           Icons.arrow_back_ios_rounded,
                           color: Colors.white,
                         ),
