@@ -1,10 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:ecash/components/ripple_animation.dart';
 import 'package:ecash/constants/app_color.dart';
+import 'package:ecash/constants/image.dart';
 import 'package:ecash/pages/login_page.dart';
 import 'package:ecash/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class RootPage extends ConsumerStatefulWidget {
   const RootPage({Key? key}) : super(key: key);
@@ -17,17 +20,13 @@ class _RootPageState extends ConsumerState<RootPage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => checkIsLogin());
     checkIsLogin();
   }
 
   void checkIsLogin() async {
-    final res = await ref.read(authProvider.notifier).checkIsLogin();
-    if (res.failure) {
-      await context.router.replaceNamed('/main');
-    } else {
-      ref.read(authProvider.notifier).listenToUserData();
-      await context.router.replaceNamed('/main');
-    }
+    await ref.read(authProvider.notifier).checkIsLogin();
+    context.router.replaceNamed('/main');
   }
 
   @override
@@ -49,18 +48,18 @@ class _RootPageState extends ConsumerState<RootPage> {
               children: [
                 GestureDetector(
                   //onTap: () => Navigator.push(context, PageTransition(child: LoginPage(), type: PageTransitionType.fade)),
-                  child: ImageIcon(
-                    const AssetImage('assets/ecash_logo.png'),
-                    size: 150,
-                    color: Colors.white.withOpacity(0.8),
+                  child: Image(
+                    image: const AssetImage(appLogo),
+                    height: 20.h,
+                    width: 80.w,
                   ),
                 ),
                 const SizedBox(
                   height: 50,
                 ),
-                const Text(
-                  'ECash',
-                  style: TextStyle(
+                Text(
+                  'Winter Brewed',
+                  style: GoogleFonts.charmonman(
                     color: Colors.white,
                     fontSize: 30,
                   ),

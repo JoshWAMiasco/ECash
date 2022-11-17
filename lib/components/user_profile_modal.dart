@@ -2,15 +2,17 @@ import 'package:auto_route/auto_route.dart';
 import 'package:ecash/components/popup_card.dart';
 import 'package:ecash/components/primary_button.dart';
 import 'package:ecash/constants/app_color.dart';
+import 'package:ecash/providers/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-class UserProfileModal extends StatelessWidget {
+class UserProfileModal extends ConsumerWidget {
   const UserProfileModal({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return PopupCard(
       borderRadius: 20,
       margin: EdgeInsets.fromLTRB(15.w, 25.h, 15.w, 22.h),
@@ -20,7 +22,7 @@ class UserProfileModal extends StatelessWidget {
           children: [
             Center(
               child: QrImage(
-                data: 'Sample User Account',
+                data: ref.watch(authProvider).user!.qrCode!,
                 version: QrVersions.auto,
                 size: 220,
                 gapless: false,
@@ -31,7 +33,7 @@ class UserProfileModal extends StatelessWidget {
             ),
             Center(
               child: Text(
-                'Joshua Miasco',
+                ref.watch(authProvider).user!.userName!,
                 style: TextStyle(
                   color: AppColor.primary,
                   fontSize: 20,
@@ -40,7 +42,7 @@ class UserProfileModal extends StatelessWidget {
             ),
             Center(
               child: Text(
-                'Beans Point: 200',
+                'Beans Point: ${ref.watch(authProvider).user!.beansPoint!}',
                 style: TextStyle(
                   fontSize: 15,
                 ),

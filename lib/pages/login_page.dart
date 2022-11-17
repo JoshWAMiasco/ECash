@@ -22,8 +22,8 @@ class LoginPage extends ConsumerStatefulWidget {
 }
 
 class _LoginPageState extends ConsumerState<LoginPage> {
-  final TextEditingController mobileNumberController = TextEditingController();
-  final TextEditingController mpinController = TextEditingController();
+  final TextEditingController username = TextEditingController();
+  final TextEditingController password = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,6 +106,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             ),
                             PrimaryTextField(
                               hint: 'ex. winterCoffee01',
+                              controller: username,
                             ),
                             SizedBox(
                               height: 2.h,
@@ -123,6 +124,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             ),
                             PasswordTextField(
                               hint: '******',
+                              controller: password,
                             ),
                           ],
                         ),
@@ -136,7 +138,22 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       child: Padding(
                         padding: EdgeInsets.only(right: 10.w),
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            if (username.text.isNotEmpty && password.text.isNotEmpty) {
+                              loadingIndicator(context);
+                              await ref.read(authProvider).login(username.text, password.text).then((res) {
+                                if (res.failure == false) {
+                                  Navigator.of(context, rootNavigator: true).pop();
+                                  context.router.popUntilRoot();
+                                } else {
+                                  Navigator.of(context, rootNavigator: true).pop();
+                                  messageDialog(context, content: res.message);
+                                }
+                              });
+                            } else {
+                              messageDialog(context, content: 'Please conplete details');
+                            }
+                          },
                           style: TextButton.styleFrom(backgroundColor: AppColor.primary, padding: EdgeInsets.fromLTRB(20.sp, 5.sp, 20.sp, 5.sp)),
                           child: Text(
                             'Login',

@@ -128,9 +128,11 @@ class AppRouter extends _i17.RootStackRouter {
       );
     },
     RegistrationRoute.name: (routeData) {
+      final args = routeData.argsAs<RegistrationRouteArgs>(
+          orElse: () => const RegistrationRouteArgs());
       return _i17.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i14.RegistrationPage(),
+        child: _i14.RegistrationPage(key: args.key),
       );
     },
     ReciptRoute.name: (routeData) {
@@ -431,14 +433,26 @@ class CartRoute extends _i17.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i14.RegistrationPage]
-class RegistrationRoute extends _i17.PageRouteInfo<void> {
-  const RegistrationRoute()
+class RegistrationRoute extends _i17.PageRouteInfo<RegistrationRouteArgs> {
+  RegistrationRoute({_i18.Key? key})
       : super(
           RegistrationRoute.name,
           path: '/registration',
+          args: RegistrationRouteArgs(key: key),
         );
 
   static const String name = 'RegistrationRoute';
+}
+
+class RegistrationRouteArgs {
+  const RegistrationRouteArgs({this.key});
+
+  final _i18.Key? key;
+
+  @override
+  String toString() {
+    return 'RegistrationRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for

@@ -4,6 +4,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ecash/components/beans_wallet_no_user.dart';
 import 'package:ecash/components/beans_wallet_with_user.dart';
+import 'package:ecash/components/loading_indicator.dart';
+import 'package:ecash/components/message_dialog.dart';
 import 'package:ecash/components/slidable_card.dart';
 import 'package:ecash/constants/app_color.dart';
 import 'package:ecash/constants/banner_data.dart';
@@ -13,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -24,6 +27,34 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
+  String diplayGreetings() {
+    final user = ref.watch(authProvider).user;
+    var now = DateTime.now();
+    var f = DateFormat.jm();
+    var formatDate = f.format(now);
+    if (user != null) {
+      if (user.realName != '') {
+        if (formatDate.contains('AM')) {
+          return "Good Morning, ${user.realName}";
+        } else {
+          return "Good Afternoon, ${user.realName}";
+        }
+      } else {
+        if (formatDate.contains('AM')) {
+          return "Good Morning, ${user.userName}";
+        } else {
+          return "Good Afternoon, ${user.userName}";
+        }
+      }
+    } else {
+      if (formatDate.contains('AM')) {
+        return "Good Morning!";
+      } else {
+        return "Good Afternoon!";
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,27 +120,55 @@ class _HomePageState extends ConsumerState<HomePage> {
               height: 2.h,
             ),
             Padding(
-              padding: EdgeInsets.only(right: 15.w),
+              padding: EdgeInsets.only(right: 5.w),
               child: Align(
                 alignment: Alignment.centerRight,
-                child: Text(
-                  ref.watch(authProvider.notifier).user == null ? 'Good Morning! ' : 'Good Morning, Joshua!',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      diplayGreetings(),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp),
+                    ),
+                    SizedBox(
+                      width: 1.w,
+                    ),
+                    Visibility(
+                      visible: ref.watch(authProvider).user != null,
+                      child: InkWell(
+                        onTap: () async {
+                          loadingIndicator(context);
+                          await ref.read(authProvider).logout().then((res) {
+                            if (res.failure == false) {
+                              Navigator.of(context, rootNavigator: true).pop();
+                              context.router.replaceNamed('/');
+                            } else {
+                              Navigator.of(context, rootNavigator: true).pop();
+                              messageDialog(context, content: 'Went something wrong');
+                            }
+                          });
+                        },
+                        child: Chip(
+                          label: const Text(
+                            'Logout',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          visualDensity: VisualDensity.compact,
+                          backgroundColor: AppColor.primary,
+                        ),
+                      ),
+                    )
+                  ],
                 ),
               ),
             ),
             SizedBox(
               height: 0.5.h,
             ),
-            Builder(
-              builder: (context) {
-                if (ref.watch(authProvider.notifier).user == null) {
-                  return const BeansWalletNoUSer();
-                } else {
-                  return const BeansWalletWithUSer();
-                }
-              },
-            ),
+            ref.watch(authProvider).user != null ? const BeansWalletWithUSer() : const BeansWalletNoUSer(),
             SizedBox(
               height: 5.h,
             ),

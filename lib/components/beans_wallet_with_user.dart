@@ -1,14 +1,22 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:ecash/components/user_profile_modal.dart';
 import 'package:ecash/constants/app_color.dart';
+import 'package:ecash/constants/app_utils.dart';
 import 'package:ecash/constants/image.dart';
+import 'package:ecash/providers/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-class BeansWalletWithUSer extends StatelessWidget {
+class BeansWalletWithUSer extends ConsumerStatefulWidget {
   const BeansWalletWithUSer({Key? key}) : super(key: key);
 
+  @override
+  ConsumerState<BeansWalletWithUSer> createState() => _BeansWalletWithUSerState();
+}
+
+class _BeansWalletWithUSerState extends ConsumerState<BeansWalletWithUSer> {
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -48,7 +56,7 @@ class BeansWalletWithUSer extends StatelessWidget {
                               height: 0.1.h,
                             ),
                             Text(
-                              '10,000,000',
+                              ref.watch(authProvider).user!.beansPoint!.toString(),
                               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp),
                             )
                           ],
@@ -64,7 +72,7 @@ class BeansWalletWithUSer extends StatelessWidget {
                           },
                           child: CircleAvatar(
                             backgroundColor: AppColor.primary,
-                            child: Icon(
+                            child: const Icon(
                               Icons.qr_code_2,
                               color: Colors.white,
                             ),

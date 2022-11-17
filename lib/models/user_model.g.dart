@@ -15,6 +15,7 @@ _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
           : DateTime.parse(json['dateCreated'] as String),
       password: json['password'] as String?,
       qrCode: json['qrCode'] as String?,
+      authKey: json['authKey'] as String?,
     );
 
 Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) =>
@@ -25,4 +26,5 @@ Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) =>
       'dateCreated': instance.dateCreated?.toIso8601String(),
       'password': instance.password,
       'qrCode': instance.qrCode,
+      'authKey': instance.authKey,
     };

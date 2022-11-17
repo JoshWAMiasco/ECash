@@ -26,6 +26,7 @@ mixin _$UserModel {
   DateTime? get dateCreated => throw _privateConstructorUsedError;
   String? get password => throw _privateConstructorUsedError;
   String? get qrCode => throw _privateConstructorUsedError;
+  String? get authKey => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -44,7 +45,8 @@ abstract class $UserModelCopyWith<$Res> {
       String? realName,
       DateTime? dateCreated,
       String? password,
-      String? qrCode});
+      String? qrCode,
+      String? authKey});
 }
 
 /// @nodoc
@@ -66,6 +68,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? dateCreated = freezed,
     Object? password = freezed,
     Object? qrCode = freezed,
+    Object? authKey = freezed,
   }) {
     return _then(_value.copyWith(
       userName: freezed == userName
@@ -92,6 +95,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.qrCode
           : qrCode // ignore: cast_nullable_to_non_nullable
               as String?,
+      authKey: freezed == authKey
+          ? _value.authKey
+          : authKey // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -109,7 +116,8 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
       String? realName,
       DateTime? dateCreated,
       String? password,
-      String? qrCode});
+      String? qrCode,
+      String? authKey});
 }
 
 /// @nodoc
@@ -129,6 +137,7 @@ class __$$_UserModelCopyWithImpl<$Res>
     Object? dateCreated = freezed,
     Object? password = freezed,
     Object? qrCode = freezed,
+    Object? authKey = freezed,
   }) {
     return _then(_$_UserModel(
       userName: freezed == userName
@@ -155,6 +164,10 @@ class __$$_UserModelCopyWithImpl<$Res>
           ? _value.qrCode
           : qrCode // ignore: cast_nullable_to_non_nullable
               as String?,
+      authKey: freezed == authKey
+          ? _value.authKey
+          : authKey // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -168,7 +181,8 @@ class _$_UserModel implements _UserModel {
       this.realName,
       this.dateCreated,
       this.password,
-      this.qrCode});
+      this.qrCode,
+      this.authKey});
 
   factory _$_UserModel.fromJson(Map<String, dynamic> json) =>
       _$$_UserModelFromJson(json);
@@ -185,10 +199,12 @@ class _$_UserModel implements _UserModel {
   final String? password;
   @override
   final String? qrCode;
+  @override
+  final String? authKey;
 
   @override
   String toString() {
-    return 'UserModel(userName: $userName, beansPoint: $beansPoint, realName: $realName, dateCreated: $dateCreated, password: $password, qrCode: $qrCode)';
+    return 'UserModel(userName: $userName, beansPoint: $beansPoint, realName: $realName, dateCreated: $dateCreated, password: $password, qrCode: $qrCode, authKey: $authKey)';
   }
 
   @override
@@ -206,13 +222,14 @@ class _$_UserModel implements _UserModel {
                 other.dateCreated == dateCreated) &&
             (identical(other.password, password) ||
                 other.password == password) &&
-            (identical(other.qrCode, qrCode) || other.qrCode == qrCode));
+            (identical(other.qrCode, qrCode) || other.qrCode == qrCode) &&
+            (identical(other.authKey, authKey) || other.authKey == authKey));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, userName, beansPoint, realName,
-      dateCreated, password, qrCode);
+      dateCreated, password, qrCode, authKey);
 
   @JsonKey(ignore: true)
   @override
@@ -235,7 +252,8 @@ abstract class _UserModel implements UserModel {
       final String? realName,
       final DateTime? dateCreated,
       final String? password,
-      final String? qrCode}) = _$_UserModel;
+      final String? qrCode,
+      final String? authKey}) = _$_UserModel;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$_UserModel.fromJson;
@@ -252,6 +270,8 @@ abstract class _UserModel implements UserModel {
   String? get password;
   @override
   String? get qrCode;
+  @override
+  String? get authKey;
   @override
   @JsonKey(ignore: true)
   _$$_UserModelCopyWith<_$_UserModel> get copyWith =>

@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:ecash/controllers/user_state.dart';
 import 'package:ecash/models/user_model.dart';
 import 'package:ecash/repository/user_repository.dart';
 import 'package:ecash/repository/user_responce.dart';
@@ -39,6 +37,7 @@ class AuthenticationController extends ChangeNotifier {
     final res = await _userRepository.checkIsLogin();
     if (res.failure == false) {
       user = res.user;
+      listenToUserData();
       notifyListeners();
     }
     return res;
@@ -51,5 +50,13 @@ class AuthenticationController extends ChangeNotifier {
         notifyListeners();
       }
     });
+  }
+
+  Future<UserResponce> register(UserModel user) async {
+    final res = await _userRepository.registerUser(user);
+    if (res.failure == false) {
+      user = res.user!;
+    }
+    return res;
   }
 }
