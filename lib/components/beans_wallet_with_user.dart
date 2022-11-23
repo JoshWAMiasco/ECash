@@ -56,7 +56,7 @@ class _BeansWalletWithUSerState extends ConsumerState<BeansWalletWithUSer> {
                               height: 0.1.h,
                             ),
                             Text(
-                              ref.watch(authProvider).user!.beansPoint!.toString(),
+                              AppUtils.pointsFormatter(ref.watch(authProvider).user!.beansPoint!),
                               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp),
                             )
                           ],

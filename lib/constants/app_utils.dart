@@ -1,11 +1,19 @@
+import 'dart:io';
+
 import 'package:ecash/constants/constants.dart';
 import 'package:encrypt/encrypt.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:intl/intl.dart';
 
 class AppUtils {
   static String moneyFormatter(double number) {
     var f = NumberFormat("###,###,###.##");
     return f.format(number);
+  }
+
+  static String pointsFormatter(int points) {
+    var f = NumberFormat('###,###,###');
+    return f.format(points);
   }
 
   static String shortDateFormatter(DateTime date) {
@@ -34,9 +42,24 @@ class AppUtils {
 
     final encrypted = encrypter.encrypt(plainText, iv: iv);
     final decrypted = encrypter.decrypt(encrypted, iv: iv);
-
-    print(decrypted); // Lorem ipsum dolor sit amet, consectetur adipiscing elit
-    print(encrypted.base64);
     return encrypted.base64;
+  }
+
+  Future<String?> uploadFile({File? file, String? fileName, String? path}) async {
+    try {
+      if (file != null && fileName != null && path != null) {
+        TaskSnapshot taskSnapshot = await FirebaseStorage.instance.ref().child("$path/$fileName").putFile(file);
+        if (taskSnapshot.state == TaskState.success) {
+          String url = await taskSnapshot.ref.getDownloadURL();
+          return url;
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    } on FirebaseException catch (e) {
+      return null;
+    }
   }
 }

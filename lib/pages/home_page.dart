@@ -2,15 +2,18 @@ import 'package:auto_route/auto_route.dart';
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecash/components/beans_wallet_no_user.dart';
 import 'package:ecash/components/beans_wallet_with_user.dart';
 import 'package:ecash/components/loading_indicator.dart';
 import 'package:ecash/components/message_dialog.dart';
-import 'package:ecash/components/slidable_card.dart';
 import 'package:ecash/constants/app_color.dart';
 import 'package:ecash/constants/banner_data.dart';
 import 'package:ecash/constants/image.dart';
+import 'package:ecash/models/product_model.dart';
+import 'package:ecash/models/variant_model.dart';
 import 'package:ecash/providers/providers.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -18,6 +21,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:uuid/uuid.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -89,26 +93,29 @@ class _HomePageState extends ConsumerState<HomePage> {
                       ],
                     ),
                   ),
-                  Badge(
-                    badgeContent: const Text(
-                      '2',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    child: InkWell(
-                      onTap: () {
-                        context.router.pushNamed('/cart');
-                      },
-                      child: Container(
-                        height: 25.sp,
-                        width: 25.sp,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColor.primary,
-                        ),
-                        child: Icon(
-                          Icons.shopping_bag,
-                          color: Colors.white,
-                          size: 20.sp,
+                  Visibility(
+                    visible: ref.watch(authProvider).user != null,
+                    child: Badge(
+                      badgeContent: const Text(
+                        '2',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      child: InkWell(
+                        onTap: () async {
+                          context.router.pushNamed('/cart');
+                        },
+                        child: Container(
+                          height: 25.sp,
+                          width: 25.sp,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColor.primary,
+                          ),
+                          child: Icon(
+                            Icons.shopping_bag,
+                            color: Colors.white,
+                            size: 20.sp,
+                          ),
                         ),
                       ),
                     ),

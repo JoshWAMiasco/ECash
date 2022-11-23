@@ -1,15 +1,28 @@
+import 'dart:developer';
+
 import 'package:auto_route/auto_route.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dotted_line/dotted_line.dart';
 import 'package:ecash/components/cart_card.dart';
-import 'package:ecash/components/no_cart_placeholder.dart';
 import 'package:ecash/constants/app_color.dart';
+import 'package:ecash/models/cart_item_model.dart';
+import 'package:ecash/providers/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-class CartPage extends StatelessWidget {
+class CartPage extends ConsumerStatefulWidget {
   const CartPage({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<CartPage> createState() => _CartPageState();
+}
+
+class _CartPageState extends ConsumerState<CartPage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async => ref.read(productProvider).getCartItems());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +38,41 @@ class CartPage extends StatelessWidget {
                   SizedBox(
                     height: 20.h,
                   ),
-                  CartCard(),
+                  ref.watch(productProvider).cart.when(
+                    loading: () {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                    data: (cartList) {
+                      return Column(
+                        children: List.generate(
+                          cartList.length,
+                          (index) => CartCard(
+                            onChange: (value) async {
+                              CartItemModel updatedItem = cartList[index];
+                              updatedItem.isChecked = value;
+                              ref.read(productProvider).update(updatedItem).then((res){
+                                if(res.failure == false){
+                                  log('check');
+                                } else {
+                                  log('error');
+                                }
+                              });
+                            },
+                            cartItem: cartList[index],
+                          ),
+                        ),
+                      );
+                    },
+                    error: (error, stact) {
+                      return const Center(
+                        child: Text(
+                          'Something went wrong',
+                        ),
+                      );
+                    },
+                  ),
                   //NoCartPlaceHolder(),
                   SizedBox(
                     height: 20.h,
@@ -35,7 +82,7 @@ class CartPage extends StatelessWidget {
             ),
           ),
           Visibility(
-            visible: false,
+            visible: ref.watch(authProvider).user != null,
             child: Align(
               alignment: Alignment.bottomCenter,
               child: Container(

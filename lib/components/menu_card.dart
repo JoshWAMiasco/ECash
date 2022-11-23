@@ -1,11 +1,41 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dotted_line/dotted_line.dart';
+import 'package:ecash/components/loading_indicator.dart';
+import 'package:ecash/components/message_dialog.dart';
 import 'package:ecash/constants/app_color.dart';
+import 'package:ecash/models/cart_item_model.dart';
+import 'package:ecash/models/product_model.dart';
+import 'package:ecash/models/variant_model.dart';
+import 'package:ecash/providers/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-class MenuCard extends StatelessWidget {
-  const MenuCard({Key? key}) : super(key: key);
+class MenuCard extends ConsumerStatefulWidget {
+  const MenuCard({Key? key, required this.product}) : super(key: key);
+  final ProductModel product;
+
+  @override
+  ConsumerState<MenuCard> createState() => _MenuCardState();
+}
+
+class _MenuCardState extends ConsumerState<MenuCard> {
+
+  VariantModel? selectedVariant;
+
+
+  void setVariant(VariantModel variant) {
+    if(selectedVariant != null){
+      if(selectedVariant!.name == variant.name) {
+        setState(() {
+          selectedVariant = null;
+        });
+      }
+    } else {
+      setState(() {
+      selectedVariant = variant;
+    });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,19 +63,27 @@ class MenuCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(
-                          children: [
-                            Chip(
-                              visualDensity: VisualDensity.compact,
-                              label: Text('8oz'),
-                            ),
-                            Chip(
-                              visualDensity: VisualDensity.compact,
-                              label: Text('12oz'),
-                            ),
-                          ],
+                          children: List.generate(widget.product.variants!.length, (index) {
+                            return GestureDetector(
+                              onTap: () {
+                                setVariant(widget.product.variants![index]);
+                              },
+                              child: Chip(
+                                backgroundColor: widget.product.variants![index].name == selectedVariant?.name ? AppColor.primary : Colors.grey,
+                                visualDensity: VisualDensity.compact,
+                                label: Text(
+                                  widget.product.variants![index].name ?? '',
+                                  style: TextStyle(
+                                    fontWeight: widget.product.variants![index].name == selectedVariant?.name ? FontWeight.bold : FontWeight.normal,
+                                    color: widget.product.variants![index].name == selectedVariant?.name ? Colors.white : Colors.black,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
                         ),
                         Text(
-                          '₱ 100.0',
+                          '₱ ${widget.product.basePrice}',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20.sp,
@@ -64,7 +102,7 @@ class MenuCard extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(left: 7.w),
                 child: CachedNetworkImage(
-                  imageUrl: 'https://picsum.photos/200/300',
+                  imageUrl: widget.product.photo!,
                   imageBuilder: (context, imageProvider) {
                     return Container(
                       height: 40.sp,
@@ -91,24 +129,47 @@ class MenuCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Classic - Strong Brewed',
+                        widget.product.name ?? '',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16.sp,
                           color: AppColor.primary,
                         ),
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColor.primary,
+                      selectedVariant != null ? InkWell(
+                        onTap: () async {
+                          if(ref.read(authProvider).user == null){
+                            messageDialog(context, content: 'Please login before add to cart');
+                          } else {
+                            CartItemModel item = CartItemModel(
+                              dateAdded: DateTime.now(),
+                              product:  widget.product,
+                              quantity: 1,
+                              variantSelected: selectedVariant,
+                            );
+                            loadingIndicator(context);
+                            await ref.read(productProvider).addToCart(item).then((res) {
+                              if (res.failure == false) {
+                                Navigator.of(context, rootNavigator: true).pop();
+                                messageDialog(context, content: 'Successfuly added to cart!');
+                              } else {
+                                messageDialog(context, content: res.message);
+                              }
+                            });
+                          }
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColor.primary,
+                          ),
+                          child: Icon(
+                            Icons.add,
+                            color: Colors.white,
+                            size: 20.sp,
+                          ),
                         ),
-                        child: Icon(
-                          Icons.add,
-                          color: Colors.white,
-                          size: 20.sp,
-                        ),
-                      )
+                      ) : const SizedBox(),
                     ],
                   ),
                 ),

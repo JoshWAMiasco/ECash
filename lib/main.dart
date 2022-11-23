@@ -19,14 +19,17 @@ void main() async {
     ProviderScope(
       child: ResponsiveSizer(
         builder: (context, orientation, screenType) => MaterialApp.router(  
+          title: 'Winter Brewed',
           routeInformationParser: appRouter.defaultRouteParser(),
+          routerDelegate: appRouter.delegate(),
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             fontFamily: GoogleFonts.nunito().fontFamily,
             textTheme: GoogleFonts.nunitoTextTheme()
           ),
-          routerDelegate: appRouter.delegate(),
+          
           builder:(context,child) => child!,
+          
         ),
       ),
     )

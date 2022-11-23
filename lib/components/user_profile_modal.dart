@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:ecash/components/popup_card.dart';
 import 'package:ecash/components/primary_button.dart';
 import 'package:ecash/constants/app_color.dart';
+import 'package:ecash/constants/app_utils.dart';
 import 'package:ecash/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -42,8 +43,8 @@ class UserProfileModal extends ConsumerWidget {
             ),
             Center(
               child: Text(
-                'Beans Point: ${ref.watch(authProvider).user!.beansPoint!}',
-                style: TextStyle(
+                'Beans Point: ${AppUtils.pointsFormatter(ref.watch(authProvider).user!.beansPoint!)}',
+                style: const TextStyle(
                   fontSize: 15,
                 ),
               ),
