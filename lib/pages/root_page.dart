@@ -26,6 +26,7 @@ class _RootPageState extends ConsumerState<RootPage> {
 
   void checkIsLogin() async {
     await ref.read(authProvider.notifier).checkIsLogin();
+    await ref.read(productProvider).getCartItems();
     context.router.replaceNamed('/main');
   }
 

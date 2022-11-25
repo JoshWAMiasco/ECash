@@ -10,7 +10,7 @@ class ProductRepository {
       var query = await productCollection.where('isAvailable', isEqualTo: true).get();
       if (query.docs.isNotEmpty) {
         List<ProductModel> products = <ProductModel>[];
-        for (var doc in query.docs) {
+        for (var doc in query.docs) { 
           products.add(ProductModel.fromJson(doc.data()));
         }
         return ProductResponce(

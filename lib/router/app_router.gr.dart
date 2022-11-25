@@ -14,6 +14,7 @@
 import 'package:auto_route/auto_route.dart' as _i17;
 import 'package:flutter/material.dart' as _i18;
 
+import '../models/order_model.dart' as _i19;
 import '../pages/cart_page.dart' as _i13;
 import '../pages/cash_in_via_card.dart' as _i2;
 import '../pages/grab_bill_page.dart' as _i3;
@@ -136,9 +137,13 @@ class AppRouter extends _i17.RootStackRouter {
       );
     },
     ReciptRoute.name: (routeData) {
+      final args = routeData.argsAs<ReciptRouteArgs>();
       return _i17.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i15.ReciptPage(),
+        child: _i15.ReciptPage(
+          key: args.key,
+          order: args.order,
+        ),
       );
     },
     MenuRoute.name: (routeData) {
@@ -457,14 +462,36 @@ class RegistrationRouteArgs {
 
 /// generated route for
 /// [_i15.ReciptPage]
-class ReciptRoute extends _i17.PageRouteInfo<void> {
-  const ReciptRoute()
-      : super(
+class ReciptRoute extends _i17.PageRouteInfo<ReciptRouteArgs> {
+  ReciptRoute({
+    _i18.Key? key,
+    required _i19.OrderModel order,
+  }) : super(
           ReciptRoute.name,
           path: '/recipt',
+          args: ReciptRouteArgs(
+            key: key,
+            order: order,
+          ),
         );
 
   static const String name = 'ReciptRoute';
+}
+
+class ReciptRouteArgs {
+  const ReciptRouteArgs({
+    this.key,
+    required this.order,
+  });
+
+  final _i18.Key? key;
+
+  final _i19.OrderModel order;
+
+  @override
+  String toString() {
+    return 'ReciptRouteArgs{key: $key, order: $order}';
+  }
 }
 
 /// generated route for

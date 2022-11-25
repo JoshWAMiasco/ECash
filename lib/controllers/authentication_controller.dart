@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:ecash/models/user_model.dart';
 import 'package:ecash/repository/user_repository.dart';
 import 'package:ecash/repository/user_responce.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AuthenticationController extends ChangeNotifier {
@@ -58,5 +59,9 @@ class AuthenticationController extends ChangeNotifier {
       user = res.user!;
     }
     return res;
+  }
+
+  String getUserId() {
+    return FirebaseAuth.instance.currentUser!.uid;
   }
 }

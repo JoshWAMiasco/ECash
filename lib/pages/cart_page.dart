@@ -2,8 +2,14 @@ import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:ecash/components/cart_card.dart';
+import 'package:ecash/components/loading_indicator.dart';
+import 'package:ecash/components/message_dialog.dart';
+import 'package:ecash/components/no_cart_placeholder.dart';
 import 'package:ecash/constants/app_color.dart';
+import 'package:ecash/constants/enums.dart';
 import 'package:ecash/models/cart_item_model.dart';
+import 'package:ecash/models/order_model.dart';
+import 'package:ecash/pages/recipt_page.dart';
 import 'package:ecash/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,7 +27,14 @@ class _CartPageState extends ConsumerState<CartPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async => ref.read(productProvider).getCartItems());
+    WidgetsBinding.instance.addPostFrameCallback((_) => getData());
+  }
+
+  void getData() async {
+    await ref.read(productProvider).getCartItems().whenComplete(() {
+      ref.read(productProvider).computeTotalPriceOnCart();
+    });
+    ref.read(productProvider).addListenerToCart();
   }
 
   @override
@@ -49,16 +62,51 @@ class _CartPageState extends ConsumerState<CartPage> {
                         children: List.generate(
                           cartList.length,
                           (index) => CartCard(
+                            initialChecked: cartList[index].isChecked!,
                             onChange: (value) async {
                               CartItemModel updatedItem = cartList[index];
                               updatedItem.isChecked = value;
                               ref.read(productProvider).update(updatedItem).then((res){
                                 if(res.failure == false){
+                                  ref.read(productProvider).computeTotalPriceOnCart();
                                   log('check');
                                 } else {
                                   log('error');
                                 }
                               });
+                            },
+                            onIncrement: () {
+                              CartItemModel updatedItem = cartList[index];
+                              if(updatedItem.quantity! < 50){
+                                updatedItem.quantity = updatedItem.quantity! + 1;
+                                ref.read(productProvider).update(updatedItem).then((res){
+                                  if(res.failure == false){
+                                    log('check');
+                                    ref.read(productProvider).computeTotalPriceOnCart();
+                                  } else {
+                                    log('error');
+                                  }
+                                });
+                              } else {
+                                messageDialog(context, content: 'you\'ve reach the maximum order per item');
+                              }
+                              
+                            },
+                            onDecrease: () {
+                              CartItemModel updatedItem = cartList[index];
+                              if(updatedItem.quantity! > 0 ){
+                                updatedItem.quantity = updatedItem.quantity! - 1;
+                                ref.read(productProvider).update(updatedItem).then((res){
+                                  if(res.failure == false){
+                                    log('check');
+                                    ref.read(productProvider).computeTotalPriceOnCart();
+                                  } else {
+                                    log('error');
+                                  }
+                                });
+                              } else {
+                                messageDialog(context, content: 'you\'ve reach the minimum order per item');
+                              }
                             },
                             cartItem: cartList[index],
                           ),
@@ -66,11 +114,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                       );
                     },
                     error: (error, stact) {
-                      return const Center(
-                        child: Text(
-                          'Something went wrong',
-                        ),
-                      );
+                      return const NoCartPlaceHolder();
                     },
                   ),
                   //NoCartPlaceHolder(),
@@ -82,7 +126,7 @@ class _CartPageState extends ConsumerState<CartPage> {
             ),
           ),
           Visibility(
-            visible: ref.watch(authProvider).user != null,
+            visible: ref.watch(authProvider).user != null && ref.watch(productProvider).cart.hasValue,
             child: Align(
               alignment: Alignment.bottomCenter,
               child: Container(
@@ -110,7 +154,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                           ),
                         ),
                         Text(
-                          '₱ 20,000.00',
+                          '₱ ${ref.watch(productProvider).totalPriceCart.toStringAsFixed(2)}',
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -119,17 +163,43 @@ class _CartPageState extends ConsumerState<CartPage> {
                         ),
                       ],
                     ),
-                    Container(
-                      height: 28.sp,
-                      width: 30.w,
-                      decoration: BoxDecoration(
-                        color: AppColor.secondary,
-                        borderRadius: BorderRadius.circular(10.sp),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Continue',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp),
+                    InkWell(
+                      onTap: () async {
+                        OrderModel newOrder = OrderModel(
+                          dateOrder: DateTime.now(),
+                          items: ref.read(productProvider).getOrder(),
+                          totalPrice: ref.read(productProvider).totalPriceCart,
+                          orderNumber: ref.read(productProvider).generateOrderNumber(),
+                          status: OrderStatus.toPay.name,
+                          userId: ref.read(authProvider).getUserId(),
+                        );
+                        loadingIndicator(context);
+                        await ref.read(productProvider).addOrder(newOrder).then((res){
+                          if(res.failure == false){
+                            Navigator.of(context, rootNavigator: true).pop();
+                            messageDialog(context, content: 'Order Successfuly Submit!, Thank you!');
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ReciptPage(
+                              order: newOrder,
+                            )));
+                          } else {
+                            Navigator.of(context, rootNavigator: true).pop();
+                            messageDialog(context, content: res.message);
+                          }
+                        });
+                        
+                      },
+                      child: Container(
+                        height: 28.sp,
+                        width: 30.w,
+                        decoration: BoxDecoration(
+                          color: AppColor.secondary,
+                          borderRadius: BorderRadius.circular(10.sp),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Continue',
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp),
+                          ),
                         ),
                       ),
                     )

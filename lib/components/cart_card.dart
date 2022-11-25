@@ -8,9 +8,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class CartCard extends ConsumerStatefulWidget {
-  const CartCard({this.onChange,Key? key, this.cartItem}) : super(key: key);
+  const CartCard({this.onChange,Key? key, this.cartItem, required this.initialChecked, this.onIncrement, this.onDecrease}) : super(key: key);
   final CartItemModel? cartItem;
   final Function(bool?)? onChange;
+  final bool initialChecked;
+  final VoidCallback? onIncrement;
+  final VoidCallback? onDecrease;
 
   @override
   ConsumerState<CartCard> createState() => _CartCardState();
@@ -19,6 +22,12 @@ class CartCard extends ConsumerStatefulWidget {
 class _CartCardState extends ConsumerState<CartCard> {
 
   bool selected = true;
+
+  @override
+  void initState() {
+    super.initState();
+    selected = widget.initialChecked;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +63,7 @@ class _CartCardState extends ConsumerState<CartCard> {
                   width: 10.sp,
                 ),
                 Text(
-                  '₱ ${widget.cartItem!.product!.basePrice}',
+                  '₱ ${widget.cartItem!.variantSelected!.price! * widget.cartItem!.quantity!}',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: AppColor.primary,
@@ -103,7 +112,7 @@ class _CartCardState extends ConsumerState<CartCard> {
                         alignment: Alignment.center,
                         child: Text(
                           widget.cartItem!.quantity.toString(),
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
@@ -130,25 +139,31 @@ class _CartCardState extends ConsumerState<CartCard> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CircleAvatar(
-                      radius: 14.sp,
-                      backgroundColor: Colors.grey.shade600,
-                      child: Icon(
-                        Icons.remove,
-                        size: 14.sp,
-                        color: Colors.white,
+                    InkWell(
+                      onTap: widget.onDecrease,
+                      child: CircleAvatar(
+                        radius: 14.sp,
+                        backgroundColor: Colors.grey.shade600,
+                        child: Icon(
+                          Icons.remove,
+                          size: 14.sp,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                     SizedBox(
                       width: 10.sp,
                     ),
-                    CircleAvatar(
-                      radius: 14.sp,
-                      backgroundColor: AppColor.primary,
-                      child: Icon(
-                        Icons.add,
-                        size: 14.sp,
-                        color: Colors.white,
+                    InkWell(
+                      onTap: widget.onIncrement,
+                      child: CircleAvatar(
+                        radius: 14.sp,
+                        backgroundColor: AppColor.primary,
+                        child: Icon(
+                          Icons.add,
+                          size: 14.sp,
+                          color: Colors.white,
+                        ),
                       ),
                     )
                   ],

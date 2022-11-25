@@ -3,3 +3,10 @@ enum TransactionType {
   expense,
   unknown,
 }
+
+enum OrderStatus {
+  toPay,
+  paid,
+  preparing,
+  ready,
+}

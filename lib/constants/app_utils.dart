@@ -45,6 +45,31 @@ class AppUtils {
     return encrypted.base64;
   }
 
+  static String getOrderStatus(String status){
+    switch (status) {
+      case 'toPay':
+        return "To Pay";
+      case 'paid':
+        return "Paid";
+      case 'preparing':
+        return "Preparing";
+      case 'ready':
+        return "Ready";
+      default:
+        return "";
+    }
+  }
+
+  static bool isAm() {
+    var f = DateFormat.jm();
+    var now = f.format(DateTime.now());
+    if(now.contains('AM')){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   Future<String?> uploadFile({File? file, String? fileName, String? path}) async {
     try {
       if (file != null && fileName != null && path != null) {

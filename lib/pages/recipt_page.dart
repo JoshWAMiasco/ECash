@@ -6,13 +6,15 @@ import 'package:ecash/components/message_dialog.dart';
 import 'package:ecash/components/multi_clipper.dart';
 import 'package:ecash/components/primary_button.dart';
 import 'package:ecash/constants/app_color.dart';
+import 'package:ecash/constants/app_utils.dart';
 import 'package:ecash/constants/image.dart';
+import 'package:ecash/models/order_model.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class ReciptPage extends StatelessWidget {
-  const ReciptPage({Key? key}) : super(key: key);
-
+  const ReciptPage({Key? key, required this.order}) : super(key: key);
+  final OrderModel order;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +72,7 @@ class ReciptPage extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'Order#: AM001',
+                                  'Order#: ${order.orderNumber!}',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: AppColor.primary,
@@ -79,8 +81,8 @@ class ReciptPage extends StatelessWidget {
                                 ),
                                 Chip(
                                   label: Text(
-                                    'To Pay',
-                                    style: TextStyle(
+                                    AppUtils.getOrderStatus(order.status!),
+                                    style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white,
                                     ),
@@ -108,54 +110,37 @@ class ReciptPage extends StatelessWidget {
                             SizedBox(
                               height: 1.h,
                             ),
-                            Row(
+                            Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Flexible(
-                                  flex: 6,
-                                  child: Text(
-                                    'Classic - Brewed ( Strong ) 8oz',
-                                  ),
-                                ),
-                                Flexible(
-                                  flex: 2,
-                                  child: Text(
-                                    '2x',
-                                  ),
-                                ),
-                                Flexible(
-                                  flex: 3,
-                                  child: Text(
-                                    '₱ 200.00',
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 1.h,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Flexible(
-                                  flex: 6,
-                                  child: Text(
-                                    'Classic - Brewed ( Strong ) 8oz',
-                                  ),
-                                ),
-                                Flexible(
-                                  flex: 2,
-                                  child: Text(
-                                    '2x',
-                                  ),
-                                ),
-                                Flexible(
-                                  flex: 3,
-                                  child: Text(
-                                    '₱ 200.00',
-                                  ),
-                                ),
-                              ],
+                              children: List.generate(order.items!.length, (index){
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Flexible(
+                                    flex: 6,
+                                    child: Text(
+                                      order.items![index].product!.name! + order.items![index].variantSelected!.name!,
+
+                                      ),
+                                    ),
+                                    Flexible(
+                                      flex: 2,
+                                      child: Text(
+                                        '${order.items![index].quantity!}x',
+                                      ),
+                                    ),
+                                    Flexible(
+                                      flex: 3,
+                                      child: Text(
+                                        '₱ ${order.items![index].variantSelected!.price!}',
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 2.h,
+                                    ),
+                                    ],
+                                  );
+                              }),
                             ),
                             SizedBox(
                               height: 1.h,
@@ -179,7 +164,7 @@ class ReciptPage extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  '₱ 200.00',
+                                  '₱ ${order.totalPrice!}',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: AppColor.green,

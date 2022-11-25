@@ -9,6 +9,7 @@ class CartItemModel {
   DateTime? dateAdded;
   bool? isChecked;
   String? id;
+  String? docType;
 
   CartItemModel({
     this.product,
@@ -16,6 +17,7 @@ class CartItemModel {
     this.quantity,
     this.dateAdded,
     this.id = '',
+    this.docType = '',
   });
 
   CartItemModel.fromJson(String uid, Map<String, dynamic> json) {

@@ -96,9 +96,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                   Visibility(
                     visible: ref.watch(authProvider).user != null,
                     child: Badge(
-                      badgeContent: const Text(
-                        '2',
-                        style: TextStyle(color: Colors.white),
+                      showBadge: ref.read(productProvider).cart.hasValue,
+                      badgeContent: Text(
+                        ref.read(productProvider).cart.hasValue ?  ref.watch(productProvider).cart.value!.length.toString() : "",
+                        style: const TextStyle(color: Colors.white),
+
                       ),
                       child: InkWell(
                         onTap: () async {
@@ -147,6 +149,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                           loadingIndicator(context);
                           await ref.read(authProvider).logout().then((res) {
                             if (res.failure == false) {
+                              ref.read(productProvider).clearCart();
                               Navigator.of(context, rootNavigator: true).pop();
                               context.router.replaceNamed('/');
                             } else {

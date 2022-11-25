@@ -104,13 +104,14 @@ class _MenuPageState extends ConsumerState<MenuPage> {
                 children: [
                   ref.watch(authProvider).user != null
                       ? Badge(
-                          badgeContent: const Text(
-                            '2',
-                            style: TextStyle(color: Colors.white),
+                          showBadge: ref.read(productProvider).cart.hasValue,
+                          badgeContent: Text(
+                            ref.watch(productProvider).cart.hasValue ?  ref.watch(productProvider).cart.value!.length.toString() : "",
+                            style: const TextStyle(color: Colors.white),
                           ),
                           child: InkWell(
                             onTap: () {
-                              context.router.pushNamed('/menu');
+                              context.router.pushNamed('/cart');
                             },
                             child: Container(
                               height: 25.sp,
