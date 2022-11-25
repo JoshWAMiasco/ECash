@@ -16,6 +16,7 @@ _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
       password: json['password'] as String?,
       qrCode: json['qrCode'] as String?,
       authKey: json['authKey'] as String?,
+      mpin: json['mpin'] as String?,
     );
 
 Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) =>
@@ -27,4 +28,5 @@ Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) =>
       'password': instance.password,
       'qrCode': instance.qrCode,
       'authKey': instance.authKey,
+      'mpin': instance.mpin,
     };

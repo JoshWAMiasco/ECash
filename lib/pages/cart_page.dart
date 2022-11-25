@@ -66,8 +66,8 @@ class _CartPageState extends ConsumerState<CartPage> {
                             onChange: (value) async {
                               CartItemModel updatedItem = cartList[index];
                               updatedItem.isChecked = value;
-                              ref.read(productProvider).update(updatedItem).then((res){
-                                if(res.failure == false){
+                              ref.read(productProvider).update(updatedItem).then((res) {
+                                if (res.failure == false) {
                                   ref.read(productProvider).computeTotalPriceOnCart();
                                   log('check');
                                 } else {
@@ -75,12 +75,26 @@ class _CartPageState extends ConsumerState<CartPage> {
                                 }
                               });
                             },
+                            onDelete: () async {
+                              CartItemModel updatedItem = cartList[index];
+                              loadingIndicator(context);
+                              await ref.read(productProvider).delete(updatedItem).then((res) {
+                                if (res.failure == false) {
+                                  Navigator.of(context, rootNavigator: true).pop();
+                                  log('check');
+                                  ref.read(productProvider).computeTotalPriceOnCart();
+                                } else {
+                                  Navigator.of(context, rootNavigator: true).pop();
+                                  messageDialog(context, content: 'Went something wrong');
+                                }
+                              });
+                            },
                             onIncrement: () {
                               CartItemModel updatedItem = cartList[index];
-                              if(updatedItem.quantity! < 50){
+                              if (updatedItem.quantity! < 50) {
                                 updatedItem.quantity = updatedItem.quantity! + 1;
-                                ref.read(productProvider).update(updatedItem).then((res){
-                                  if(res.failure == false){
+                                ref.read(productProvider).update(updatedItem).then((res) {
+                                  if (res.failure == false) {
                                     log('check');
                                     ref.read(productProvider).computeTotalPriceOnCart();
                                   } else {
@@ -90,14 +104,13 @@ class _CartPageState extends ConsumerState<CartPage> {
                               } else {
                                 messageDialog(context, content: 'you\'ve reach the maximum order per item');
                               }
-                              
                             },
                             onDecrease: () {
                               CartItemModel updatedItem = cartList[index];
-                              if(updatedItem.quantity! > 0 ){
+                              if (updatedItem.quantity! > 0) {
                                 updatedItem.quantity = updatedItem.quantity! - 1;
-                                ref.read(productProvider).update(updatedItem).then((res){
-                                  if(res.failure == false){
+                                ref.read(productProvider).update(updatedItem).then((res) {
+                                  if (res.failure == false) {
                                     log('check');
                                     ref.read(productProvider).computeTotalPriceOnCart();
                                   } else {
@@ -174,19 +187,21 @@ class _CartPageState extends ConsumerState<CartPage> {
                           userId: ref.read(authProvider).getUserId(),
                         );
                         loadingIndicator(context);
-                        await ref.read(productProvider).addOrder(newOrder).then((res){
-                          if(res.failure == false){
+                        await ref.read(productProvider).addOrder(newOrder).then((res) {
+                          if (res.failure == false) {
                             Navigator.of(context, rootNavigator: true).pop();
                             messageDialog(context, content: 'Order Successfuly Submit!, Thank you!');
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => ReciptPage(
-                              order: newOrder,
-                            )));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ReciptPage(
+                                          order: newOrder,
+                                        )));
                           } else {
                             Navigator.of(context, rootNavigator: true).pop();
                             messageDialog(context, content: res.message);
                           }
                         });
-                        
                       },
                       child: Container(
                         height: 28.sp,

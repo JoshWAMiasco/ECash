@@ -92,7 +92,7 @@ class UserRepositpory {
         final email = '${newUser.userName}@brewed.com';
         try {
           final userCred = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: newUser.password!);
-          final encryptedPassword = AppUtils.encryptPassword(newUser.password!);
+          final encryptedPassword = AppUtils.encrypt(newUser.password!);
           newUser = newUser.copyWith(password: encryptedPassword);
           try {
             await userCollection.doc(userCred.user!.uid).set(newUser.toJson());

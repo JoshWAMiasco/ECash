@@ -49,10 +49,9 @@ class CartRepository {
     }
   }
 
-
   Future<CartResponce> addOrder(OrderModel order) async {
     try {
-      for(var item in order.items!){
+      for (var item in order.items!) {
         final currentUser = FirebaseAuth.instance.currentUser;
         await FirebaseFirestore.instance.collection('Users').doc(currentUser!.uid).collection('Cart').doc(item.id).delete();
       }
@@ -69,8 +68,23 @@ class CartRepository {
   }
 
   Future<CartResponce> update(CartItemModel cartItem, {String? message}) async {
-     try {
+    try {
       await FirebaseFirestore.instance.collection('Users').doc(currentUser?.uid).collection('Cart').doc(cartItem.id).update(cartItem.toJson());
+      return CartResponce(
+        failure: false,
+        message: message ?? 'Success!',
+      );
+    } on FirebaseException catch (e) {
+      return CartResponce(
+        failure: true,
+        message: e.message!,
+      );
+    }
+  }
+
+  Future<CartResponce> delete(CartItemModel cartItem, {String? message}) async {
+    try {
+      await FirebaseFirestore.instance.collection('Users').doc(currentUser?.uid).collection('Cart').doc(cartItem.id).delete();
       return CartResponce(
         failure: false,
         message: message ?? 'Success!',
@@ -85,16 +99,15 @@ class CartRepository {
 
   Stream<CartResponce> addListner() {
     return FirebaseFirestore.instance.collection('Users').doc(currentUser?.uid).collection('Cart').snapshots().map((query) {
-      if(query.docChanges.isNotEmpty) {
+      if (query.docChanges.isNotEmpty) {
         List<CartItemModel> items = <CartItemModel>[];
-        for(var doc in query.docChanges){
+        for (var doc in query.docChanges) {
           CartItemModel newItem = CartItemModel.fromJson(doc.doc.id, doc.doc.data()!);
           switch (doc.type) {
             case DocumentChangeType.added:
               newItem.docType = 'added';
               break;
             case DocumentChangeType.modified:
-
               newItem.docType = 'modified';
               break;
             case DocumentChangeType.removed:
@@ -104,18 +117,10 @@ class CartRepository {
           }
           items.add(newItem);
         }
-        return CartResponce(
-          failure: false,
-          lisOfItem: items
-        );
+        return CartResponce(failure: false, lisOfItem: items);
       } else {
-        return CartResponce(
-          failure: true,
-          message: 'empty'
-        );
+        return CartResponce(failure: true, message: 'empty');
       }
-      
     });
   }
-
 }

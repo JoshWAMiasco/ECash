@@ -33,7 +33,7 @@ class AppUtils {
     return f.format(int.parse(mobile.substring(1, 9)));
   }
 
-  static String encryptPassword(String password) {
+  static String encrypt(String password) {
     final plainText = password;
     final key = Key.fromUtf8(Constants.regKey);
     final iv = IV.fromLength(16);

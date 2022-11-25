@@ -108,7 +108,7 @@ class RegistrationPage extends ConsumerWidget {
                             beansPoint: 0,
                             dateCreated: DateTime.now(),
                             password: password.text,
-                            qrCode: AppUtils.encryptPassword(userName.text),
+                            qrCode: AppUtils.encrypt(userName.text),
                             realName: realName.text,
                             userName: userName.text,
                             authKey: 'password',

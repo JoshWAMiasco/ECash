@@ -19,21 +19,19 @@ class MenuCard extends ConsumerStatefulWidget {
 }
 
 class _MenuCardState extends ConsumerState<MenuCard> {
-
   VariantModel? selectedVariant;
 
-
   void setVariant(VariantModel variant) {
-    if(selectedVariant != null){
-      if(selectedVariant!.name == variant.name) {
+    if (selectedVariant != null) {
+      if (selectedVariant!.name == variant.name) {
         setState(() {
           selectedVariant = null;
         });
       }
     } else {
       setState(() {
-      selectedVariant = variant;
-    });
+        selectedVariant = variant;
+      });
     }
   }
 
@@ -136,40 +134,43 @@ class _MenuCardState extends ConsumerState<MenuCard> {
                           color: AppColor.primary,
                         ),
                       ),
-                      selectedVariant != null ? InkWell(
-                        onTap: () async {
-                          if(ref.read(authProvider).user == null){
-                            messageDialog(context, content: 'Please login before add to cart');
-                          } else {
-                            CartItemModel item = CartItemModel(
-                              dateAdded: DateTime.now(),
-                              product:  widget.product,
-                              quantity: 1,
-                              variantSelected: selectedVariant,
-                            );
-                            loadingIndicator(context);
-                            await ref.read(productProvider).addToCart(item).then((res) {
-                              if (res.failure == false) {
-                                Navigator.of(context, rootNavigator: true).pop();
-                                messageDialog(context, content: 'Successfuly added to cart!');
-                              } else {
-                                messageDialog(context, content: res.message);
-                              }
-                            });
-                          }
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColor.primary,
-                          ),
-                          child: Icon(
-                            Icons.add,
-                            color: Colors.white,
-                            size: 20.sp,
-                          ),
-                        ),
-                      ) : const SizedBox(),
+                      selectedVariant != null
+                          ? InkWell(
+                              onTap: () async {
+                                if (ref.read(authProvider).user == null) {
+                                  messageDialog(context, content: 'Please login before add to cart');
+                                } else {
+                                  CartItemModel item = CartItemModel(
+                                    dateAdded: DateTime.now(),
+                                    product: widget.product,
+                                    quantity: 1,
+                                    variantSelected: selectedVariant,
+                                  );
+                                  loadingIndicator(context);
+                                  await ref.read(productProvider).addToCart(item).then((res) {
+                                    if (res.failure == false) {
+                                      Navigator.of(context, rootNavigator: true).pop();
+                                      messageDialog(context, content: 'Successfuly added to cart!');
+                                    } else {
+                                      Navigator.of(context, rootNavigator: true).pop();
+                                      messageDialog(context, content: res.message);
+                                    }
+                                  });
+                                }
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppColor.primary,
+                                ),
+                                child: Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                  size: 20.sp,
+                                ),
+                              ),
+                            )
+                          : const SizedBox(),
                     ],
                   ),
                 ),

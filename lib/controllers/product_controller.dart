@@ -25,9 +25,6 @@ class ProductController extends ChangeNotifier {
   StreamSubscription? _cartStream;
   StreamSubscription? _orderStream;
 
-  
-  
-
   Future<void> getProducts() async {
     products = const AsyncValue.loading();
     notifyListeners();
@@ -42,7 +39,7 @@ class ProductController extends ChangeNotifier {
 
   Future<void> getCartItems() async {
     final currentUser = FirebaseAuth.instance.currentUser;
-    if(currentUser != null){
+    if (currentUser != null) {
       cart = const AsyncValue.loading();
       notifyListeners();
       final res = await _cartRepository.getMyCartItems();
@@ -64,12 +61,14 @@ class ProductController extends ChangeNotifier {
     return await _cartRepository.update(cartItem, message: message);
   }
 
-
+  Future<CartResponce> delete(CartItemModel cartItem, {String? message}) async {
+    return await _cartRepository.delete(cartItem, message: message);
+  }
 
   void computeTotalPriceOnCart() {
     double total = 0.0;
-    for(var item in cart.value!){
-      if(item.isChecked!){
+    for (var item in cart.value!) {
+      if (item.isChecked!) {
         total += item.variantSelected!.price! * item.quantity!;
       }
     }
@@ -79,38 +78,37 @@ class ProductController extends ChangeNotifier {
 
   List<CartItemModel> getOrder() {
     var orders = <CartItemModel>[];
-    for(var item in cart.value!){
-      if(item.isChecked!){
+    for (var item in cart.value!) {
+      if (item.isChecked!) {
         orders.add(item);
       }
     }
     return orders;
   }
 
-
   void addListenerToCart() {
     _cartStream = _cartRepository.addListner().listen((res) {
-      if(res.failure == false) {  
+      if (res.failure == false) {
         List<CartItemModel> updatedCartList = cart.value!;
-        for(var newItem in res.lisOfItem!){
+        for (var newItem in res.lisOfItem!) {
           List<String> cartIds = <String>[];
-          for(var userItem in cart.value!){
+          for (var userItem in cart.value!) {
             cartIds.add(userItem.id!);
           }
-          if(newItem.docType == 'added' && cartIds.contains(newItem.id) == false){
+          if (newItem.docType == 'added' && cartIds.contains(newItem.id) == false) {
             updatedCartList.add(newItem);
-          } else if(newItem.docType == 'modified') {
+          } else if (newItem.docType == 'modified') {
             int index = 0;
-            for(var userItem in cart.value!){
-              if(newItem.id == userItem.id) {
+            for (var userItem in cart.value!) {
+              if (newItem.id == userItem.id) {
                 updatedCartList[index] = newItem;
               }
               index++;
             }
-          } else if(newItem.docType == 'removed') {
+          } else if (newItem.docType == 'removed') {
             int index = 0;
-            for(var userItem in cart.value!){
-              if(newItem.id == userItem.id) {
+            for (var userItem in cart.value!) {
+              if (newItem.id == userItem.id) {
                 updatedCartList.removeAt(index);
               }
               index++;
@@ -125,27 +123,27 @@ class ProductController extends ChangeNotifier {
 
   void addListenerToOrder() {
     _orderStream = _orderRepository.addListner().listen((res) {
-      if(res.failure == false) {
+      if (res.failure == false) {
         List<OrderModel> updatedOrderList = orders.value!;
-        for(var newOrder in res.orders!){
+        for (var newOrder in res.orders!) {
           List<String> orderIds = <String>[];
-          for(var userOrder in orders.value!){
+          for (var userOrder in orders.value!) {
             orderIds.add(userOrder.uid!);
           }
-          if(newOrder.docType == 'added' && orderIds.contains(newOrder.uid) == false){
+          if (newOrder.docType == 'added' && orderIds.contains(newOrder.uid) == false) {
             updatedOrderList.add(newOrder);
-          } else if(newOrder.docType == 'modified') {
+          } else if (newOrder.docType == 'modified') {
             int index = 0;
-            for(var userOrder in orders.value!){
-              if(newOrder.uid == userOrder.uid) {
+            for (var userOrder in orders.value!) {
+              if (newOrder.uid == userOrder.uid) {
                 updatedOrderList[index] = newOrder;
               }
               index++;
             }
-          } else if(newOrder.docType == 'removed') {
+          } else if (newOrder.docType == 'removed') {
             int index = 0;
-            for(var userOrder in orders.value!){
-              if(newOrder.uid == userOrder.uid) {
+            for (var userOrder in orders.value!) {
+              if (newOrder.uid == userOrder.uid) {
                 updatedOrderList.removeAt(index);
               }
               index++;
@@ -164,10 +162,10 @@ class ProductController extends ChangeNotifier {
   }
 
   String generateOrderNumber() {
-    if(AppUtils.isAm()){
-      return "AM${const Uuid().v4().substring(0,4)}";
+    if (AppUtils.isAm()) {
+      return "AM${const Uuid().v4().substring(0, 4)}";
     } else {
-      return "PM${const Uuid().v4().substring(0,4)}";
+      return "PM${const Uuid().v4().substring(0, 4)}";
     }
   }
 
@@ -179,9 +177,9 @@ class ProductController extends ChangeNotifier {
     final currentUser = FirebaseAuth.instance.currentUser;
     orders = const AsyncValue.loading();
     notifyListeners();
-    if(currentUser != null){
-      await _orderRepository.getMyOrders().then((res){
-        if(res.failure == false){
+    if (currentUser != null) {
+      await _orderRepository.getMyOrders().then((res) {
+        if (res.failure == false) {
           orders = AsyncValue.data(res.orders!);
           notifyListeners();
         } else {
@@ -191,6 +189,4 @@ class ProductController extends ChangeNotifier {
       });
     }
   }
-
-
 }

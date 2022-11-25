@@ -96,7 +96,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   Visibility(
                     visible: ref.watch(authProvider).user != null,
                     child: Badge(
-                      showBadge: ref.read(productProvider).cart.hasValue,
+                      showBadge: true,
                       badgeContent: Text(
                         ref.read(productProvider).cart.hasValue ?  ref.watch(productProvider).cart.value!.length.toString() : "",
                         style: const TextStyle(color: Colors.white),
