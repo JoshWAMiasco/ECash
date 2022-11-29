@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 class AuthenticationController extends ChangeNotifier {
   UserModel? user;
   final _userRepository = UserRepositpory();
+
   StreamSubscription? _streamSubscription;
 
   Future<UserResponce> login(String mobileNumber, String mpin) async {

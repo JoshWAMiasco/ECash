@@ -65,7 +65,7 @@ dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/mobile_icon.png"
+  image_path: "assets/mobile_logo.png"
 
 dev_dependencies:
   flutter_test:
