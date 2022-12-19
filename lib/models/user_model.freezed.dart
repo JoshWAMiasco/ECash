@@ -21,7 +21,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$UserModel {
   String? get userName => throw _privateConstructorUsedError;
-  int? get beansPoint => throw _privateConstructorUsedError;
+  double? get beansPoint => throw _privateConstructorUsedError;
   String? get realName => throw _privateConstructorUsedError;
   DateTime? get dateCreated => throw _privateConstructorUsedError;
   String? get password => throw _privateConstructorUsedError;
@@ -42,7 +42,7 @@ abstract class $UserModelCopyWith<$Res> {
   @useResult
   $Res call(
       {String? userName,
-      int? beansPoint,
+      double? beansPoint,
       String? realName,
       DateTime? dateCreated,
       String? password,
@@ -81,7 +81,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
       beansPoint: freezed == beansPoint
           ? _value.beansPoint
           : beansPoint // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       realName: freezed == realName
           ? _value.realName
           : realName // ignore: cast_nullable_to_non_nullable
@@ -119,7 +119,7 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
   @useResult
   $Res call(
       {String? userName,
-      int? beansPoint,
+      double? beansPoint,
       String? realName,
       DateTime? dateCreated,
       String? password,
@@ -156,7 +156,7 @@ class __$$_UserModelCopyWithImpl<$Res>
       beansPoint: freezed == beansPoint
           ? _value.beansPoint
           : beansPoint // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       realName: freezed == realName
           ? _value.realName
           : realName // ignore: cast_nullable_to_non_nullable
@@ -204,7 +204,7 @@ class _$_UserModel implements _UserModel {
   @override
   final String? userName;
   @override
-  final int? beansPoint;
+  final double? beansPoint;
   @override
   final String? realName;
   @override
@@ -265,7 +265,7 @@ class _$_UserModel implements _UserModel {
 abstract class _UserModel implements UserModel {
   factory _UserModel(
       {final String? userName,
-      final int? beansPoint,
+      final double? beansPoint,
       final String? realName,
       final DateTime? dateCreated,
       final String? password,
@@ -279,7 +279,7 @@ abstract class _UserModel implements UserModel {
   @override
   String? get userName;
   @override
-  int? get beansPoint;
+  double? get beansPoint;
   @override
   String? get realName;
   @override

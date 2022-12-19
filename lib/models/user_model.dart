@@ -7,7 +7,7 @@ part 'user_model.g.dart';
 class UserModel with _$UserModel {
   factory UserModel({
     String? userName,
-    int? beansPoint,
+    double? beansPoint,
     String? realName,
     DateTime? dateCreated,
     String? password,

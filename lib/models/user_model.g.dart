@@ -8,7 +8,7 @@ part of 'user_model.dart';
 
 _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
       userName: json['userName'] as String?,
-      beansPoint: json['beansPoint'] as int?,
+      beansPoint: (json['beansPoint'] as num?)?.toDouble(),
       realName: json['realName'] as String?,
       dateCreated: json['dateCreated'] == null
           ? null

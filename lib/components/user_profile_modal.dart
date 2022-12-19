@@ -43,7 +43,7 @@ class UserProfileModal extends ConsumerWidget {
             ),
             Center(
               child: Text(
-                'Beans Point: ${AppUtils.pointsFormatter(ref.watch(authProvider).user!.beansPoint!)}',
+                'Beans Point: ${AppUtils.pointsFormatter(ref.watch(authProvider).user!.beansPoint!.toInt())}',
                 style: const TextStyle(
                   fontSize: 15,
                 ),
