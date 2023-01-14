@@ -8,29 +8,24 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 final appRouter = AppRouter();
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
   await Firebase.initializeApp();
-  runApp(
-    ProviderScope(
-      child: ResponsiveSizer(
-        builder: (context, orientation, screenType) => MaterialApp.router(
-          title: 'Winter Brewed',
-          routeInformationParser: appRouter.defaultRouteParser(),
-          routerDelegate: appRouter.delegate(),
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
+  runApp(ProviderScope(
+    child: ResponsiveSizer(
+      builder: (context, orientation, screenType) => MaterialApp.router(
+        title: 'Winter Brewed',
+        routeInformationParser: appRouter.defaultRouteParser(),
+        routerDelegate: appRouter.delegate(),
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
             fontFamily: GoogleFonts.nunito().fontFamily,
-            textTheme: GoogleFonts.nunitoTextTheme()
-          ),
-          builder:(context,child) => child!,
-        ),
+            textTheme: GoogleFonts.nunitoTextTheme()),
+        builder: (context, child) => child!,
       ),
-    )
-  );
+    ),
+  ));
 }
-

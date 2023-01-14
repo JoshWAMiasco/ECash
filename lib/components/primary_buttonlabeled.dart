@@ -1,14 +1,16 @@
-import 'dart:ffi';
-
-import 'package:ecash/components/primary_icon_button.dart';
-import 'package:ecash/constants/app_color.dart';
 import 'package:flutter/material.dart';
 
 class PriamryButtonLabeled extends StatelessWidget {
-  const PriamryButtonLabeled({Key? key, this.onTap, this.label,required this.asset, this.large = false}) : super(key: key);
+  const PriamryButtonLabeled(
+      {Key? key,
+      this.onTap,
+      this.label,
+      required this.icon,
+      this.large = false})
+      : super(key: key);
   final VoidCallback? onTap;
   final String? label;
-  final String asset;
+  final Icon icon;
   final bool large;
   @override
   Widget build(BuildContext context) {
@@ -33,11 +35,7 @@ class PriamryButtonLabeled extends StatelessWidget {
                       child: Center(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Image(
-                            image: AssetImage(asset),
-                            height: 80,
-                            width: 80,
-                          ),
+                          child: icon,
                         ),
                       ),
                     ),
@@ -75,11 +73,7 @@ class PriamryButtonLabeled extends StatelessWidget {
                       child: Center(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: ImageIcon(
-                            AssetImage(asset),
-                            size: 20,
-                            color: AppColor.primary,
-                          ),
+                          child: icon,
                         ),
                       ),
                     ),
