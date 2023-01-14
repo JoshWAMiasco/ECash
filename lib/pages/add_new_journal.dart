@@ -1,11 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:ecash/components/loading_indicator.dart';
+import 'package:ecash/components/message_dialog.dart';
 import 'package:ecash/components/primary_button.dart';
 import 'package:ecash/constants/app_color.dart';
+import 'package:ecash/models/journal_book_model.dart';
 import 'package:ecash/models/journal_item_model.dart';
 import 'package:ecash/pages/primary_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:uuid/uuid.dart';
 
 class AddNewJournalPage extends StatefulWidget {
   const AddNewJournalPage({super.key});
@@ -15,18 +20,40 @@ class AddNewJournalPage extends StatefulWidget {
 }
 
 class _AddNewJournalPageState extends State<AddNewJournalPage> {
+  int currentJournalCount = 0;
   DateTime dateNow = DateTime.now();
-  final f = DateFormat('d MMM y');
+  final f = DateFormat('MMM d y');
   String dateNowString = '';
   double totalCredit = 0.0;
   double totalDebit = 0.0;
+  String journalId = 'Loading...';
+  bool enableSave = false;
+  TextEditingController notesController = TextEditingController();
 
   List<JournalItemModel> listOfJournalItem = [];
 
+  var fn = NumberFormat("0000");
+
   @override
   void initState() {
+    getCurrentJournalCount();
     dateNowString = f.format(dateNow);
     super.initState();
+  }
+
+  getCurrentJournalCount() async {
+    await FirebaseFirestore.instance
+        .collection('Counting')
+        .doc('JournalCount')
+        .get()
+        .then((query) {
+      if (query.data() != null) {
+        currentJournalCount = (query.data()!['count'] as num).toInt();
+      }
+    });
+    setState(() {
+      journalId = 'J${dateNow.year}-${fn.format(currentJournalCount)}';
+    });
   }
 
   void addItem(JournalItemModel newItem) {
@@ -73,13 +100,55 @@ class _AddNewJournalPageState extends State<AddNewJournalPage> {
     listOfJournalItem[index].chartOfAccount = newType;
   }
 
+  void saveJournal() async {
+    loadingIndicator(context);
+    JournalBookModel jornal = JournalBookModel(
+      date: DateTime.now(),
+      id: journalId,
+      totalCredit: totalCredit,
+      totalDebit: totalDebit,
+      items: listOfJournalItem,
+      notes: notesController.text,
+    );
+
+    await FirebaseFirestore.instance
+        .collection('Journals')
+        .doc(journalId)
+        .set(jornal.toJson())
+        .whenComplete(() async {
+      // increment current Count
+
+      await FirebaseFirestore.instance
+          .collection('Counting')
+          .doc('JournalCount')
+          .update({
+        "count": FieldValue.increment(1),
+      }).whenComplete(() {
+        Navigator.of(context, rootNavigator: true).pop();
+        messageDialog(context, title: 'Success', content: 'Journal Saved!');
+      });
+    });
+  }
+
+  void checkEnableSave() {
+    if (listOfJournalItem.isEmpty) {
+      setState(() {
+        enableSave = false;
+      });
+    } else {
+      setState(() {
+        enableSave = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.background,
       appBar: AppBar(
         backgroundColor: AppColor.primary,
-        title: Text(
+        title: const Text(
           'Journal Entry',
         ),
       ),
@@ -92,7 +161,7 @@ class _AddNewJournalPageState extends State<AddNewJournalPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   'Total Debit: ',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -101,7 +170,7 @@ class _AddNewJournalPageState extends State<AddNewJournalPage> {
                 ),
                 Text(
                   '₱ $totalDebit',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
@@ -111,7 +180,7 @@ class _AddNewJournalPageState extends State<AddNewJournalPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   'Total Credit: ',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -120,7 +189,7 @@ class _AddNewJournalPageState extends State<AddNewJournalPage> {
                 ),
                 Text(
                   '₱ $totalCredit',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
@@ -136,10 +205,22 @@ class _AddNewJournalPageState extends State<AddNewJournalPage> {
                 SizedBox(
                   width: 40.w,
                   child: PrimaryButton(
-                    backgroundColor: Colors.white,
+                    backgroundColor: enableSave
+                        ? Colors.white
+                        : Colors.white.withOpacity(0.5),
                     titleColor: AppColor.primary,
                     title: 'Save',
-                    onPressed: () {},
+                    onPressed: () {
+                      if (enableSave) {
+                        if (totalCredit != totalDebit) {
+                          messageDialog(context,
+                              title: 'Alert',
+                              content: 'Total debit and credit does not match');
+                          return;
+                        }
+                        saveJournal();
+                      }
+                    },
                   ),
                 ),
                 SizedBox(
@@ -148,7 +229,13 @@ class _AddNewJournalPageState extends State<AddNewJournalPage> {
                     backgroundColor: Colors.white,
                     titleColor: Colors.red,
                     title: 'Cancel',
-                    onPressed: () {},
+                    onPressed: () {
+                      listOfJournalItem.clear();
+                      journalId = '';
+                      totalCredit = 0.0;
+                      totalDebit = 0.0;
+                      Navigator.pop(context);
+                    },
                   ),
                 ),
               ],
@@ -170,7 +257,7 @@ class _AddNewJournalPageState extends State<AddNewJournalPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'J0001',
+                      journalId,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18.sp,
@@ -206,16 +293,19 @@ class _AddNewJournalPageState extends State<AddNewJournalPage> {
                                   updateDebCredAccount(index, value!);
                                 },
                                 amountOnChange: (value) {
-                                  double amount = double.parse(value);
-                                  updateAmount(index, amount);
+                                  if (value.isNotEmpty) {
+                                    double amount = double.parse(value);
+                                    updateAmount(index, amount);
+                                  }
                                 },
                                 onClose: () {
                                   removeItem(index);
+                                  checkEnableSave();
                                 },
                               )),
                     );
                   } else {
-                    return Text(
+                    return const Text(
                       'No Item',
                     );
                   }
@@ -234,7 +324,19 @@ class _AddNewJournalPageState extends State<AddNewJournalPage> {
                       debitCreditAccount: 'debit',
                     ),
                   );
+
+                  checkEnableSave();
                 },
+              ),
+              SizedBox(
+                height: 1.h,
+              ),
+              PrimaryTextField(
+                controller: notesController,
+                hint: 'Notes',
+                height: 35.h,
+                textInputType: TextInputType.multiline,
+                maxLines: 5,
               ),
               SizedBox(
                 height: 5.h,
@@ -286,7 +388,10 @@ class _JournalItemCardState extends State<JournalItemCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: AppColor.secondary,
+      margin: EdgeInsets.only(
+        top: 20.sp,
+      ),
+      color: AppColor.ligthBlue,
       elevation: 5,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusDirectional.circular(20)),
@@ -334,10 +439,10 @@ class _JournalItemCardState extends State<JournalItemCard> {
                   fontSize: 17.sp,
                 ),
                 tabs: [
-                  Tab(
+                  const Tab(
                     text: 'Debit',
                   ),
-                  Tab(
+                  const Tab(
                     text: 'Credit',
                   ),
                 ],

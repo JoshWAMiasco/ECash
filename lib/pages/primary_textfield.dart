@@ -3,26 +3,30 @@ import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class PrimaryTextField extends StatelessWidget {
-  const PrimaryTextField(
-      {Key? key,
-      this.width,
-      this.hint,
-      this.controller,
-      this.maxLength,
-      this.textInputType,
-      this.onChange})
-      : super(key: key);
+  const PrimaryTextField({
+    Key? key,
+    this.width,
+    this.hint,
+    this.controller,
+    this.maxLength,
+    this.textInputType,
+    this.onChange,
+    this.height,
+    this.maxLines,
+  }) : super(key: key);
   final double? width;
   final String? hint;
   final TextEditingController? controller;
   final int? maxLength;
   final TextInputType? textInputType;
   final Function(String)? onChange;
+  final double? height;
+  final int? maxLines;
   @override
   Widget build(BuildContext context) {
     return Container(
       width: width ?? MediaQuery.of(context).size.width,
-      height: 28.sp,
+      height: height ?? 28.sp,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
@@ -31,6 +35,7 @@ class PrimaryTextField extends StatelessWidget {
         onChanged: onChange,
         controller: controller,
         maxLength: maxLength,
+        maxLines: maxLines ?? 1,
         keyboardType: textInputType,
         decoration: InputDecoration(
           border: InputBorder.none,
