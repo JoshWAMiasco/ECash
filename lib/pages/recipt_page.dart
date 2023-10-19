@@ -1,7 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:dotted_line/dotted_line.dart';
-import 'package:ecash/components/clip_path_shadow.dart';
-import 'package:ecash/components/loading_indicator.dart';
 import 'package:ecash/components/message_dialog.dart';
 import 'package:ecash/components/multi_clipper.dart';
 import 'package:ecash/components/primary_button.dart';

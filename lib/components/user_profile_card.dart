@@ -14,7 +14,7 @@ class UserProfileCard extends StatelessWidget {
   final String? userAccountNumber;
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 130,
       child: Stack(
         children: [
@@ -25,7 +25,7 @@ class UserProfileCard extends StatelessWidget {
                 height: 20,
               ),
               Container(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 height: 70,
                 width: double.infinity,
                 decoration: BoxDecoration(
@@ -41,14 +41,14 @@ class UserProfileCard extends StatelessWidget {
                       children: [
                         Text(
                           displayName ?? '',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 20,
                             color: Colors.white,
                           ),
                         ),
                         Text(
                           mobileNumber ?? '',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14,
                             color: Colors.white,
                           ),
@@ -60,12 +60,12 @@ class UserProfileCard extends StatelessWidget {
                     ),
                     Container(
                       height: 20,
-                      padding: EdgeInsets.fromLTRB(10, 2, 10, 1),
+                      padding: const EdgeInsets.fromLTRB(10, 2, 10, 1),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Text(
+                      child: const Text(
                         'Verified',
                         style: TextStyle(),
                       ),
@@ -90,7 +90,7 @@ class UserProfileCard extends StatelessWidget {
                       height: 80,
                       width: 80,
                       decoration: BoxDecoration(
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             offset: Offset(1, 2),
                             color: Colors.white,
@@ -124,14 +124,14 @@ class UserProfileCard extends StatelessWidget {
                               padding: const EdgeInsets.all(15.0),
                               child: Column(
                                 children: [
-                                  Center(
-                                    child: QrImage(
-                                      data: userAccountNumber ?? '',
-                                      version: QrVersions.auto,
-                                      size: 220,
-                                      gapless: false,
-                                    ),
-                                  ),
+                                  // Center(
+                                  //   child: QrImage(
+                                  //     data: userAccountNumber ?? '',
+                                  //     version: QrVersions.auto,
+                                  //     size: 220,
+                                  //     gapless: false,
+                                  //   ),
+                                  // ),
                                   const SizedBox(
                                     height: 20,
                                   ),
@@ -147,7 +147,7 @@ class UserProfileCard extends StatelessWidget {
                                   Center(
                                     child: Text(
                                       mobileNumber ?? '',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 15,
                                       ),
                                     ),
@@ -167,7 +167,7 @@ class UserProfileCard extends StatelessWidget {
                       },
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 50,
                     child: PrimaryIconButton(
                       icon: Icons.edit,

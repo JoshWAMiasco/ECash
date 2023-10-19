@@ -21,14 +21,14 @@ class UserProfileModal extends ConsumerWidget {
         padding: const EdgeInsets.all(15.0),
         child: Column(
           children: [
-            Center(
-              child: QrImage(
-                data: ref.watch(authProvider).user!.qrCode!,
-                version: QrVersions.auto,
-                size: 220,
-                gapless: false,
-              ),
-            ),
+            // Center(
+            //   child: QrImage(
+            //     data: ref.watch(authProvider).user!.qrCode!,
+            //     version: QrVersions.auto,
+            //     size: 220,
+            //     gapless: false,
+            //   ),
+            // ),
             const SizedBox(
               height: 20,
             ),

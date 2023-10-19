@@ -20,7 +20,7 @@ class LoadingScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 'Loading...',
                 style: TextStyle(
                   fontSize: 18,

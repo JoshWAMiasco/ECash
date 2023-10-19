@@ -1,6 +1,5 @@
 import 'package:ecash/constants/app_color.dart';
 import 'package:ecash/constants/image.dart';
-import 'package:ecash/pages/demo_page.dart';
 import 'package:ecash/pages/home_page.dart';
 import 'package:ecash/pages/my_order_page.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +48,7 @@ class _MainPageState extends State<MainPage> {
                       child: Column(
                         children: [
                           ImageIcon(
-                            AssetImage(storeIcon),
+                            const AssetImage(storeIcon),
                             size: 25.sp,
                             color: pageIndex == 0 ? Colors.white : Colors.white30,
                           ),
@@ -73,7 +72,7 @@ class _MainPageState extends State<MainPage> {
                           Padding(
                             padding: EdgeInsets.only(top: 9.sp),
                             child: ImageIcon(
-                              AssetImage(orderIcon),
+                              const AssetImage(orderIcon),
                               size: 22.sp,
                               color: pageIndex == 1 ? Colors.white : Colors.white30,
                             ),

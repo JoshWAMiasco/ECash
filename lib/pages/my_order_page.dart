@@ -1,5 +1,3 @@
-import 'package:badges/badges.dart';
-import 'package:dotted_line/dotted_line.dart';
 import 'package:ecash/components/no_order_placeholder.dart';
 import 'package:ecash/components/order_card.dart';
 import 'package:ecash/constants/app_color.dart';
@@ -72,7 +70,7 @@ class _MyOrderPageState extends ConsumerState<MyOrderPage> {
                       }),
                     );
                   } else {
-                    return Text('No Order');
+                    return const Text('No Order');
                   }
                 },
                 error: (error, stact) {

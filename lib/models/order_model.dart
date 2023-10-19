@@ -1,6 +1,5 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecash/constants/app_utils.dart';
 import 'package:ecash/models/cart_item_model.dart';
 
 

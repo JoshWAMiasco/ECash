@@ -1,9 +1,6 @@
-import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:ecash/components/primary_button.dart';
 import 'package:ecash/constants/app_color.dart';
-import 'package:ecash/constants/app_utils.dart';
 import 'package:ecash/constants/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -72,7 +69,7 @@ class BeansWalletNoUSer extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(20.sp),
                                 ),
                               ),
-                              child: Text(
+                              child: const Text(
                                 'Login',
                                 style: TextStyle(
                                   color: Colors.white,

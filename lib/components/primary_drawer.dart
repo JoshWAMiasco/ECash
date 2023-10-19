@@ -11,7 +11,7 @@ class PrimaryDrawer extends StatelessWidget {
       elevation: 2,
       child: Container(
         color: AppColor.primary,
-        padding: EdgeInsets.only(left: 10, right: 10),
+        padding: const EdgeInsets.only(left: 10, right: 10),
         child: Column(
           children: [
             const SizedBox(
@@ -33,16 +33,16 @@ class PrimaryDrawer extends StatelessWidget {
             Row(
               children: [
                 ImageIcon(
-                  AssetImage('assets/ecash_logo.png'),
+                  const AssetImage('assets/ecash_logo.png'),
                   size: 100,
                   color: Colors.white.withOpacity(0.5),
                 ),
                 const SizedBox(
                   width: 20,
                 ),
-                Column(
+                const Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
-                  children: const [
+                  children: [
                     Text(
                       'Ecash',
                       style: TextStyle(
@@ -64,14 +64,14 @@ class PrimaryDrawer extends StatelessWidget {
             const SizedBox(
               height: 50,
             ),
-            Container(
+            SizedBox(
               height: 60,
               child: Stack(
                 alignment: Alignment.center,
                 children: [
                   Container(
                     alignment: Alignment.center,
-                    margin: EdgeInsets.only(left: 20),
+                    margin: const EdgeInsets.only(left: 20),
                     height: 30,
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -141,7 +141,7 @@ class PrimaryDrawer extends StatelessWidget {
                 children: [
                   Container(
                     alignment: Alignment.center,
-                    margin: EdgeInsets.only(left: 20),
+                    margin: const EdgeInsets.only(left: 20),
                     height: 30,
                     width: double.infinity,
                     decoration: BoxDecoration(

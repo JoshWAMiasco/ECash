@@ -1,5 +1,4 @@
 
-import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecash/components/primary_button.dart';
 import 'package:ecash/constants/app_color.dart';
@@ -8,7 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'dart:math';
 
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:shimmer/shimmer.dart';
 
 class SlidableCard extends StatefulWidget {
   const SlidableCard({Key? key}) : super(key: key);
@@ -61,8 +59,8 @@ class _SlidableCardState extends State<SlidableCard> {
                   int? currentPage;
                   if(currentPageValue.isNegative == false){
                     currentIndex = currentPageValue.toInt();
-                    print('index: ' + currentIndex.toString());
-                    print('i: ' + (_page - 10).abs().toString());
+                    print('index: $currentIndex');
+                    print('i: ${(_page - 10).abs()}');
                     currentPage = (_page.toInt() - 10).abs();
                   }
 
@@ -156,7 +154,7 @@ class _SlidableCardState extends State<SlidableCard> {
                                 ],
                               );
                             }
-                            return SizedBox();
+                            return const SizedBox();
                           }
                         ),
                     ),
@@ -169,12 +167,12 @@ class _SlidableCardState extends State<SlidableCard> {
           ),
           Positioned.fill(
             child: PageView.builder(
-              physics: BouncingScrollPhysics(
+              physics: const BouncingScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics()),
               itemCount: 10,
               controller: pageController,
               itemBuilder: (context, index) {
-                return SizedBox();
+                return const SizedBox();
               },
             ),
           ),

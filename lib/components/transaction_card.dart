@@ -27,7 +27,7 @@ class TransactionCard extends StatelessWidget {
                 children: [
                   Text(
                     title ?? '',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 15,
                     ),
                   ),
@@ -43,7 +43,7 @@ class TransactionCard extends StatelessWidget {
               const SizedBox(
                 height: 5,
               ),
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width * 0.95,
                 child: Text(
                   description ?? '',

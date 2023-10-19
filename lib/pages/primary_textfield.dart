@@ -32,7 +32,7 @@ class PrimaryTextField extends StatelessWidget {
             fontSize: 17.sp,
           ),
           counterText: "",
-          contentPadding: EdgeInsets.only(
+          contentPadding: const EdgeInsets.only(
             left: 10,
             bottom: 10,
           ),

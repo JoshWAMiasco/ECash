@@ -83,7 +83,7 @@ class AppUtils {
       } else {
         return null;
       }
-    } on FirebaseException catch (e) {
+    } on FirebaseException {
       return null;
     }
   }

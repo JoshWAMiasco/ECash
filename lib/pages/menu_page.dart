@@ -1,12 +1,7 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:badges/badges.dart';
-import 'package:ecash/components/cart_card.dart';
-import 'package:ecash/components/loading_indicator.dart';
 import 'package:ecash/components/menu_card.dart';
-import 'package:ecash/components/message_dialog.dart';
 import 'package:ecash/constants/app_color.dart';
 import 'package:ecash/constants/image.dart';
-import 'package:ecash/models/cart_item_model.dart';
 import 'package:ecash/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,7 +31,7 @@ class _MenuPageState extends ConsumerState<MenuPage> {
         children: [
           Container(
             padding: EdgeInsets.only(left: 15.sp, right: 15.sp),
-            height: 100.h, 
+            height: 100.h,
             width: 100.w,
             child: SingleChildScrollView(
               child: Column(
@@ -104,9 +99,9 @@ class _MenuPageState extends ConsumerState<MenuPage> {
                 children: [
                   ref.watch(authProvider).user != null
                       ? Badge(
-                          showBadge: ref.read(productProvider).cart.hasValue,
-                          badgeContent: Text(
-                            ref.watch(productProvider).cart.hasValue ?  ref.watch(productProvider).cart.value!.length.toString() : "",
+                          isLabelVisible: ref.read(productProvider).cart.hasValue,
+                          label: Text(
+                            ref.watch(productProvider).cart.hasValue ? ref.watch(productProvider).cart.value!.length.toString() : "",
                             style: const TextStyle(color: Colors.white),
                           ),
                           child: InkWell(

@@ -2,7 +2,6 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:ecash/constants/app_color.dart';
 import 'package:ecash/constants/app_utils.dart';
 import 'package:ecash/models/order_model.dart';
-import 'package:ecash/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -43,7 +42,7 @@ class OrderCard extends ConsumerWidget {
                       padding: EdgeInsets.zero,
                       label: Text(
                         AppUtils.getOrderStatus(order.status!),
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
                       ),

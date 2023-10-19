@@ -1,5 +1,4 @@
 import 'package:ecash/models/order_model.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class OrderResponce{
   bool? failure;

@@ -8,7 +8,7 @@ class PrimaryAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(15),
+      margin: const EdgeInsets.all(15),
       decoration: BoxDecoration(color: AppColor.primary, borderRadius: BorderRadius.circular(10)),
       height: 45,
       width: double.infinity,
@@ -19,7 +19,7 @@ class PrimaryAppBar extends StatelessWidget {
           ),
           GestureDetector(
             onTap: onBack,
-            child: Icon(
+            child: const Icon(
               Icons.arrow_back_ios_rounded,
               color: Colors.white,
             ),
@@ -29,7 +29,7 @@ class PrimaryAppBar extends StatelessWidget {
           ),
           Text(
             title ?? '',
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 15,
             ),

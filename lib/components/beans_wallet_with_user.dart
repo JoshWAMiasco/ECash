@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:ecash/components/user_profile_modal.dart';
 import 'package:ecash/constants/app_color.dart';
 import 'package:ecash/constants/app_utils.dart';
@@ -66,7 +65,7 @@ class _BeansWalletWithUSerState extends ConsumerState<BeansWalletWithUSer> {
                             showDialog(
                               context: context,
                               builder: (context) {
-                                return UserProfileModal();
+                                return const UserProfileModal();
                               },
                             );
                           },

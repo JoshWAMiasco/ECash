@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:ecash/components/ripple_animation.dart';
 import 'package:ecash/constants/app_color.dart';
 import 'package:ecash/constants/image.dart';
-import 'package:ecash/pages/login_page.dart';
 import 'package:ecash/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

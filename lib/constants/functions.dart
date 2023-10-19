@@ -6,10 +6,10 @@ String moneyFormatter(double number) {
 }
 
 String shortDateFormatter(DateTime date) {
-  String month = date.month.toString().length > 1 ? date.month.toString() : '0' + date.month.toString();
-  String day = date.day.toString().length > 1 ? date.day.toString() : '0' + date.day.toString();
+  String month = date.month.toString().length > 1 ? date.month.toString() : '0${date.month}';
+  String day = date.day.toString().length > 1 ? date.day.toString() : '0${date.day}';
   String year = date.year.toString().substring(2, 4);
-  return month + ' / ' + day + ' / ' + year;
+  return '$month / $day / $year';
 }
 
 String dateFormatter(DateTime date) {
